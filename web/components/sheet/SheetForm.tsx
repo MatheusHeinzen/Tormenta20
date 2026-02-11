@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { CharacterSheet } from "@/lib/models/character";
+import { applyT20DerivedChanges } from "@/lib/t20/derived";
 import { SheetHeader } from "@/components/sheet/SheetHeader";
 import { SheetTabs } from "@/components/sheet/SheetTabs";
 import { ClassListBlock } from "@/components/sheet/ClassListBlock";
@@ -41,7 +42,7 @@ export function SheetForm({
   }
 
   function handleSheetChange(next: CharacterSheet) {
-    setSheet(next);
+    setSheet((prev) => applyT20DerivedChanges(prev, next));
   }
 
   return (
