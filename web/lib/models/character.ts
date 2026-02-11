@@ -42,6 +42,7 @@ export interface CombatStats {
   pmAtual: number;
   pmMaximo: number;
   caTotal: number;
+  caBonus?: number;
   penalidadeArmadura: number;
   deslocamento: number;
 }
@@ -295,6 +296,7 @@ export function createEmptyCharacterSheet(nome: string): CharacterSheet {
       pmAtual: 0,
       pmMaximo: 0,
       caTotal: 10,
+      caBonus: 0,
       penalidadeArmadura: 0,
       deslocamento: 9,
     },

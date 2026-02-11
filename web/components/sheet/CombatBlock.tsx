@@ -32,8 +32,16 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
 
   const atributoHpMod = abilityModifier(atributoHpValor);
   const atributoDefesaMod = abilityModifier(atributoDefesaValor);
+
   const ataques = sheet.ataques ?? [];
   const proficiencias = sheet.proficiencias;
+
+  const caCalculada =
+    10 +
+    atributoDefesaMod +
+    (proficiencias?.armadura?.defesa ?? 0) +
+    (proficiencias?.escudo?.defesa ?? 0) +
+    (combate.caBonus ?? 0);
   const magia = sheet.magia;
 
   const classesResumo =
@@ -289,31 +297,45 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
               </span>
             </div>
           </div>
-          <input
-            type="number"
-            className="w-full rounded border border-zinc-300 px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
-            value={combate.caTotal}
-            onChange={(event) =>
-              handleChange("caTotal", Number(event.target.value) || 0)
-            }
-          />
+          <p className="text-[11px] text-zinc-500">
+            10 + {atributoDefesaMod >= 0 ? `+${atributoDefesaMod}` : atributoDefesaMod} (atributo) + {proficiencias?.armadura?.defesa ?? 0} (armadura) + {proficiencias?.escudo?.defesa ?? 0} (escudo) + {combate.caBonus ?? 0} (bônus)
+          </p>
+          <div className="flex items-baseline gap-3">
+            <span className="text-2xl font-semibold tabular-nums text-zinc-900">
+              {caCalculada}
+            </span>
+            <label className="flex items-center gap-1.5 text-xs text-zinc-600">
+              Bônus
+              <input
+                type="number"
+                className="w-14 rounded border border-zinc-300 px-1.5 py-0.5 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                value={combate.caBonus ?? 0}
+                onChange={(event) =>
+                  onChange({
+                    ...sheet,
+                    combate: {
+                      ...sheet.combate,
+                      caBonus: Number(event.target.value) || 0,
+                    },
+                  })
+                }
+              />
+            </label>
+          </div>
         </div>
 
         <div className="space-y-1">
           <label className="block text-xs font-semibold text-zinc-500">
             Penalidade armadura
           </label>
-          <input
-            type="number"
-            className="w-full rounded border border-zinc-300 px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
-            value={combate.penalidadeArmadura}
-            onChange={(event) =>
-              handleChange(
-                "penalidadeArmadura",
-                Number(event.target.value) || 0,
-              )
-            }
-          />
+          <p className="text-[11px] text-zinc-500">
+            Armadura ({proficiencias?.armadura?.penalidade ?? 0}) + Escudo (
+            {proficiencias?.escudo?.penalidade ?? 0})
+          </p>
+          <p className="text-lg font-semibold tabular-nums text-zinc-900">
+            {(proficiencias?.armadura?.penalidade ?? 0) +
+              (proficiencias?.escudo?.penalidade ?? 0)}
+          </p>
         </div>
 
         <div className="space-y-1">

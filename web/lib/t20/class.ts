@@ -1,4 +1,5 @@
 import type {
+  AbilityScoreName,
   AbilityScores,
   CharacterClass,
   CharacterSheet,
@@ -37,32 +38,33 @@ function findClassRule(nomeClasse: string): ClassRule | undefined {
 }
 
 /**
- * PV de uma classe. Em multiclasse, só a classe do 1º nível do personagem
- * usa pvNivel1; ao ganhar nível em outra classe, usa-se pvPorNivel (nível
- * subsequente), não o valor de 1º nível dessa classe.
+ * PV de uma classe. Usa o modificador do atributo definido em atributoHp
+ * (por padrão Constituição). Em multiclasse, só a classe do 1º nível usa
+ * pvNivel1; níveis seguintes usam pvPorNivel.
  * @param isPrimeiraClasse true = classe do 1º nível do personagem (usa pvNivel1 no 1º nível)
  */
 function calcularPvClasse(
   klass: CharacterClass,
   atributos: AbilityScores,
+  atributoHp: AbilityScoreName,
   isPrimeiraClasse: boolean,
 ): number {
   const rule = findClassRule(klass.nome);
   if (!rule || klass.nivel <= 0) return 0;
 
-  const modCon = abilityModifier(atributos.constituicao);
+  const modHp = abilityModifier(atributos[atributoHp]);
 
   let total: number;
   if (isPrimeiraClasse) {
-    const primeiroNivel = rule.pvNivel1 + modCon;
+    const primeiroNivel = rule.pvNivel1 + modHp;
     const niveisSubsequentes = klass.nivel - 1;
     const porNivel =
       niveisSubsequentes > 0
-        ? niveisSubsequentes * (rule.pvPorNivel + modCon)
+        ? niveisSubsequentes * (rule.pvPorNivel + modHp)
         : 0;
     total = primeiroNivel + porNivel;
   } else {
-    total = klass.nivel * (rule.pvPorNivel + modCon);
+    total = klass.nivel * (rule.pvPorNivel + modHp);
   }
 
   return Math.max(1, total);
@@ -84,9 +86,12 @@ export function applyClassRules(sheet: CharacterSheet): CharacterSheet {
     return sheet;
   }
 
+  const atributoHp: AbilityScoreName =
+    sheet.config?.derived?.atributoHp ?? "constituicao";
+
   const totalPv = classes
     .map((klass, index) =>
-      calcularPvClasse(klass, sheet.atributos, index === 0),
+      calcularPvClasse(klass, sheet.atributos, atributoHp, index === 0),
     )
     .reduce((total, pv) => total + pv, 0);
 

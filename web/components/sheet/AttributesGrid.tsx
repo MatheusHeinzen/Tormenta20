@@ -1,5 +1,9 @@
+ 'use client';
+
+import { useState } from "react";
 import type { AbilityScoreName, CharacterSheet } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
+import { AttributesCalculatorModal } from "@/components/sheet/AttributesCalculatorModal";
 
 interface AttributesGridProps {
   sheet: CharacterSheet;
@@ -16,19 +20,24 @@ const LABELS: Record<AbilityScoreName, string> = {
 };
 
 export function AttributesGrid({ sheet, onChange }: AttributesGridProps) {
-  function handleChange(name: AbilityScoreName, value: number) {
-    onChange({
-      ...sheet,
-      atributos: {
-        ...sheet.atributos,
-        [name]: value,
-      },
-    });
+  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
+
+  function handleApplyFromCalculator(next: CharacterSheet) {
+    onChange(next);
   }
 
   return (
     <section className="space-y-5 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
-      <h2 className="text-base font-semibold text-zinc-900">Atributos</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-base font-semibold text-zinc-900">Atributos</h2>
+        <button
+          type="button"
+          className="rounded border border-zinc-300 bg-white px-3 py-1 text-xs font-medium text-zinc-800 shadow-sm hover:bg-zinc-50"
+          onClick={() => setIsCalculatorOpen(true)}
+        >
+          Abrir calculadora de atributos
+        </button>
+      </div>
 
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
         {(Object.keys(LABELS) as AbilityScoreName[]).map((key) => {
@@ -43,23 +52,20 @@ export function AttributesGrid({ sheet, onChange }: AttributesGridProps) {
               <span className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">
                 {LABELS[key]}
               </span>
-              <input
-                type="number"
-                min={1}
-                className="mt-2 w-16 rounded border border-zinc-300 px-2 py-1 text-center text-sm font-semibold shadow-sm focus:border-zinc-600 focus:outline-none"
-                value={score}
-                onChange={(event) =>
-                  handleChange(key, Number(event.target.value) || 0)
-                }
-              />
-              <span className="mt-1 text-[11px] text-zinc-600">
-                Modificador:{" "}
-                <strong>{mod >= 0 ? `+${mod}` : mod.toString()}</strong>
+              <span className="mt-2 text-lg font-semibold tabular-nums text-zinc-900">
+                {mod >= 0 ? `+${mod}` : mod.toString()}
               </span>
             </div>
           );
         })}
       </div>
+
+      <AttributesCalculatorModal
+        open={isCalculatorOpen}
+        sheet={sheet}
+        onOpenChange={setIsCalculatorOpen}
+        onApply={handleApplyFromCalculator}
+      />
     </section>
   );
 }

@@ -54,6 +54,13 @@ function findRaceRulesByName(nome: string): RaceRules | undefined {
   return raceRulesCache.find((race) => race.nome === nome);
 }
 
+export function getRaceAbilityBonusByName(
+  nome: string,
+): Partial<CharacterSheet["atributos"]> | undefined {
+  const rules = findRaceRulesByName(nome);
+  return rules?.bonusAtributos;
+}
+
 export function applyRaceByName(
   sheet: CharacterSheet,
   nextRaceName: string,
