@@ -1,4 +1,10 @@
 import type { CharacterSheet } from "@/lib/models/character";
+import {
+  getClasses,
+  getDeuses,
+  getOrigens,
+  getRacas,
+} from "@/lib/data/tormenta20";
 
 interface SheetHeaderProps {
   sheet: CharacterSheet;
@@ -37,40 +43,58 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
 
         <div className="space-y-1">
           <label className="block text-sm font-medium text-zinc-700">Raça</label>
-          <input
-            type="text"
+          <select
             value={sheet.raca}
             onChange={(event) => handleFieldChange("raca", event.target.value)}
-            className="w-full rounded border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
-          />
+            className="w-full rounded border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+          >
+            <option value="">Selecione uma raça</option>
+            {getRacas().map((race) => (
+              <option key={race.id} value={race.nome}>
+                {race.nome}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="space-y-1">
           <label className="block text-sm font-medium text-zinc-700">
             Origem
           </label>
-          <input
-            type="text"
+          <select
             value={sheet.origem}
             onChange={(event) =>
               handleFieldChange("origem", event.target.value)
             }
-            className="w-full rounded border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
-          />
+            className="w-full rounded border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+          >
+            <option value="">Selecione uma origem</option>
+            {getOrigens().map((origin) => (
+              <option key={origin.id} value={origin.nome}>
+                {origin.nome}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="space-y-1">
           <label className="block text-sm font-medium text-zinc-700">
             Divindade
           </label>
-          <input
-            type="text"
+          <select
             value={sheet.divindade}
             onChange={(event) =>
               handleFieldChange("divindade", event.target.value)
             }
-            className="w-full rounded border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
-          />
+            className="w-full rounded border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+          >
+            <option value="">Selecione uma divindade</option>
+            {getDeuses().map((god) => (
+              <option key={god.id} value={god.nome}>
+                {god.nome}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -79,14 +103,20 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
           <label className="block text-sm font-medium text-zinc-700">
             Classe principal
           </label>
-          <input
-            type="text"
+          <select
             value={sheet.classePrincipal}
             onChange={(event) =>
               handleFieldChange("classePrincipal", event.target.value)
             }
-            className="w-full rounded border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
-          />
+            className="w-full rounded border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+          >
+            <option value="">Selecione uma classe</option>
+            {getClasses().map((klass) => (
+              <option key={klass.id} value={klass.nome}>
+                {klass.nome}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="space-y-1">

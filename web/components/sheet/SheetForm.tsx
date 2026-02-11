@@ -3,8 +3,10 @@
 import { useState } from "react";
 import type { CharacterSheet } from "@/lib/models/character";
 import { SheetHeader } from "@/components/sheet/SheetHeader";
+import { ClassListBlock } from "@/components/sheet/ClassListBlock";
 import { AttributesGrid } from "@/components/sheet/AttributesGrid";
 import { CombatBlock } from "@/components/sheet/CombatBlock";
+import { SkillsBlock } from "@/components/sheet/SkillsBlock";
 import { InventoryBlock } from "@/components/sheet/InventoryBlock";
 import { NotesBlock } from "@/components/sheet/NotesBlock";
 import { SpellsBlock } from "@/components/sheet/SpellsBlock";
@@ -34,7 +36,9 @@ export function SheetForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <SheetHeader sheet={sheet} onChange={handleSheetChange} />
+      <ClassListBlock sheet={sheet} onChange={handleSheetChange} />
       <AttributesGrid sheet={sheet} onChange={handleSheetChange} />
+      <SkillsBlock sheet={sheet} onChange={handleSheetChange} />
       <CombatBlock sheet={sheet} onChange={handleSheetChange} />
       <InventoryBlock sheet={sheet} onChange={handleSheetChange} />
       <SpellsBlock sheet={sheet} onChange={handleSheetChange} />

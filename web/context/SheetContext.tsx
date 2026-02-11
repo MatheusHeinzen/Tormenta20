@@ -11,6 +11,7 @@ import {
 import {
   type CharacterSheet,
   createEmptyCharacterSheet,
+  normalizeCharacter,
 } from "@/lib/models/character";
 import {
   deleteCharacter as deleteFromStorage,
@@ -97,7 +98,8 @@ export function SheetProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored = listCharacters();
-    dispatch({ type: "LOAD_FROM_STORAGE", payload: stored });
+    const normalized = stored.map((sheet) => normalizeCharacter(sheet));
+    dispatch({ type: "LOAD_FROM_STORAGE", payload: normalized });
   }, []);
 
   const value: SheetContextValue = useMemo(() => {

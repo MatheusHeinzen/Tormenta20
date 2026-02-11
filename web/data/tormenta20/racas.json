@@ -1,0 +1,20 @@
+[
+  { "id": "humano", "nome": "Humano" },
+  { "id": "anao", "nome": "Anão" },
+  { "id": "dahllan", "nome": "Dahllan" },
+  { "id": "elfo", "nome": "Elfo" },
+  { "id": "goblin", "nome": "Goblin" },
+  { "id": "lefou", "nome": "Lefou" },
+  { "id": "minotauro", "nome": "Minotauro" },
+  { "id": "qareen", "nome": "Qareen" },
+  { "id": "suraggel", "nome": "Suraggel" },
+  { "id": "sifide", "nome": "Sífide" },
+  { "id": "sereia-tritao", "nome": "Sereia/Tritão" },
+  { "id": "osteon", "nome": "Osteon" },
+  { "id": "medusa", "nome": "Medusa" },
+  { "id": "kliren", "nome": "Kliren" },
+  { "id": "hynne", "nome": "Hynne" },
+  { "id": "golem", "nome": "Golem" },
+  { "id": "trog", "nome": "Trog" }
+]
+

@@ -1,0 +1,17 @@
+[
+  { "id": "arcanista", "nome": "Arcanista" },
+  { "id": "barbaro", "nome": "Bárbaro" },
+  { "id": "bardo", "nome": "Bardo" },
+  { "id": "bucaneiro", "nome": "Bucaneiro" },
+  { "id": "cacador", "nome": "Caçador" },
+  { "id": "cavaleiro", "nome": "Cavaleiro" },
+  { "id": "clerigo", "nome": "Clérigo" },
+  { "id": "druida", "nome": "Druida" },
+  { "id": "guerreiro", "nome": "Guerreiro" },
+  { "id": "inventor", "nome": "Inventor" },
+  { "id": "ladino", "nome": "Ladino" },
+  { "id": "lutador", "nome": "Lutador" },
+  { "id": "nobre", "nome": "Nobre" },
+  { "id": "paladino", "nome": "Paladino" }
+]
+

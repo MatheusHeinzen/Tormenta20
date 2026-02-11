@@ -17,6 +17,25 @@ export interface AbilityScores {
   carisma: number;
 }
 
+export interface CharacterClass {
+  id: string;
+  nome: string;
+  nivel: number;
+  notas?: string;
+}
+
+export interface DerivedStatsConfig {
+  atributoHp: AbilityScoreName;
+  atributoDefesa: AbilityScoreName;
+}
+
+export interface CharacterSkill {
+  id: string;
+  atributoUsado: AbilityScoreName;
+  bonusOutros: number;
+  treinada: boolean;
+}
+
 export interface CombatStats {
   pvAtual: number;
   pvMaximo: number;
@@ -87,8 +106,55 @@ export interface CharacterSheet {
   magias: CharacterSpell[];
   notas: CharacterNotes;
 
+  classes: CharacterClass[];
+  pericias: CharacterSkill[];
+  config: {
+    derived: DerivedStatsConfig;
+  };
+
   createdAt: string;
   updatedAt: string;
+}
+
+export function normalizeCharacter(raw: CharacterSheet): CharacterSheet {
+  const fallbackConfig: DerivedStatsConfig = {
+    atributoHp: "constituicao",
+    atributoDefesa: "destreza",
+  };
+
+  const config =
+    raw.config && raw.config.derived
+      ? {
+          derived: {
+            atributoHp:
+              raw.config.derived.atributoHp ?? fallbackConfig.atributoHp,
+            atributoDefesa:
+              raw.config.derived.atributoDefesa ?? fallbackConfig.atributoDefesa,
+          },
+        }
+      : { derived: fallbackConfig };
+
+  const classes: CharacterClass[] =
+    raw.classes && raw.classes.length > 0
+      ? raw.classes
+      : raw.classePrincipal
+        ? [
+            {
+              id: raw.classePrincipal.toLowerCase().replace(/\s+/g, "-"),
+              nome: raw.classePrincipal,
+              nivel: raw.nivel ?? 1,
+            },
+          ]
+        : [];
+
+  const pericias: CharacterSkill[] = raw.pericias ?? [];
+
+  return {
+    ...raw,
+    classes,
+    pericias,
+    config,
+  };
 }
 
 export function abilityModifier(score: number): number {
@@ -149,6 +215,15 @@ export function createEmptyCharacterSheet(nome: string): CharacterSheet {
       descricao: "",
       historicoAliadosTesouros: "",
       anotacoesGerais: "",
+    },
+
+    classes: [],
+    pericias: [],
+    config: {
+      derived: {
+        atributoHp: "constituicao",
+        atributoDefesa: "destreza",
+      },
     },
 
     createdAt: now,

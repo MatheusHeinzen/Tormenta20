@@ -6,55 +6,195 @@ interface SpellsBlockProps {
 }
 
 export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
-  // MVP: campo livre para magias, mantendo espaço para evoluir para tabela estruturada.
-  const textoMagias =
-    sheet.magias.length === 0
-      ? ""
-      : sheet.magias.map((spell) => `${spell.nome} – ${spell.efeito ?? ""}`).join("\n");
+  const magias = sheet.magias;
 
-  function handleChange(value: string) {
-    if (!value.trim()) {
-      onChange({
-        ...sheet,
-        magias: [],
-      });
-      return;
-    }
-
-    const linhas = value.split("\n");
-    const magias = linhas.map((linha, index) => {
-      const [nomeBruto, efeitoBruto] = linha.split("–");
-      const nome = (nomeBruto ?? "").trim();
-      const efeito = (efeitoBruto ?? "").trim();
-
-      return {
-        id: `${index}-${nome}`,
-        nome,
-        efeito: efeito || undefined,
-      };
+  function handleChange(index: number, partial: Partial<CharacterSheet["magias"][number]>) {
+    const next = magias.map((spell, idx) =>
+      idx === index ? { ...spell, ...partial } : spell,
+    );
+    onChange({
+      ...sheet,
+      magias: next,
     });
+  }
+
+  function handleAdd() {
+    const nova = {
+      id: crypto.randomUUID(),
+      nome: "",
+      circulo: 1,
+      escola: "",
+      alcance: "",
+      area: "",
+      duracao: "",
+      resistencia: "",
+      efeito: "",
+    } as CharacterSheet["magias"][number];
 
     onChange({
       ...sheet,
-      magias,
+      magias: [...magias, nova],
+    });
+  }
+
+  function handleRemove(index: number) {
+    const next = magias.filter((_, idx) => idx !== index);
+    onChange({
+      ...sheet,
+      magias: next,
     });
   }
 
   return (
     <section className="space-y-4 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
-      <h2 className="text-lg font-semibold text-zinc-900">Magias (livre)</h2>
-      <p className="text-xs text-zinc-500">
-        Você pode descrever suas magias linha a linha. Exemplo:{" "}
-        <span className="font-mono text-[11px]">
-          Bola de Fogo – 6d6 de dano em área.
-        </span>
-      </p>
-      <textarea
-        rows={6}
-        value={textoMagias}
-        onChange={(event) => handleChange(event.target.value)}
-        className="w-full rounded border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
-      />
+      <div className="flex items-center justify-between gap-2">
+        <h2 className="text-lg font-semibold text-zinc-900">Magias</h2>
+        <button
+          type="button"
+          onClick={handleAdd}
+          className="rounded border border-zinc-300 bg-zinc-50 px-3 py-1 text-xs font-medium text-zinc-800 hover:bg-zinc-100"
+        >
+          Adicionar magia
+        </button>
+      </div>
+
+      {magias.length === 0 ? (
+        <p className="text-sm text-zinc-600">
+          Nenhuma magia cadastrada. Use &quot;Adicionar magia&quot; para criar
+          entradas por círculo.
+        </p>
+      ) : (
+        <div className="space-y-3">
+          {magias.map((spell, index) => (
+            <div
+              key={spell.id}
+              className="space-y-2 rounded-lg border border-zinc-200 bg-zinc-50 p-3"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <label className="flex items-center gap-1 text-xs text-zinc-700">
+                    Círculo
+                    <input
+                      type="number"
+                      min={0}
+                      max={9}
+                      value={spell.circulo ?? 0}
+                      onChange={(event) =>
+                        handleChange(index, {
+                          circulo: Number(event.target.value) || 0,
+                        })
+                      }
+                      className="w-14 rounded border border-zinc-300 px-1 py-0.5 text-[11px] shadow-sm focus:border-zinc-600 focus:outline-none"
+                    />
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Nome da magia"
+                    value={spell.nome}
+                    onChange={(event) =>
+                      handleChange(index, { nome: event.target.value })
+                    }
+                    className="min-w-[160px] flex-1 rounded border border-zinc-300 px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleRemove(index)}
+                  className="rounded border border-red-200 bg-white px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-50"
+                >
+                  Remover
+                </button>
+              </div>
+
+              <div className="grid gap-2 md:grid-cols-4">
+                <div className="space-y-1">
+                  <label className="block text-[11px] font-medium text-zinc-700">
+                    Escola
+                  </label>
+                  <input
+                    type="text"
+                    value={spell.escola ?? ""}
+                    onChange={(event) =>
+                      handleChange(index, { escola: event.target.value })
+                    }
+                    className="w-full rounded border border-zinc-300 px-2 py-1 text-xs shadow-sm focus:border-zinc-600 focus:outline-none"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="block text-[11px] font-medium text-zinc-700">
+                    Alcance
+                  </label>
+                  <input
+                    type="text"
+                    value={spell.alcance ?? ""}
+                    onChange={(event) =>
+                      handleChange(index, { alcance: event.target.value })
+                    }
+                    className="w-full rounded border border-zinc-300 px-2 py-1 text-xs shadow-sm focus:border-zinc-600 focus:outline-none"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="block text-[11px] font-medium text-zinc-700">
+                    Área
+                  </label>
+                  <input
+                    type="text"
+                    value={spell.area ?? ""}
+                    onChange={(event) =>
+                      handleChange(index, { area: event.target.value })
+                    }
+                    className="w-full rounded border border-zinc-300 px-2 py-1 text-xs shadow-sm focus:border-zinc-600 focus:outline-none"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="block text-[11px] font-medium text-zinc-700">
+                    Duração
+                  </label>
+                  <input
+                    type="text"
+                    value={spell.duracao ?? ""}
+                    onChange={(event) =>
+                      handleChange(index, { duracao: event.target.value })
+                    }
+                    className="w-full rounded border border-zinc-300 px-2 py-1 text-xs shadow-sm focus:border-zinc-600 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid gap-2 md:grid-cols-2">
+                <div className="space-y-1">
+                  <label className="block text-[11px] font-medium text-zinc-700">
+                    Resistência
+                  </label>
+                  <input
+                    type="text"
+                    value={spell.resistencia ?? ""}
+                    onChange={(event) =>
+                      handleChange(index, {
+                        resistencia: event.target.value,
+                      })
+                    }
+                    className="w-full rounded border border-zinc-300 px-2 py-1 text-xs shadow-sm focus:border-zinc-600 focus:outline-none"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="block text-[11px] font-medium text-zinc-700">
+                    Descrição / Efeito
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={spell.efeito ?? ""}
+                    onChange={(event) =>
+                      handleChange(index, { efeito: event.target.value })
+                    }
+                    className="w-full rounded border border-zinc-300 px-2 py-1 text-xs shadow-sm focus:border-zinc-600 focus:outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

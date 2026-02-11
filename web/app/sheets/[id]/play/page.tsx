@@ -2,6 +2,7 @@
 
 import { useRouter, useParams } from "next/navigation";
 import { useSheetContext } from "@/context/SheetContext";
+import { abilityModifier, type AbilityScoreName } from "@/lib/models/character";
 
 function StatButton({
   label,
@@ -48,6 +49,10 @@ export default function PlaySheetPage() {
       </main>
     );
   }
+
+  const atributoDefesa: AbilityScoreName =
+    sheet.config?.derived.atributoDefesa ?? "destreza";
+  const defesaMod = abilityModifier(sheet.atributos[atributoDefesa]);
 
   function adjustPv(target: typeof sheet, delta: number) {
     if (!target) return;
@@ -145,7 +150,10 @@ export default function PlaySheetPage() {
             {sheet.nivel}
           </p>
           <p className="text-xs text-zinc-600">
-            CA {sheet.combate.caTotal} • Deslocamento {sheet.combate.deslocamento}m
+            CA {sheet.combate.caTotal} (
+            {atributoDefesa.toUpperCase()}{" "}
+            {defesaMod >= 0 ? `+${defesaMod}` : defesaMod}) • Deslocamento{" "}
+            {sheet.combate.deslocamento}m
           </p>
         </div>
 
