@@ -46,11 +46,55 @@ export interface CombatStats {
   deslocamento: number;
 }
 
+export interface ArmorProficiency {
+  tipo: string;
+  defesa: number;
+  penalidade: number;
+  proficiencia: string;
+}
+
+export interface WeaponProficiencies {
+  simples: boolean;
+  marciais: boolean;
+  exoticas: boolean;
+  deFogo: boolean;
+}
+
+export interface SenseInfo {
+  visaoPenumbra: boolean;
+  visaoEscuro: boolean;
+  outros: string;
+}
+
+export interface ProficienciasCombate {
+  armadura: ArmorProficiency;
+  escudo: ArmorProficiency;
+  armas: WeaponProficiencies;
+  sentidos: SenseInfo;
+}
+
+export interface MagicInfo {
+  cd: number;
+}
+
+export interface CharacterAttack {
+  id: string;
+  nome: string;
+  teste: string;
+  bonusAtaque: number;
+  dano: string;
+  critico: number;
+  tipo: string;
+  alcance: string;
+}
+
 export interface InventoryItem {
   id: string;
   nome: string;
   quantidade: number;
   slots: number;
+  descricao?: string;
+  valor?: number;
   observacoes?: string;
 }
 
@@ -58,6 +102,7 @@ export interface Inventory {
   itens: InventoryItem[];
   limiteCarga: number;
   cargaUsada: number;
+  dinheiro: number;
 }
 
 export interface CharacterAbilitySections {
@@ -100,6 +145,9 @@ export interface CharacterSheet {
 
   atributos: AbilityScores;
   combate: CombatStats;
+  proficiencias: ProficienciasCombate;
+  magia: MagicInfo;
+  ataques: CharacterAttack[];
   experiencia: number;
   inventario: Inventory;
   habilidades: CharacterAbilitySections;
@@ -149,11 +197,66 @@ export function normalizeCharacter(raw: CharacterSheet): CharacterSheet {
 
   const pericias: CharacterSkill[] = raw.pericias ?? [];
 
+  const proficiencias: ProficienciasCombate =
+    raw.proficiencias ?? {
+      armadura: {
+        tipo: "",
+        defesa: 0,
+        penalidade: 0,
+        proficiencia: "",
+      },
+      escudo: {
+        tipo: "",
+        defesa: 0,
+        penalidade: 0,
+        proficiencia: "",
+      },
+      armas: {
+        simples: false,
+        marciais: false,
+        exoticas: false,
+        deFogo: false,
+      },
+      sentidos: {
+        visaoPenumbra: false,
+        visaoEscuro: false,
+        outros: "",
+      },
+    };
+
+  const magia: MagicInfo = raw.magia ?? { cd: 10 };
+  const inventario: Inventory = {
+    itens: raw.inventario?.itens ?? [],
+    limiteCarga: raw.inventario?.limiteCarga ?? 10,
+    cargaUsada: raw.inventario?.cargaUsada ?? 0,
+    dinheiro: raw.inventario?.dinheiro ?? 0,
+  };
+
   return {
     ...raw,
     classes,
     pericias,
     config,
+    ataques: raw.ataques ?? [],
+    proficiencias,
+    magia,
+    inventario,
+  };
+}
+
+export function syncClassesToLegacyFields(sheet: CharacterSheet): CharacterSheet {
+  if (!sheet.classes || sheet.classes.length === 0) {
+    return sheet;
+  }
+
+  const principal = sheet.classes[0];
+  const secundarias = sheet.classes.slice(1).map((klass) => klass.nome).join(" / ");
+
+  return {
+    ...sheet,
+    classePrincipal: principal.nome,
+    classesSecundarias: secundarias,
+    nivel: principal.nivel,
   };
 }
 
@@ -196,12 +299,45 @@ export function createEmptyCharacterSheet(nome: string): CharacterSheet {
       deslocamento: 9,
     },
 
+    proficiencias: {
+      armadura: {
+        tipo: "",
+        defesa: 0,
+        penalidade: 0,
+        proficiencia: "",
+      },
+      escudo: {
+        tipo: "",
+        defesa: 0,
+        penalidade: 0,
+        proficiencia: "",
+      },
+      armas: {
+        simples: false,
+        marciais: false,
+        exoticas: false,
+        deFogo: false,
+      },
+      sentidos: {
+        visaoPenumbra: false,
+        visaoEscuro: false,
+        outros: "",
+      },
+    },
+
+    magia: {
+      cd: 10,
+    },
+
+    ataques: [],
+
     experiencia: 0,
 
     inventario: {
       itens: [],
       limiteCarga: 10,
       cargaUsada: 0,
+      dinheiro: 0,
     },
 
     habilidades: {

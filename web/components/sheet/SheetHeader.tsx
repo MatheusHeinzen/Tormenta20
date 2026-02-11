@@ -1,6 +1,5 @@
 import type { CharacterSheet } from "@/lib/models/character";
 import {
-  getClasses,
   getDeuses,
   getOrigens,
   getRacas,
@@ -12,6 +11,11 @@ interface SheetHeaderProps {
 }
 
 export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
+  const nivelTotal =
+    sheet.classes.length > 0
+      ? sheet.classes.reduce((total, klass) => total + klass.nivel, 0)
+      : sheet.nivel;
+
   function handleFieldChange<K extends keyof CharacterSheet>(
     key: K,
     value: CharacterSheet[K],
@@ -23,14 +27,14 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
   }
 
   return (
-    <section className="space-y-4 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
-      <h2 className="text-lg font-semibold text-zinc-900">
+    <section className="space-y-5 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+      <h2 className="text-base font-semibold text-zinc-900">
         Identificação da ficha
       </h2>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-1">
-          <label className="block text-sm font-medium text-zinc-700">
+          <label className="block text-xs font-semibold text-zinc-500">
             Nome do personagem
           </label>
           <input
@@ -42,7 +46,9 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
         </div>
 
         <div className="space-y-1">
-          <label className="block text-sm font-medium text-zinc-700">Raça</label>
+          <label className="block text-xs font-semibold text-zinc-500">
+            Raça
+          </label>
           <select
             value={sheet.raca}
             onChange={(event) => handleFieldChange("raca", event.target.value)}
@@ -58,7 +64,7 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
         </div>
 
         <div className="space-y-1">
-          <label className="block text-sm font-medium text-zinc-700">
+          <label className="block text-xs font-semibold text-zinc-500">
             Origem
           </label>
           <select
@@ -78,7 +84,7 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
         </div>
 
         <div className="space-y-1">
-          <label className="block text-sm font-medium text-zinc-700">
+          <label className="block text-xs font-semibold text-zinc-500">
             Divindade
           </label>
           <select
@@ -98,60 +104,25 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-4">
         <div className="space-y-1">
-          <label className="block text-sm font-medium text-zinc-700">
-            Classe principal
-          </label>
-          <select
-            value={sheet.classePrincipal}
-            onChange={(event) =>
-              handleFieldChange("classePrincipal", event.target.value)
-            }
-            className="w-full rounded border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
-          >
-            <option value="">Selecione uma classe</option>
-            {getClasses().map((klass) => (
-              <option key={klass.id} value={klass.nome}>
-                {klass.nome}
-              </option>
-            ))}
-          </select>
+          <p className="text-xs font-semibold text-zinc-500">Classe e nível</p>
+          <p className="text-sm font-medium text-zinc-800">
+            {sheet.classes.length > 0
+              ? sheet.classes
+                  .map((klass) => `${klass.nome} ${klass.nivel}`)
+                  .join(" / ")
+              : sheet.classePrincipal
+                ? `${sheet.classePrincipal} ${sheet.nivel}`
+                : "—"}
+          </p>
         </div>
-
         <div className="space-y-1">
-          <label className="block text-sm font-medium text-zinc-700">
-            Outras classes
-          </label>
-          <input
-            type="text"
-            value={sheet.classesSecundarias}
-            onChange={(event) =>
-              handleFieldChange("classesSecundarias", event.target.value)
-            }
-            className="w-full rounded border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
-          />
+          <p className="text-xs font-semibold text-zinc-500">Nível total</p>
+          <p className="text-sm font-medium text-zinc-800">{nivelTotal}</p>
         </div>
-
         <div className="space-y-1">
-          <label className="block text-sm font-medium text-zinc-700">
-            Nível
-          </label>
-          <input
-            type="number"
-            min={1}
-            value={sheet.nivel}
-            onChange={(event) =>
-              handleFieldChange("nivel", Number(event.target.value) || 1)
-            }
-            className="w-full rounded border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
-          />
-        </div>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="space-y-1">
-          <label className="block text-sm font-medium text-zinc-700">
+          <label className="block text-xs font-semibold text-zinc-500">
             Tamanho
           </label>
           <input
@@ -163,9 +134,8 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
             className="w-full rounded border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
           />
         </div>
-
         <div className="space-y-1">
-          <label className="block text-sm text-xs font-medium uppercase text-zinc-500">
+          <label className="block text-xs font-semibold uppercase text-zinc-500">
             Sistema
           </label>
           <input

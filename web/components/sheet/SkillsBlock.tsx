@@ -87,108 +87,138 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
     return modAtributo + bonusTreinado + config.bonusOutros;
   }
 
+  const midIndex = Math.ceil(skillRules.length / 2);
+  const leftSkills = skillRules.slice(0, midIndex);
+  const rightSkills = skillRules.slice(midIndex);
+
+  function renderRows(rules: typeof skillRules) {
+    return rules.map((rule) => {
+      const current =
+        byId.get(rule.id) ??
+        ({
+          id: rule.id,
+          atributoUsado: rule.atributoPadrao,
+          bonusOutros: 0,
+          treinada: false,
+        } as CharacterSkill);
+
+      const total = getSkillTotal(rule.id);
+      const totalLabel = total >= 0 ? `+${total}` : total.toString();
+
+      return (
+        <tr
+          key={rule.id}
+          className="border-b border-zinc-100 hover:bg-zinc-50"
+        >
+          <td className="px-1 py-0.5 align-middle font-semibold text-zinc-900">
+            {totalLabel}
+          </td>
+          <td className="px-1 py-0.5 align-middle">
+            <input
+              type="checkbox"
+              checked={current.treinada}
+              onChange={(event) =>
+                handleChange(rule.id, {
+                  treinada: event.target.checked,
+                })
+              }
+            />
+          </td>
+          <td className="px-1 py-0.5 align-middle text-zinc-800">
+            {rule.nome}
+          </td>
+          <td className="px-1 py-0.5 align-middle">
+            <select
+              value={current.atributoUsado}
+              onChange={(event) =>
+                handleChange(rule.id, {
+                  atributoUsado: event.target.value as AbilityScoreName,
+                })
+              }
+              className="rounded border border-zinc-300 bg-white px-1 py-0.5 text-[10px] shadow-sm focus:border-zinc-600 focus:outline-none"
+            >
+              {(Object.keys(abilityLabels) as AbilityScoreName[]).map((key) => (
+                <option key={key} value={key}>
+                  {abilityLabels[key]}
+                </option>
+              ))}
+            </select>
+          </td>
+          <td className="px-1 py-0.5 align-middle">
+            <input
+              type="number"
+              className="w-14 rounded border border-zinc-300 px-1 py-0.5 text-[10px] shadow-sm focus:border-zinc-600 focus:outline-none"
+              value={current.bonusOutros}
+              onChange={(event) =>
+                handleChange(rule.id, {
+                  bonusOutros: Number(event.target.value) || 0,
+                })
+              }
+            />
+          </td>
+        </tr>
+      );
+    });
+  }
+
   return (
-    <section className="space-y-4 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
-      <h2 className="text-lg font-semibold text-zinc-900">Perícias</h2>
+    <section className="space-y-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+      <h2 className="text-base font-semibold text-zinc-900">Perícias</h2>
       <p className="text-xs text-zinc-600">
-        Cada perícia usa um atributo base (padrão de Tormenta 20), mas você
-        pode alterar o atributo usado e adicionar bônus extras quando precisar.
+        Use o atributo sugerido ou ajuste conforme a mesa. O total já inclui
+        modificador de atributo, treinamento (+2) e bônus extras.
       </p>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full border-collapse text-xs">
-          <thead>
-            <tr className="border-b border-zinc-200 bg-zinc-50">
-              <th className="px-2 py-1 text-left font-medium text-zinc-700">
-                Total
-              </th>
-              <th className="px-2 py-1 text-left font-medium text-zinc-700">
-                Treinada
-              </th>
-              <th className="px-2 py-1 text-left font-medium text-zinc-700">
-                Perícia
-              </th>
-              <th className="px-2 py-1 text-left font-medium text-zinc-700">
-                Atributo
-              </th>
-              <th className="px-2 py-1 text-left font-medium text-zinc-700">
-                Bônus outros
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {skillRules.map((rule) => {
-              const current =
-                byId.get(rule.id) ??
-                ({
-                  id: rule.id,
-                  atributoUsado: rule.atributoPadrao,
-                  bonusOutros: 0,
-                  treinada: false,
-                } as CharacterSkill);
+      <div className="grid gap-2 md:grid-cols-2">
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-collapse text-xs">
+            <thead>
+              <tr className="border-b border-zinc-200 bg-zinc-50">
+                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                  Tot
+                </th>
+                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                  T
+                </th>
+                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                  Perícia
+                </th>
+                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                  Atr
+                </th>
+                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                  B.
+                </th>
+              </tr>
+            </thead>
+            <tbody>{renderRows(leftSkills)}</tbody>
+          </table>
+        </div>
 
-              const total = getSkillTotal(rule.id);
-              const totalLabel = total >= 0 ? `+${total}` : total.toString();
-
-              return (
-                <tr
-                  key={rule.id}
-                  className="border-b border-zinc-100 hover:bg-zinc-50"
-                >
-                  <td className="px-2 py-1 align-middle font-semibold text-zinc-900">
-                    {totalLabel}
-                  </td>
-                  <td className="px-2 py-1 align-middle">
-                    <input
-                      type="checkbox"
-                      checked={current.treinada}
-                      onChange={(event) =>
-                        handleChange(rule.id, {
-                          treinada: event.target.checked,
-                        })
-                      }
-                    />
-                  </td>
-                  <td className="px-2 py-1 align-middle text-zinc-800">
-                    {rule.nome}
-                  </td>
-                  <td className="px-2 py-1 align-middle">
-                    <select
-                      value={current.atributoUsado}
-                      onChange={(event) =>
-                        handleChange(rule.id, {
-                          atributoUsado: event.target
-                            .value as AbilityScoreName,
-                        })
-                      }
-                      className="rounded border border-zinc-300 bg-white px-1 py-0.5 text-[11px] shadow-sm focus:border-zinc-600 focus:outline-none"
-                    >
-                      {(Object.keys(
-                        abilityLabels,
-                      ) as AbilityScoreName[]).map((key) => (
-                        <option key={key} value={key}>
-                          {abilityLabels[key]}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="px-2 py-1 align-middle">
-                    <input
-                      type="number"
-                      className="w-16 rounded border border-zinc-300 px-1 py-0.5 text-[11px] shadow-sm focus:border-zinc-600 focus:outline-none"
-                      value={current.bonusOutros}
-                      onChange={(event) =>
-                        handleChange(rule.id, {
-                          bonusOutros: Number(event.target.value) || 0,
-                        })
-                      }
-                    />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-collapse text-xs">
+            <thead>
+              <tr className="border-b border-zinc-200 bg-zinc-50">
+                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                  Tot
+                </th>
+                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                  T
+                </th>
+                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                  Perícia
+                </th>
+                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                  Atr
+                </th>
+                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                  B.
+                </th>
+              </tr>
+            </thead>
+            <tbody>{renderRows(rightSkills)}</tbody>
+          </table>
+        </div>
       </div>
     </section>
   );

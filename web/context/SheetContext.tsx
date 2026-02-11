@@ -12,6 +12,7 @@ import {
   type CharacterSheet,
   createEmptyCharacterSheet,
   normalizeCharacter,
+  syncClassesToLegacyFields,
 } from "@/lib/models/character";
 import {
   deleteCharacter as deleteFromStorage,
@@ -113,13 +114,15 @@ export function SheetProvider({ children }: { children: ReactNode }) {
 
     function createCharacter(nome: string): CharacterSheet {
       const fresh = createEmptyCharacterSheet(nome);
-      const saved = saveCharacter(fresh);
+      const prepared = syncClassesToLegacyFields(normalizeCharacter(fresh));
+      const saved = saveCharacter(prepared);
       dispatch({ type: "UPSERT", payload: saved });
       return saved;
     }
 
     function updateCharacter(sheet: CharacterSheet): CharacterSheet {
-      const saved = saveCharacter(sheet);
+      const prepared = syncClassesToLegacyFields(normalizeCharacter(sheet));
+      const saved = saveCharacter(prepared);
       dispatch({ type: "UPSERT", payload: saved });
       return saved;
     }

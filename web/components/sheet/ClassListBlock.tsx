@@ -41,13 +41,13 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
   const allClassOptions = getClasses();
 
   return (
-    <section className="space-y-4 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+    <section className="space-y-5 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
       <div className="flex items-center justify-between gap-2">
-        <h2 className="text-lg font-semibold text-zinc-900">Classes</h2>
+        <h2 className="text-base font-semibold text-zinc-900">Classes</h2>
         <button
           type="button"
           onClick={handleAdd}
-          className="rounded border border-zinc-300 bg-zinc-50 px-3 py-1 text-xs font-medium text-zinc-800 hover:bg-zinc-100"
+          className="rounded bg-zinc-900 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-zinc-800"
         >
           Adicionar classe
         </button>
@@ -63,7 +63,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
           {classes.map((klass, index) => (
             <details
               key={klass.id}
-              className="rounded-lg border border-zinc-200 bg-zinc-50 p-3"
+              className="rounded-lg border border-zinc-200 bg-zinc-50 p-4"
               open={index === 0}
             >
               <summary className="flex items-center justify-between gap-2 cursor-pointer">
@@ -81,7 +81,9 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                       </option>
                     ))}
                   </select>
-                  <span className="text-xs text-zinc-600">Nível</span>
+                  <span className="text-xs font-semibold text-zinc-500">
+                    Nível
+                  </span>
                   <input
                     type="number"
                     min={1}

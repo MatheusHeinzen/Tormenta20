@@ -10,7 +10,7 @@
   { "id": "enganacao", "nome": "Enganação", "atributoPadrao": "carisma" },
   { "id": "fortitude", "nome": "Fortitude", "atributoPadrao": "constituicao" },
   { "id": "furtividade", "nome": "Furtividade", "atributoPadrao": "destreza" },
-  { "id": "guerra", "nome": "Guerra", "atributoPadrao": "sabedoria" },
+  { "id": "guerra", "nome": "Guerra", "atributoPadrao": "inteligencia" },
   { "id": "iniciativa", "nome": "Iniciativa", "atributoPadrao": "destreza" },
   { "id": "intimidacao", "nome": "Intimidação", "atributoPadrao": "carisma" },
   { "id": "intuicao", "nome": "Intuição", "atributoPadrao": "sabedoria" },
