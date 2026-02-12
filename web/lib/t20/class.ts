@@ -101,13 +101,8 @@ export function applyClassRules(sheet: CharacterSheet): CharacterSheet {
     .map((klass) => calcularPmClasse(klass))
     .reduce((total, pm) => total + pm, 0);
 
-  // Mantemos os valores atuais de PV/PM atual. Apenas ajustamos o
-  // máximo, e garantimos que o atual não ultrapasse o máximo.
   const pvMaximo = totalPv > 0 ? totalPv : sheet.combate.pvMaximo;
   const pmMaximo = totalPm > 0 ? totalPm : sheet.combate.pmMaximo;
-
-  const pvAtual = Math.min(sheet.combate.pvAtual, pvMaximo);
-  const pmAtual = Math.min(sheet.combate.pmAtual, pmMaximo);
 
   return {
     ...sheet,
@@ -115,8 +110,6 @@ export function applyClassRules(sheet: CharacterSheet): CharacterSheet {
       ...sheet.combate,
       pvMaximo,
       pmMaximo,
-      pvAtual,
-      pmAtual,
     },
   };
 }

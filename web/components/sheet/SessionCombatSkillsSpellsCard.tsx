@@ -1,0 +1,241 @@
+"use client";
+
+import { useState } from "react";
+import type {
+  AbilityScoreName,
+  CharacterSheet,
+  CharacterSkill,
+} from "@/lib/models/character";
+import { abilityModifier } from "@/lib/models/character";
+import {
+  getClassByNome,
+  skillRules,
+  type SkillRule,
+} from "@/lib/data/tormenta20";
+
+const SKILL_TRAINED_BONUS = 2;
+
+type TabId = "ataques" | "magias" | "pericias";
+
+const TABS: { id: TabId; label: string }[] = [
+  { id: "ataques", label: "Ataques" },
+  { id: "magias", label: "Magias" },
+  { id: "pericias", label: "Perícias" },
+];
+
+function getPericiasFromClasses(sheet: CharacterSheet): {
+  base: string[];
+  treinaveis: string[];
+} {
+  const classes = sheet.classes ?? [];
+  const baseSet = new Set<string>();
+  const treinaveisSet = new Set<string>();
+  for (const klass of classes) {
+    const data = getClassByNome(klass.nome);
+    if (!data) continue;
+    (data.pericias_base ?? []).forEach((id: string) => baseSet.add(id));
+    (data.pericias_treinaveis ?? []).forEach((id: string) => treinaveisSet.add(id));
+  }
+  return { base: [...baseSet], treinaveis: [...treinaveisSet] };
+}
+
+function getSkillTotal(
+  sheet: CharacterSheet,
+  skillId: string,
+  byId: Map<string, CharacterSkill>,
+  baseIds: string[],
+  effectiveTreinada?: boolean,
+): number {
+  const rule = skillRules.find((s) => s.id === skillId);
+  if (!rule) return 0;
+  const config =
+    byId.get(skillId) ??
+    ({
+      id: skillId,
+      atributoUsado: rule.atributoPadrao,
+      bonusOutros: 0,
+      treinada: false,
+    } as CharacterSkill);
+  const modAtributo = abilityModifier(sheet.atributos[config.atributoUsado]);
+  const treinada = effectiveTreinada ?? config.treinada ?? baseIds.includes(skillId);
+  const bonusTreinado = treinada ? SKILL_TRAINED_BONUS : 0;
+  return modAtributo + bonusTreinado + config.bonusOutros;
+}
+
+interface SessionCombatSkillsSpellsCardProps {
+  sheet: CharacterSheet;
+}
+
+export function SessionCombatSkillsSpellsCard({
+  sheet,
+}: SessionCombatSkillsSpellsCardProps) {
+  const [activeTab, setActiveTab] = useState<TabId>("ataques");
+  const ataques = sheet.ataques ?? [];
+  const magias = sheet.magias ?? [];
+  const cdMagia = sheet.magia?.cd ?? 10;
+  const { base: baseIds } = getPericiasFromClasses(sheet);
+  const byId = new Map<string, CharacterSkill>();
+  for (const s of sheet.pericias) byId.set(s.id, s);
+
+  return (
+    <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
+      <div className="flex border-b border-zinc-200">
+        {TABS.map(({ id, label }) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => setActiveTab(id)}
+            className={`flex-1 px-3 py-2.5 text-xs font-semibold transition-colors ${
+              activeTab === id
+                ? "border-b-2 border-zinc-900 bg-white text-zinc-900"
+                : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-700"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      <div className="min-h-[140px] p-4">
+        {activeTab === "ataques" && (
+          <>
+            {ataques.length === 0 ? (
+              <p className="text-xs text-zinc-500">
+                Nenhum ataque cadastrado. Edite a ficha para adicionar.
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {ataques.map((a) => (
+                  <li
+                    key={a.id}
+                    className="flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded border border-zinc-100 bg-zinc-50 px-3 py-2 text-xs"
+                  >
+                    <span className="font-semibold text-zinc-900">
+                      {a.nome || "—"}
+                    </span>
+                    <span className="text-zinc-600">
+                      {a.teste} {a.bonusAtaque >= 0 ? `+${a.bonusAtaque}` : a.bonusAtaque}
+                    </span>
+                    <span className="text-zinc-600">dano {a.dano}</span>
+                    <span className="text-zinc-500">
+                      crítico {a.critico} · {a.tipo} · {a.alcance}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
+        )}
+        {activeTab === "magias" && (
+          <>
+            <p className="mb-2 text-[11px] font-semibold text-zinc-500">
+              CD das magias: {cdMagia}
+            </p>
+            {magias.length === 0 ? (
+              <p className="text-xs text-zinc-500">
+                Nenhuma magia cadastrada. Edite a ficha para adicionar.
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {magias.map((m) => (
+                  <li key={m.id}>
+                    <details className="group rounded-lg border border-zinc-200 bg-zinc-50">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2 text-xs [&::-webkit-details-marker]:hidden">
+                        <span className="font-semibold text-zinc-900">
+                          {m.nome || "—"}
+                        </span>
+                        <span className="text-zinc-500">
+                          {m.circulo ?? 0}º círculo
+                          {m.alcance ? ` · ${m.alcance}` : ""}
+                        </span>
+                        <span className="text-zinc-400 transition group-open:rotate-180">
+                          ▼
+                        </span>
+                      </summary>
+                      <div className="border-t border-zinc-200 px-3 py-2 text-xs text-zinc-700">
+                        <dl className="grid gap-1.5 sm:grid-cols-2">
+                          {m.escola && (
+                            <div>
+                              <dt className="font-semibold text-zinc-600">Escola</dt>
+                              <dd>{m.escola}</dd>
+                            </div>
+                          )}
+                          {m.execucao && (
+                            <div>
+                              <dt className="font-semibold text-zinc-600">Execução</dt>
+                              <dd>{m.execucao}</dd>
+                            </div>
+                          )}
+                          {m.alcance && (
+                            <div>
+                              <dt className="font-semibold text-zinc-600">Alcance</dt>
+                              <dd>{m.alcance}</dd>
+                            </div>
+                          )}
+                          {m.area && (
+                            <div>
+                              <dt className="font-semibold text-zinc-600">Área</dt>
+                              <dd>{m.area}</dd>
+                            </div>
+                          )}
+                          {m.duracao && (
+                            <div>
+                              <dt className="font-semibold text-zinc-600">Duração</dt>
+                              <dd>{m.duracao}</dd>
+                            </div>
+                          )}
+                          {m.resistencia && (
+                            <div>
+                              <dt className="font-semibold text-zinc-600">Resistência</dt>
+                              <dd>{m.resistencia}</dd>
+                            </div>
+                          )}
+                          {m.cd != null && (
+                            <div>
+                              <dt className="font-semibold text-zinc-600">CD</dt>
+                              <dd>{m.cd}</dd>
+                            </div>
+                          )}
+                        </dl>
+                        {m.efeito && (
+                          <div className="mt-2">
+                            <dt className="font-semibold text-zinc-600">Efeito</dt>
+                            <p className="mt-0.5 whitespace-pre-wrap">{m.efeito}</p>
+                          </div>
+                        )}
+                      </div>
+                    </details>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
+        )}
+        {activeTab === "pericias" && (
+          <div className="grid gap-2 sm:grid-cols-2">
+            {skillRules.map((rule: SkillRule) => {
+              const effectiveTreinada =
+                (byId.get(rule.id)?.treinada ?? false) || baseIds.includes(rule.id);
+              const total = getSkillTotal(
+                sheet,
+                rule.id,
+                byId,
+                baseIds,
+                effectiveTreinada,
+              );
+              const label = total >= 0 ? `+${total}` : String(total);
+              return (
+                <div
+                  key={rule.id}
+                  className="flex justify-between gap-2 rounded border border-zinc-100 bg-zinc-50 px-2 py-1 text-xs"
+                >
+                  <span className="font-semibold text-zinc-800">{label}</span>
+                  <span className="text-zinc-700">{rule.nome}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}

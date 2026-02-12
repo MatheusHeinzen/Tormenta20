@@ -3,6 +3,8 @@
 import { useRouter, useParams } from "next/navigation";
 import { useSheetContext } from "@/context/SheetContext";
 import { abilityModifier, type AbilityScoreName } from "@/lib/models/character";
+import { SessionCombatSkillsSpellsCard } from "@/components/sheet/SessionCombatSkillsSpellsCard";
+import { SessionPowersNotesCard } from "@/components/sheet/SessionPowersNotesCard";
 
 function StatButton({
   label,
@@ -63,30 +65,24 @@ export default function PlaySheetPage() {
 
   function adjustPv(target: typeof sheet, delta: number) {
     if (!target) return;
-
+    const next = target.combate.pvAtual + delta;
     updateCharacter({
       ...target,
       combate: {
         ...target.combate,
-        pvAtual: Math.max(
-          0,
-          Math.min(target.combate.pvMaximo, target.combate.pvAtual + delta),
-        ),
+        pvAtual: Math.max(0, next),
       },
     });
   }
 
   function adjustPm(target: typeof sheet, delta: number) {
     if (!target) return;
-
+    const next = target.combate.pmAtual + delta;
     updateCharacter({
       ...target,
       combate: {
         ...target.combate,
-        pmAtual: Math.max(
-          0,
-          Math.min(target.combate.pmMaximo, target.combate.pmAtual + delta),
-        ),
+        pmAtual: Math.max(0, next),
       },
     });
   }
@@ -166,6 +162,9 @@ export default function PlaySheetPage() {
 
           <div className="space-y-2 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
             <h2 className="text-sm font-semibold text-zinc-900">Inventário</h2>
+            <p className="text-xs font-semibold text-zinc-600">
+              Dinheiro: {sheet.inventario.dinheiro ?? 0} T$
+            </p>
             {sheet.inventario.itens.length === 0 ? (
               <p className="text-xs text-zinc-500">
                 Nenhum item cadastrado. Edite a ficha para adicionar itens.
@@ -185,33 +184,20 @@ export default function PlaySheetPage() {
           </div>
         </section>
 
-        <section className="space-y-2 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+        <section className="space-y-2">
           <h2 className="text-sm font-semibold text-zinc-900">
-            Habilidades & anotações rápidas
+            Ataques, magias e perícias
           </h2>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-1">
-              <h3 className="text-xs font-semibold uppercase text-zinc-600">
-                Habilidades
-              </h3>
-              <p className="text-xs text-zinc-700 whitespace-pre-wrap">
-                {sheet.habilidades.habilidadesClassePoderes ||
-                  sheet.habilidades.habilidadesRacaOrigem ||
-                  "Use a tela de edição para registrar habilidades importantes."}
-              </p>
-            </div>
-            <div className="space-y-1">
-              <h3 className="text-xs font-semibold uppercase text-zinc-600">
-                Anotações
-              </h3>
-              <p className="text-xs text-zinc-700 whitespace-pre-wrap">
-                {sheet.notas.anotacoesGerais ||
-                  sheet.notas.historicoAliadosTesouros ||
-                  "Use a tela de edição para registrar anotações da sessão."}
-              </p>
-            </div>
-          </div>
+          <SessionCombatSkillsSpellsCard sheet={sheet} />
         </section>
+
+        <section className="space-y-2">
+          <h2 className="text-sm font-semibold text-zinc-900">
+            Poderes e anotações
+          </h2>
+          <SessionPowersNotesCard sheet={sheet} />
+        </section>
+
       </div>
     </main>
   );
