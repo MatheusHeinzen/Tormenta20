@@ -1,5 +1,6 @@
 import type { AbilityScoreName, CharacterSheet } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
+import { getConjuradorMagiaInfo } from "@/lib/t20/class";
 
 interface CombatBlockProps {
   sheet: CharacterSheet;
@@ -55,6 +56,7 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
     sheet.classes && sheet.classes.length > 0
       ? sheet.classes.reduce((total, klass) => total + klass.nivel, 0)
       : sheet.nivel;
+  const conjuradorMagia = getConjuradorMagiaInfo(sheet);
 
   function updateProficiencias(
     partial: Partial<typeof proficiencias>,
@@ -740,6 +742,11 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
             <p className="text-[11px] font-semibold text-zinc-500">
               CD DE MAGIA
             </p>
+            {conjuradorMagia && (
+              <p className="mt-1 text-[10px] text-zinc-500">
+                Sugerido pela classe: {conjuradorMagia.cdBase}
+              </p>
+            )}
             <input
               type="number"
               value={magia.cd}

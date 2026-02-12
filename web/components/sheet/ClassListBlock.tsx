@@ -1,19 +1,31 @@
 import type { CharacterClass, CharacterSheet } from "@/lib/models/character";
-import { getClasses } from "@/lib/data/tormenta20";
+import { applyClassProficiencies } from "@/lib/t20/class";
+import {
+  getClasses,
+  getClassByNome,
+  getPoderesClasse,
+  getPoderesClasseByIds,
+} from "@/lib/data/tormenta20";
+import { skillRules } from "@/lib/data/tormenta20";
 
 interface ClassListBlockProps {
   sheet: CharacterSheet;
   onChange(next: CharacterSheet): void;
 }
 
+function nomePericia(id: string): string {
+  return skillRules.find((s) => s.id === id)?.nome ?? id;
+}
+
 export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
   const classes = sheet.classes;
 
   function updateClasses(next: CharacterClass[]) {
-    onChange({
+    const nextSheet = applyClassProficiencies({
       ...sheet,
       classes: next,
     });
+    onChange(nextSheet);
   }
 
   function handleChange(index: number, partial: Partial<CharacterClass>) {
@@ -108,12 +120,96 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                 </button>
               </summary>
 
-              <div className="mt-3 space-y-2 text-xs text-zinc-600">
-                <p>
-                  Espaço reservado para detalhes da classe (HP por nível, PM,
-                  poderes). Por enquanto, use as anotações gerais para registrar
-                  informações extras.
-                </p>
+              <div className="mt-3 space-y-3 text-xs text-zinc-600">
+                {(() => {
+                  const data = getClassByNome(klass.nome);
+                  if (!data) return null;
+                  const poderesIds =
+                    data.habilidades_por_nivel?.flatMap((h) => h.poderes) ?? [];
+                  const poderes = getPoderesClasseByIds(poderesIds);
+                  const base = data.pericias_base ?? [];
+                  const treinaveis = data.pericias_treinaveis ?? [];
+                  const treinadas =
+                    typeof data.pericias_treinadas === "number"
+                      ? String(data.pericias_treinadas)
+                      : data.pericias_treinadas ?? "—";
+                  const prof =
+                    data.proficiencias &&
+                    [
+                      data.proficiencias.armas?.length
+                        ? `Armas: ${data.proficiencias.armas.join(", ")}`
+                        : "",
+                      data.proficiencias.armaduras?.length
+                        ? `Armaduras: ${data.proficiencias.armaduras.join(", ")}`
+                        : "",
+                      data.proficiencias.escudos?.length
+                        ? `Escudos: ${data.proficiencias.escudos.join(", ")}`
+                        : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" • ");
+                  return (
+                    <>
+                      {data.descricao_resumida && (
+                        <p className="text-zinc-700">
+                          {data.descricao_resumida}
+                        </p>
+                      )}
+                      {data.vida_nivel_1 != null && (
+                        <p>
+                          <strong>PV:</strong> {data.vida_nivel_1} + Const (1º
+                          nível); {data.vida_por_nivel} + Const/nível.{" "}
+                          <strong>PM:</strong> {data.mana_por_nivel}/nível.
+                        </p>
+                      )}
+                      {base.length > 0 && (
+                        <p>
+                          <strong>Perícias base:</strong>{" "}
+                          {base.map(nomePericia).join(", ")}.
+                        </p>
+                      )}
+                      {treinaveis.length > 0 && (
+                        <p>
+                          <strong>Perícias treináveis:</strong> escolha até{" "}
+                          {treinadas} entre:{" "}
+                          {treinaveis.map(nomePericia).join(", ")}.
+                        </p>
+                      )}
+                      {prof && (
+                        <p>
+                          <strong>Proficiências:</strong> {prof}.
+                        </p>
+                      )}
+                      {data.magia?.conjurador && (
+                        <p>
+                          <strong>Magia:</strong> até {data.magia.circulo_maximo}
+                          º círculo. Atributo:{" "}
+                          {data.magia.atributo_chave ??
+                            (data.magia.atributo_chave_por_caminho
+                              ? "depende do caminho (Int/Car)"
+                              : "—")}
+                          . CD = 10 + círculo + mod. Bônus de teste = mod +
+                          nível.
+                        </p>
+                      )}
+                      {poderes.length > 0 && (
+                        <div>
+                          <strong>Poderes de classe:</strong>
+                          <ul className="mt-1 list-inside list-disc space-y-0.5 pl-1">
+                            {poderes.map((p) => (
+                              <li key={p.id}>
+                                {p.nome}
+                                {p.descricao_resumida
+                                  ? ` — ${p.descricao_resumida}`
+                                  : ""}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             </details>
           ))}

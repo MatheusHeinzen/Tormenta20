@@ -1,6 +1,10 @@
 import { useState } from "react";
 import type { CharacterSheet } from "@/lib/models/character";
-import { getRacas } from "@/lib/data/tormenta20";
+import {
+  getClassByNome,
+  getPoderesClasseByIds,
+  getRacas,
+} from "@/lib/data/tormenta20";
 import type { RacaJson } from "@/lib/t20/jsonTypes";
 
 interface PowersTabsBlockProps {
@@ -80,6 +84,110 @@ export function PowersTabsBlock({ sheet }: PowersTabsBlockProps) {
     );
   }
 
+  function renderClassPowers() {
+    const classes = sheet.classes ?? [];
+
+    if (classes.length === 0) {
+      return (
+        <p className="text-sm text-zinc-600">
+          Adicione ao menos uma classe na aba{" "}
+          <span className="font-semibold">Básico</span> para ver os poderes de
+          classe aqui.
+        </p>
+      );
+    }
+
+    const blocks = classes
+      .map((klass) => {
+        const data = getClassByNome(klass.nome);
+        if (!data) return null;
+
+        const habilidadesPorNivel = data.habilidades_por_nivel ?? [];
+        const poderesIds = habilidadesPorNivel.flatMap((h) => h.poderes);
+        const poderes = getPoderesClasseByIds(poderesIds);
+
+        return {
+          id: data.id,
+          nome: data.nome,
+          nivel: klass.nivel,
+          descricao: data.descricao_resumida,
+          poderesPorNivel: habilidadesPorNivel.map((h) => ({
+            nivel: h.nivel,
+            poderes: getPoderesClasseByIds(h.poderes),
+          })),
+        };
+      })
+      .filter(Boolean) as {
+      id: string;
+      nome: string;
+      nivel: number;
+      descricao?: string;
+      poderesPorNivel: { nivel: number; poderes: ReturnType<
+        typeof getPoderesClasseByIds
+      > }[];
+    }[];
+
+    if (blocks.length === 0) {
+      return (
+        <p className="text-sm text-zinc-600">
+          As classes cadastradas ainda não têm poderes de classe detalhados no
+          JSON. Use a aba &quot;Anotações&quot; para registrar manualmente.
+        </p>
+      );
+    }
+
+    return (
+      <div className="space-y-4">
+        {blocks.map((block) => (
+          <div
+            key={block.id}
+            className="space-y-2 rounded border border-zinc-200 bg-zinc-50 p-3"
+          >
+            <div className="flex items-baseline justify-between gap-2">
+              <p className="text-sm font-semibold text-zinc-900">
+                {block.nome}{" "}
+                <span className="text-xs font-normal text-zinc-500">
+                  (nível {block.nivel})
+                </span>
+              </p>
+            </div>
+            {block.descricao && (
+              <p className="text-xs text-zinc-700">{block.descricao}</p>
+            )}
+            {block.poderesPorNivel.length > 0 ? (
+              <ul className="space-y-1">
+                {block.poderesPorNivel.map((grupo) => (
+                  <li key={grupo.nivel} className="text-xs text-zinc-800">
+                    <span className="font-semibold">Nível {grupo.nivel}:</span>{" "}
+                    {grupo.poderes.length === 0 ? (
+                      <span className="text-zinc-500">
+                        (sem poderes cadastrados)
+                      </span>
+                    ) : (
+                      grupo.poderes.map((poder, idx) => (
+                        <span key={poder.id}>
+                          {idx > 0 && ", "}
+                          <span className="font-semibold">{poder.nome}</span>
+                          {poder.descricao_resumida
+                            ? ` — ${poder.descricao_resumida}`
+                            : ""}
+                        </span>
+                      ))
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-xs text-zinc-600">
+                Nenhum poder de classe cadastrado para esta classe.
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   function renderPlaceholder(label: string) {
     return (
       <p className="text-sm text-zinc-600">
@@ -97,7 +205,7 @@ export function PowersTabsBlock({ sheet }: PowersTabsBlockProps) {
   } else if (activeTab === "origem") {
     content = renderPlaceholder("Origem");
   } else if (activeTab === "classes") {
-    content = renderPlaceholder("Classes");
+    content = renderClassPowers();
   } else {
     content = renderPlaceholder("Diversos");
   }

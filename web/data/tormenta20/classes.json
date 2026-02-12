@@ -1,16 +1,267 @@
 [
-  { "id": "arcanista", "nome": "Arcanista" },
-  { "id": "barbaro", "nome": "Bárbaro" },
-  { "id": "bardo", "nome": "Bardo" },
-  { "id": "bucaneiro", "nome": "Bucaneiro" },
-  { "id": "cacador", "nome": "Caçador" },
-  { "id": "cavaleiro", "nome": "Cavaleiro" },
+  {
+    "id": "arcanista",
+    "nome": "Arcanista",
+    "vida_nivel_1": 8,
+    "vida_por_nivel": 2,
+    "mana_por_nivel": 6,
+    "pericias_base": ["misticismo", "vontade"],
+    "pericias_treinaveis": [
+      "conhecimento",
+      "diplomacia",
+      "enganacao",
+      "guerra",
+      "iniciativa",
+      "intimidacao",
+      "intuicao",
+      "investigacao",
+      "nobreza",
+      "oficio",
+      "percepcao"
+    ],
+    "pericias_treinadas": "2+inteligencia",
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["arcanista_caminhos_magia"]
+      }
+    ],
+    "magia": {
+      "conjurador": true,
+      "atributo_chave": null,
+      "atributo_chave_por_caminho": {
+        "bruxo": "inteligencia",
+        "feiticeiro": "carisma",
+        "mago": "inteligencia"
+      },
+      "circulo_maximo": 5,
+      "progressao_circulos": [
+        { "nivel_personagem": 1, "circulo": 1 },
+        { "nivel_personagem": 5, "circulo": 2 },
+        { "nivel_personagem": 9, "circulo": 3 },
+        { "nivel_personagem": 13, "circulo": 4 },
+        { "nivel_personagem": 17, "circulo": 5 }
+      ],
+      "magias_iniciais": 3,
+      "magias_por_nivel": "1_por_nivel"
+    },
+    "descricao_resumida": "Conjurador arcano que canaliza magia por estudo, herança ou pactos, com ampla lista de magias."
+  },
+  {
+    "id": "barbaro",
+    "nome": "Bárbaro",
+    "vida_nivel_1": 24,
+    "vida_por_nivel": 6,
+    "mana_por_nivel": 3,
+    "pericias_base": ["fortitude", "luta"],
+    "pericias_treinaveis": [
+      "adestramento",
+      "atletismo",
+      "cavalgar",
+      "iniciativa",
+      "intimidacao",
+      "oficio",
+      "percepcao",
+      "pontaria",
+      "sobrevivencia",
+      "vontade"
+    ],
+    "pericias_treinadas": 4,
+    "proficiencias": {
+      "armas": ["simples", "marciais"],
+      "escudos": ["leves", "pesados"]
+    },
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["barbaro_furia"]
+      }
+    ],
+    "descricao_resumida": "Guerreiro selvagem que entra em fúria para causar muito dano corpo a corpo e aguentar castigo."
+  },
+  {
+    "id": "bardo",
+    "nome": "Bardo",
+    "vida_nivel_1": 12,
+    "vida_por_nivel": 3,
+    "mana_por_nivel": 4,
+    "pericias_base": ["atuacao", "reflexos"],
+    "pericias_treinaveis": [
+      "acrobacia",
+      "cavalgar",
+      "conhecimento",
+      "diplomacia",
+      "enganacao",
+      "furtividade",
+      "iniciativa",
+      "intuicao",
+      "investigacao",
+      "jogatina",
+      "ladinagem",
+      "luta",
+      "misticismo",
+      "nobreza",
+      "percepcao",
+      "pontaria",
+      "vontade"
+    ],
+    "pericias_treinadas": 6,
+    "proficiencias": {
+      "armas": ["simples", "marciais"]
+    },
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["bardo_inspiracao"]
+      }
+    ],
+    "magia": {
+      "conjurador": true,
+      "atributo_chave": "carisma",
+      "circulo_maximo": 4,
+      "progressao_circulos": [
+        { "nivel_personagem": 1, "circulo": 1 },
+        { "nivel_personagem": 6, "circulo": 2 },
+        { "nivel_personagem": 10, "circulo": 3 },
+        { "nivel_personagem": 14, "circulo": 4 }
+      ],
+      "magias_iniciais": 2,
+      "magias_por_nivel": "1_niveis_pares"
+    },
+    "descricao_resumida": "Artista e aventureiro versátil que inspira aliados e conjura magias arcanas ligadas à música e à palavra."
+  },
+  {
+    "id": "bucaneiro",
+    "nome": "Bucaneiro",
+    "vida_nivel_1": 16,
+    "vida_por_nivel": 4,
+    "mana_por_nivel": 3,
+    "pericias_base": ["luta", "pontaria", "reflexos"],
+    "pericias_treinaveis": [
+      "acrobacia",
+      "atletismo",
+      "atuacao",
+      "enganacao",
+      "fortitude",
+      "furtividade",
+      "iniciativa",
+      "intimidacao",
+      "jogatina",
+      "luta",
+      "oficio",
+      "percepcao",
+      "pilotagem",
+      "pontaria"
+    ],
+    "pericias_treinadas": 4,
+    "proficiencias": {
+      "armas": ["simples", "marciais"]
+    },
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["bucaneiro_audacia", "bucaneiro_insolencia"]
+      },
+      {
+        "nivel": 2,
+        "poderes": ["bucaneiro_evasao"]
+      }
+    ],
+    "descricao_resumida": "Pirata carismático e ágil, que confia na audácia, em truques e em manobras arriscadas."
+  },
+  {
+    "id": "cacador",
+    "nome": "Caçador",
+    "vida_nivel_1": 16,
+    "vida_por_nivel": 4,
+    "mana_por_nivel": 4,
+    "pericias_base": ["luta", "pontaria", "sobrevivencia"],
+    "pericias_treinaveis": [
+      "adestramento",
+      "atletismo",
+      "cavalgar",
+      "cura",
+      "fortitude",
+      "furtividade",
+      "iniciativa",
+      "investigacao",
+      "luta",
+      "oficio",
+      "percepcao",
+      "pontaria",
+      "reflexos"
+    ],
+    "pericias_treinadas": 6,
+    "proficiencias": {
+      "armas": ["simples", "marciais"],
+      "escudos": ["leves", "pesados"]
+    },
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["cacador_marca_presa", "cacador_rastreador"]
+      }
+    ],
+    "descricao_resumida": "Especialista em rastrear e abater presas, combinando combate com conhecimento de natureza."
+  },
+  {
+    "id": "cavaleiro",
+    "nome": "Cavaleiro",
+    "vida_nivel_1": 20,
+    "vida_por_nivel": 5,
+    "mana_por_nivel": 3,
+    "pericias_base": ["fortitude", "luta"],
+    "pericias_treinaveis": [
+      "adestramento",
+      "atletismo",
+      "cavalgar",
+      "diplomacia",
+      "guerra",
+      "iniciativa",
+      "intimidacao",
+      "nobreza",
+      "percepcao",
+      "vontade"
+    ],
+    "pericias_treinadas": 2,
+    "proficiencias": {
+      "armas": ["simples", "marciais"],
+      "armaduras": ["leves", "medias", "pesadas"],
+      "escudos": ["leves", "pesados"]
+    },
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["cavaleiro_codigo_honra", "cavaleiro_baluarte"]
+      },
+      {
+        "nivel": 2,
+        "poderes": ["cavaleiro_duelo"]
+      }
+    ],
+    "descricao_resumida": "Guerreiro montado que segue um código de honra e protege aliados com disciplina e coragem."
+  },
   {
     "id": "clerigo",
     "nome": "Clérigo",
     "vida_nivel_1": 16,
     "vida_por_nivel": 4,
     "mana_por_nivel": 4,
+    "pericias_base": ["religiao", "vontade"],
+    "pericias_treinaveis": [
+      "conhecimento",
+      "cura",
+      "diplomacia",
+      "fortitude",
+      "iniciativa",
+      "intuicao",
+      "luta",
+      "misticismo",
+      "nobreza",
+      "oficio",
+      "percepcao"
+    ],
+    "pericias_treinadas": 2,
     "pericias_iniciais": {
       "quantidade": 4,
       "opcoes": ["religiao", "cura", "diplomacia", "intimidacao", "misticismo", "guerra"]
@@ -30,15 +281,90 @@
         "poderes": ["clerigo_canalizar_energia_aprimorado"]
       }
     ],
-    "descricao_resumida": "Conjurador divino versátil, com foco em suporte e cura. Consulte o livro para detalhes completos."
+    "magia": {
+      "conjurador": true,
+      "atributo_chave": "sabedoria",
+      "circulo_maximo": 5,
+      "progressao_circulos": [
+        { "nivel_personagem": 1, "circulo": 1 },
+        { "nivel_personagem": 5, "circulo": 2 },
+        { "nivel_personagem": 9, "circulo": 3 },
+        { "nivel_personagem": 13, "circulo": 4 },
+        { "nivel_personagem": 17, "circulo": 5 }
+      ],
+      "magias_iniciais": 3,
+      "magias_por_nivel": "1_por_nivel"
+    },
+    "descricao_resumida": "Servo de uma divindade que canaliza energia divina para curar, proteger e punir inimigos."
   },
-  { "id": "druida", "nome": "Druida" },
+  {
+    "id": "druida",
+    "nome": "Druida",
+    "vida_nivel_1": 16,
+    "vida_por_nivel": 4,
+    "mana_por_nivel": 4,
+    "pericias_base": ["sobrevivencia", "vontade"],
+    "pericias_treinaveis": [
+      "adestramento",
+      "atletismo",
+      "cavalgar",
+      "conhecimento",
+      "cura",
+      "fortitude",
+      "iniciativa",
+      "intuicao",
+      "luta",
+      "misticismo",
+      "oficio",
+      "percepcao",
+      "religiao"
+    ],
+    "pericias_treinadas": 4,
+    "proficiencias": {
+      "escudos": ["leves", "pesados"]
+    },
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["druida_devoto_fiel", "druida_empatia_selvagem"]
+      }
+    ],
+    "magia": {
+      "conjurador": true,
+      "atributo_chave": "sabedoria",
+      "circulo_maximo": 4,
+      "progressao_circulos": [
+        { "nivel_personagem": 1, "circulo": 1 },
+        { "nivel_personagem": 6, "circulo": 2 },
+        { "nivel_personagem": 10, "circulo": 3 },
+        { "nivel_personagem": 14, "circulo": 4 }
+      ],
+      "magias_iniciais": 2,
+      "magias_por_nivel": "1_niveis_pares"
+    },
+    "descricao_resumida": "Guardião da natureza que recebe bênçãos divinas e magias ligadas a animais, plantas e clima."
+  },
   {
     "id": "guerreiro",
     "nome": "Guerreiro",
     "vida_nivel_1": 20,
     "vida_por_nivel": 5,
     "mana_por_nivel": 3,
+    "pericias_base": ["luta", "pontaria", "fortitude"],
+    "pericias_treinaveis": [
+      "adestramento",
+      "atletismo",
+      "cavalgar",
+      "guerra",
+      "iniciativa",
+      "intimidacao",
+      "luta",
+      "oficio",
+      "percepcao",
+      "pontaria",
+      "reflexos"
+    ],
+    "pericias_treinadas": 2,
     "pericias_iniciais": {
       "quantidade": 4,
       "opcoes": ["atletismo", "luta", "guerra", "iniciativa", "pontaria", "intimidacao"]
@@ -51,19 +377,197 @@
     "habilidades_por_nivel": [
       {
         "nivel": 1,
-        "poderes": ["guerreiro_arma_favorita", "guerreiro_golpe_poderoso"]
+        "poderes": ["guerreiro_arma_favorita", "guerreiro_golpe_poderoso", "guerreiro_ataque_especial"]
       },
       {
         "nivel": 2,
         "poderes": ["guerreiro_treino_militar"]
       }
     ],
-    "descricao_resumida": "Combatente marcial resistente, especialista em armas e armaduras. Consulte o livro para detalhes completos."
+    "descricao_resumida": "Combatente marcial focado em armas e armaduras, capaz de golpes mais precisos e potentes."
   },
-  { "id": "inventor", "nome": "Inventor" },
-  { "id": "ladino", "nome": "Ladino" },
-  { "id": "lutador", "nome": "Lutador" },
-  { "id": "nobre", "nome": "Nobre" },
-  { "id": "paladino", "nome": "Paladino" }
+  {
+    "id": "inventor",
+    "nome": "Inventor",
+    "vida_nivel_1": 12,
+    "vida_por_nivel": 3,
+    "mana_por_nivel": 4,
+    "pericias_base": ["oficio", "vontade"],
+    "pericias_treinaveis": [
+      "conhecimento",
+      "cura",
+      "diplomacia",
+      "fortitude",
+      "iniciativa",
+      "investigacao",
+      "luta",
+      "misticismo",
+      "oficio",
+      "pilotagem",
+      "percepcao",
+      "pontaria"
+    ],
+    "pericias_treinadas": 4,
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["inventor_engenhosidade", "inventor_prototipo"]
+      },
+      {
+        "nivel": 2,
+        "poderes": ["inventor_fabricar_item_superior"]
+      }
+    ],
+    "descricao_resumida": "Gênio de laboratório que usa engenhocas, fórmulas e protótipos para apoiar o grupo e improvisar soluções."
+  },
+  {
+    "id": "ladino",
+    "nome": "Ladino",
+    "vida_nivel_1": 12,
+    "vida_por_nivel": 3,
+    "mana_por_nivel": 4,
+    "pericias_base": ["ladinagem", "reflexos"],
+    "pericias_treinaveis": [
+      "acrobacia",
+      "atletismo",
+      "atuacao",
+      "cavalgar",
+      "conhecimento",
+      "diplomacia",
+      "enganacao",
+      "furtividade",
+      "iniciativa",
+      "intimidacao",
+      "intuicao",
+      "investigacao",
+      "jogatina",
+      "luta",
+      "oficio",
+      "percepcao",
+      "pilotagem",
+      "pontaria"
+    ],
+    "pericias_treinadas": 8,
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["ladino_ataque_furtivo", "ladino_especialista"]
+      },
+      {
+        "nivel": 2,
+        "poderes": ["ladino_evasao", "ladino_poder_ladino"]
+      }
+    ],
+    "descricao_resumida": "Especialista em furtividade, perícias e golpes precisos contra alvos desprevenidos ou flanqueados."
+  },
+  {
+    "id": "lutador",
+    "nome": "Lutador",
+    "vida_nivel_1": 20,
+    "vida_por_nivel": 5,
+    "mana_por_nivel": 3,
+    "pericias_base": ["fortitude", "luta"],
+    "pericias_treinaveis": [
+      "acrobacia",
+      "adestramento",
+      "atletismo",
+      "enganacao",
+      "furtividade",
+      "iniciativa",
+      "intimidacao",
+      "oficio",
+      "percepcao",
+      "pontaria",
+      "reflexos"
+    ],
+    "pericias_treinadas": 4,
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["lutador_briga", "lutador_golpe_relampago"]
+      }
+    ],
+    "descricao_resumida": "Especialista em combate desarmado e lutas corpo a corpo, usando o próprio corpo como arma."
+  },
+  {
+    "id": "nobre",
+    "nome": "Nobre",
+    "vida_nivel_1": 16,
+    "vida_por_nivel": 4,
+    "mana_por_nivel": 4,
+    "pericias_base": ["diplomacia", "intimidacao", "vontade"],
+    "pericias_treinaveis": [
+      "adestramento",
+      "atuacao",
+      "cavalgar",
+      "conhecimento",
+      "diplomacia",
+      "enganacao",
+      "fortitude",
+      "guerra",
+      "iniciativa",
+      "intimidacao",
+      "intuicao",
+      "investigacao",
+      "jogatina",
+      "luta",
+      "nobreza",
+      "oficio",
+      "percepcao",
+      "pontaria"
+    ],
+    "pericias_treinadas": 4,
+    "proficiencias": {
+      "armas": ["simples", "marciais"],
+      "armaduras": ["leves", "medias", "pesadas"],
+      "escudos": ["leves", "pesados"]
+    },
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["nobre_autoconfianca", "nobre_espolio", "nobre_orgulho"]
+      }
+    ],
+    "descricao_resumida": "Personagem de alta posição social que usa recursos, contatos e carisma para liderar e influenciar."
+  },
+  {
+    "id": "paladino",
+    "nome": "Paladino",
+    "vida_nivel_1": 20,
+    "vida_por_nivel": 5,
+    "mana_por_nivel": 3,
+    "pericias_base": ["luta", "vontade"],
+    "pericias_treinaveis": [
+      "adestramento",
+      "atletismo",
+      "cavalgar",
+      "cura",
+      "diplomacia",
+      "fortitude",
+      "guerra",
+      "iniciativa",
+      "intuicao",
+      "nobreza",
+      "percepcao",
+      "religiao"
+    ],
+    "pericias_treinadas": 2,
+    "proficiencias": {
+      "armas": ["simples", "marciais"],
+      "armaduras": ["leves", "medias", "pesadas"],
+      "escudos": ["leves", "pesados"]
+    },
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["paladino_abencoado", "paladino_codigo_heroi", "paladino_golpe_divino"]
+      },
+      {
+        "nivel": 2,
+        "poderes": ["paladino_cura_pelas_maos"]
+      }
+    ],
+    "descricao_resumida": "Guerreiro sagrado que segue um rígido código heroico, abençoado para proteger inocentes e punir o mal."
+  }
 ]
 

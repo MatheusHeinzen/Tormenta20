@@ -114,6 +114,7 @@ export interface CharacterAbilitySections {
 export interface CharacterSpell {
   id: string;
   nome: string;
+  circulo?: number;
   escola?: string;
   execucao?: string;
   alcance?: string;

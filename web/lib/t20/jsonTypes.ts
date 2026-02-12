@@ -153,15 +153,67 @@ export interface HabilidadesNivelClasse {
   poderes: string[]; // ids em poderes_classe.json
 }
 
+export interface MagiaProgressaoCirculoClasse {
+  nivel_personagem: number;
+  circulo: number;
+}
+
+export interface MagiaClasseJson {
+  /** Indica se a classe realmente conjura magias. */
+  conjurador: boolean;
+  /**
+   * Atributo principal usado para CD e testes de magia.
+   * Em classes com caminhos diferentes, pode ser omitido e
+   * detalhado em atributo_chave_por_caminho.
+   */
+  atributo_chave?: AbilityScoreName | null;
+  /**
+   * Mapa opcional para classes com caminhos/arquetipos que
+   * mudam o atributo chave (ex.: Arcanista: bruxo/feiticeiro/mago).
+   */
+  atributo_chave_por_caminho?: Record<string, AbilityScoreName>;
+  /** Maior círculo de magia que a classe alcança. */
+  circulo_maximo: number;
+  /** Níveis em que a classe destrava novos círculos. */
+  progressao_circulos: MagiaProgressaoCirculoClasse[];
+  /** Quantidade de magias conhecidas/preparadas no 1º nível. */
+  magias_iniciais: number;
+  /**
+   * Regra simples para ganho de magias por nível.
+   * Exemplos de valores:
+   * - "1_por_nivel"
+   * - "1_niveis_pares"
+   */
+  magias_por_nivel: string;
+}
+
 export interface ClasseJson {
   id: string;
   nome: string;
-  vida_nivel_1: number;
-  vida_por_nivel: number;
-  mana_por_nivel: number;
+  vida_nivel_1?: number;
+  vida_por_nivel?: number;
+  mana_por_nivel?: number;
+  /**
+   * Perícias básicas da classe (sempre consideradas treinadas
+   * para fins de cálculo de perícias base).
+   */
+  pericias_base?: string[];
+  /**
+   * Lista de perícias que o jogador pode escolher ao receber
+   * perícias treinadas pela classe.
+   */
+  pericias_treinaveis?: string[];
+  /**
+   * Quantidade de perícias treinadas que a classe concede.
+   * Pode ser um número fixo (ex.: 4) ou uma expressão simples
+   * como "2+inteligencia".
+   */
+  pericias_treinadas?: number | string;
   pericias_iniciais?: PericiasIniciaisClasse;
   proficiencias?: ProficienciasClasse;
   habilidades_por_nivel?: HabilidadesNivelClasse[];
+  /** Dados agregados sobre progressão de magias da classe. */
+  magia?: MagiaClasseJson;
   descricao_resumida?: string;
 }
 

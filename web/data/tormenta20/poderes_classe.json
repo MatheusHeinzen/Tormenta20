@@ -114,6 +114,336 @@
       "nivel_minimo": 5,
       "outros_poderes": ["clerigo_canalizar_energia"]
     }
+  },
+  {
+    "id": "arcanista_caminhos_magia",
+    "nome": "Caminhos da Magia",
+    "classe": "arcanista",
+    "tipo": "passivo",
+    "descricao_resumida": "Escolhe seguir o caminho de bruxo, feiticeiro ou mago, definindo como aprende e usa suas magias arcanas.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "barbaro_furia",
+    "nome": "Fúria",
+    "classe": "barbaro",
+    "tipo": "ativo",
+    "descricao_resumida": "Gasta PM para entrar em fúria, aumentando ataque e dano corpo a corpo por alguns rounds.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "bardo_inspiracao",
+    "nome": "Inspiração",
+    "classe": "bardo",
+    "tipo": "ativo",
+    "descricao_resumida": "Gasta PM e uma ação para inspirar aliados em alcance curto, concedendo bônus em testes de perícia.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "bucaneiro_audacia",
+    "nome": "Audácia",
+    "classe": "bucaneiro",
+    "tipo": "ativo",
+    "descricao_resumida": "Gasta PM para somar Carisma em um teste de perícia, representando sua ousadia.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "bucaneiro_insolencia",
+    "nome": "Insolência",
+    "classe": "bucaneiro",
+    "tipo": "passivo",
+    "descricao_resumida": "Soma Carisma à Defesa, refletindo seu estilo provocador, exceto com armaduras muito pesadas.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "bucaneiro_evasao",
+    "nome": "Evasão",
+    "classe": "bucaneiro",
+    "tipo": "passivo",
+    "descricao_resumida": "Ao passar em testes de Reflexos contra efeitos em área, não sofre dano.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 2
+    }
+  },
+  {
+    "id": "cacador_marca_presa",
+    "nome": "Marca da Presa",
+    "classe": "cacador",
+    "tipo": "ativo",
+    "descricao_resumida": "Gasta PM para marcar um inimigo e causar dano extra contra ele.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "cacador_rastreador",
+    "nome": "Rastreador",
+    "classe": "cacador",
+    "tipo": "passivo",
+    "descricao_resumida": "Especialista em seguir rastros, com bônus em Sobrevivência e menos penalidades ao se mover enquanto rastreia.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "cavaleiro_codigo_honra",
+    "nome": "Código de Honra",
+    "classe": "cavaleiro",
+    "tipo": "passivo",
+    "descricao_resumida": "Segue um rígido código cavaleiresco e perde PM se o violar.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "cavaleiro_baluarte",
+    "nome": "Baluarte",
+    "classe": "cavaleiro",
+    "tipo": "ativo",
+    "descricao_resumida": "Gasta PM para aumentar sua Defesa e resistências, protegendo a si mesmo e, em níveis mais altos, aliados próximos.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "cavaleiro_duelo",
+    "nome": "Duelo",
+    "classe": "cavaleiro",
+    "tipo": "ativo",
+    "descricao_resumida": "Desafia um inimigo, gastando PM para receber bônus de ataque e dano contra aquele alvo.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 2
+    }
+  },
+  {
+    "id": "druida_devoto_fiel",
+    "nome": "Devoto Fiel",
+    "classe": "druida",
+    "tipo": "passivo",
+    "descricao_resumida": "Segue Allihanna, Megalokk ou o Oceano, recebendo poderes concedidos de sua divindade da natureza.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "druida_empatia_selvagem",
+    "nome": "Empatia Selvagem",
+    "classe": "druida",
+    "tipo": "passivo",
+    "descricao_resumida": "Consegue se comunicar com animais e usar perícias sociais com eles com mais facilidade.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "guerreiro_ataque_especial",
+    "nome": "Ataque Especial",
+    "classe": "guerreiro",
+    "tipo": "ativo",
+    "descricao_resumida": "Gasta PM para focar um ataque, aumentando bastante a chance de acertar ou o dano.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "inventor_engenhosidade",
+    "nome": "Engenhosidade",
+    "classe": "inventor",
+    "tipo": "ativo",
+    "descricao_resumida": "Gasta PM para somar Inteligência em testes de perícias, mostrando sua mente analítica.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "inventor_prototipo",
+    "nome": "Protótipo",
+    "classe": "inventor",
+    "tipo": "passivo",
+    "descricao_resumida": "Começa o jogo com um item superior ou um conjunto de invenções e fórmulas alquímicas.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "inventor_fabricar_item_superior",
+    "nome": "Fabricar Item Superior",
+    "classe": "inventor",
+    "tipo": "passivo",
+    "descricao_resumida": "Consegue criar itens superiores cada vez mais complexos conforme sobe de nível.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 2
+    }
+  },
+  {
+    "id": "lutador_briga",
+    "nome": "Briga",
+    "classe": "lutador",
+    "tipo": "passivo",
+    "descricao_resumida": "Aprimora seus ataques desarmados, aumentando o dano conforme sobe de nível.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "lutador_golpe_relampago",
+    "nome": "Golpe Relâmpago",
+    "classe": "lutador",
+    "tipo": "ativo",
+    "descricao_resumida": "Gasta PM para realizar um ataque desarmado extra em combinação com manobras agressivas.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "nobre_autoconfianca",
+    "nome": "Autoconfiança",
+    "classe": "nobre",
+    "tipo": "passivo",
+    "descricao_resumida": "Soma Carisma à Defesa, representando sua postura confiante, especialmente com armaduras elegantes.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "nobre_espolio",
+    "nome": "Espólio",
+    "classe": "nobre",
+    "tipo": "passivo",
+    "descricao_resumida": "Começa o jogo com um item valioso custeado por sua herança.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "nobre_orgulho",
+    "nome": "Orgulho",
+    "classe": "nobre",
+    "tipo": "ativo",
+    "descricao_resumida": "Gasta PM para somar um grande bônus em testes de perícia, impulsionado por seu orgulho aristocrático.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "paladino_abencoado",
+    "nome": "Abençoado",
+    "classe": "paladino",
+    "tipo": "passivo",
+    "descricao_resumida": "Recebe bênçãos divinas, poderes concedidos e um reforço em seus PM graças à fé.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "paladino_codigo_heroi",
+    "nome": "Código do Herói",
+    "classe": "paladino",
+    "tipo": "passivo",
+    "descricao_resumida": "Segue um código heróico rígido; ao quebrá-lo, perde acesso a seus PM até se redimir.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "paladino_golpe_divino",
+    "nome": "Golpe Divino",
+    "classe": "paladino",
+    "tipo": "ativo",
+    "descricao_resumida": "Gasta PM para canalizar energia sagrada em um ataque, aumentando ataque e dano.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "paladino_cura_pelas_maos",
+    "nome": "Cura pelas Mãos",
+    "classe": "paladino",
+    "tipo": "ativo",
+    "descricao_resumida": "Gasta PM para curar a si mesmo ou a aliados com um toque, podendo remover condições em níveis maiores.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 2
+    }
+  },
+  {
+    "id": "ladino_ataque_furtivo",
+    "nome": "Ataque Furtivo",
+    "classe": "ladino",
+    "tipo": "passivo",
+    "descricao_resumida": "Uma vez por rodada, ao acertar criatura desprevenida ou flanqueando com ataque corpo a corpo ou alcance curto, causa 1d6 de dano extra. A cada dois níveis +1d6. Imune a crítico é imune a ataque furtivo.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "ladino_especialista",
+    "nome": "Especialista",
+    "classe": "ladino",
+    "tipo": "ativo",
+    "descricao_resumida": "Escolhe um número de perícias treinadas igual à Inteligência (mín. 1). Ao fazer teste de uma delas, pode gastar 1 PM para dobrar o bônus de treinamento. Não se aplica a testes de ataque.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "ladino_evasao",
+    "nome": "Evasão",
+    "classe": "ladino",
+    "tipo": "passivo",
+    "descricao_resumida": "Quando sofre efeito que permite teste de Reflexos para reduzir dano à metade, não sofre dano se passar. Exige liberdade de movimentos; não funciona com armadura pesada ou condição imóvel.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 2
+    }
+  },
+  {
+    "id": "ladino_poder_ladino",
+    "nome": "Poder de Ladino",
+    "classe": "ladino",
+    "tipo": "passivo",
+    "descricao_resumida": "No 2º nível e a cada nível seguinte, escolhe um dos poderes de ladino da lista.",
+    "efeitos_mecanicos": [],
+    "requisitos": {
+      "nivel_minimo": 2
+    }
   }
 ]
 

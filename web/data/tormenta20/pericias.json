@@ -15,6 +15,7 @@
   { "id": "intimidacao", "nome": "Intimidação", "atributoPadrao": "carisma" },
   { "id": "intuicao", "nome": "Intuição", "atributoPadrao": "sabedoria" },
   { "id": "investigacao", "nome": "Investigação", "atributoPadrao": "inteligencia" },
+  { "id": "ladinagem", "nome": "Ladinagem", "atributoPadrao": "destreza" },
   { "id": "jogatina", "nome": "Jogatina", "atributoPadrao": "carisma" },
   { "id": "luta", "nome": "Luta", "atributoPadrao": "forca" },
   { "id": "misticismo", "nome": "Misticismo", "atributoPadrao": "inteligencia" },

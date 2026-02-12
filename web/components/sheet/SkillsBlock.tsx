@@ -4,7 +4,7 @@ import type {
   CharacterSkill,
 } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
-import { skillRules } from "@/lib/data/tormenta20";
+import { getClassByNome, skillRules } from "@/lib/data/tormenta20";
 
 interface SkillsBlockProps {
   sheet: CharacterSheet;
@@ -22,8 +22,49 @@ const abilityLabels: Record<AbilityScoreName, string> = {
   carisma: "Car",
 };
 
+function getPericiasFromClasses(sheet: CharacterSheet): {
+  base: string[];
+  treinaveis: string[];
+  totalTreinadas: number;
+} {
+  const classes = sheet.classes ?? [];
+  const baseSet = new Set<string>();
+  const treinaveisSet = new Set<string>();
+  let totalTreinadas = 0;
+  for (const klass of classes) {
+    const data = getClassByNome(klass.nome);
+    if (!data) continue;
+    (data.pericias_base ?? []).forEach((id) => baseSet.add(id));
+    (data.pericias_treinaveis ?? []).forEach((id) => treinaveisSet.add(id));
+    const pt = data.pericias_treinadas;
+    if (typeof pt === "number") {
+      totalTreinadas += pt;
+    } else if (typeof pt === "string" && pt.includes("+")) {
+      const [fixed, attr] = pt.split("+").map((s) => s.trim().toLowerCase());
+      const n = parseInt(fixed, 10) || 0;
+      const mod =
+        attr && sheet.atributos[attr as AbilityScoreName] != null
+          ? abilityModifier(sheet.atributos[attr as AbilityScoreName])
+          : 0;
+      totalTreinadas += n + mod;
+    }
+  }
+  return {
+    base: [...baseSet],
+    treinaveis: [...treinaveisSet],
+    totalTreinadas: Math.max(0, totalTreinadas),
+  };
+}
+
 export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
   const { atributos } = sheet;
+  const { base: periciasBaseClasse, treinaveis: periciasTreinaveisClasse, totalTreinadas: slotsTreinadas } =
+    getPericiasFromClasses(sheet);
+  const skillIdsInRules = new Set(skillRules.map((s) => s.id));
+  const baseFiltered = periciasBaseClasse.filter((id) => skillIdsInRules.has(id));
+  const treinaveisFiltered = periciasTreinaveisClasse.filter((id) =>
+    skillIdsInRules.has(id),
+  );
 
   const byId = new Map<string, CharacterSkill>();
   for (const skill of sheet.pericias) {
@@ -67,7 +108,7 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
     upsertSkill(next);
   }
 
-  function getSkillTotal(skillId: string): number {
+  function getSkillTotal(skillId: string, effectiveTreinada?: boolean): number {
     const rule = skillRules.find((s) => s.id === skillId);
     if (!rule) return 0;
 
@@ -82,7 +123,8 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
 
     const attr = config.atributoUsado;
     const modAtributo = abilityModifier(atributos[attr]);
-    const bonusTreinado = config.treinada ? SKILL_TRAINED_BONUS : 0;
+    const treinada = effectiveTreinada ?? config.treinada;
+    const bonusTreinado = treinada ? SKILL_TRAINED_BONUS : 0;
 
     return modAtributo + bonusTreinado + config.bonusOutros;
   }
@@ -102,8 +144,17 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
           treinada: false,
         } as CharacterSkill);
 
-      const total = getSkillTotal(rule.id);
+      const isBaseFromClass = baseFiltered.includes(rule.id);
+      const isTreinavelFromClass = treinaveisFiltered.includes(rule.id);
+      const effectiveTreinada = current.treinada || isBaseFromClass;
+      const total = getSkillTotal(rule.id, effectiveTreinada);
       const totalLabel = total >= 0 ? `+${total}` : total.toString();
+      const countTreinadasChosen = sheet.pericias.filter(
+        (s) => treinaveisFiltered.includes(s.id) && s.treinada,
+      ).length;
+      const canToggleTreinada =
+        isTreinavelFromClass &&
+        (effectiveTreinada ? true : countTreinadasChosen < slotsTreinadas);
 
       return (
         <tr
@@ -114,15 +165,22 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
             {totalLabel}
           </td>
           <td className="px-1 py-0.5 align-middle">
-            <input
-              type="checkbox"
-              checked={current.treinada}
-              onChange={(event) =>
-                handleChange(rule.id, {
-                  treinada: event.target.checked,
-                })
-              }
-            />
+            {isBaseFromClass ? (
+              <span className="text-[10px] text-zinc-500" title="Perícia base da classe">
+                base
+              </span>
+            ) : (
+              <input
+                type="checkbox"
+                checked={effectiveTreinada}
+                disabled={!canToggleTreinada && !current.treinada}
+                onChange={(event) =>
+                  handleChange(rule.id, {
+                    treinada: event.target.checked,
+                  })
+                }
+              />
+            )}
           </td>
           <td className="px-1 py-0.5 align-middle text-zinc-800">
             {rule.nome}
@@ -161,6 +219,21 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
     });
   }
 
+  const resumoClasse =
+    baseFiltered.length > 0 || treinaveisFiltered.length > 0 ? (
+      <p className="text-xs text-zinc-600">
+        {baseFiltered.length > 0 && (
+          <>Perícias base da classe: {baseFiltered.map((id) => skillRules.find((s) => s.id === id)?.nome ?? id).join(", ")} (sempre +2).</>
+        )}
+        {treinaveisFiltered.length > 0 && (
+          <>
+            {" "}
+            Escolha até <strong>{slotsTreinadas}</strong> treinadas entre as listadas abaixo.
+          </>
+        )}
+      </p>
+    ) : null;
+
   return (
     <section className="space-y-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
       <h2 className="text-base font-semibold text-zinc-900">Perícias</h2>
@@ -168,6 +241,7 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
         Use o atributo sugerido ou ajuste conforme a mesa. O total já inclui
         modificador de atributo, treinamento (+2) e bônus extras.
       </p>
+      {resumoClasse}
 
       <div className="grid gap-2 md:grid-cols-2">
         <div className="overflow-x-auto">

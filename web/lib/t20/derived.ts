@@ -2,7 +2,7 @@ import type { CharacterSheet } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
 import { applyRaceByName, getRaceDataByName } from "@/lib/t20/race";
 import { applyOriginByName } from "@/lib/t20/origin";
-import { applyClassRules } from "@/lib/t20/class";
+import { applyClassProficiencies, applyClassRules } from "@/lib/t20/class";
 
 /**
  * CA = 10 + (modificador do atributo de defesa) + armadura + escudo + bônus.
@@ -115,7 +115,7 @@ export function applyT20DerivedChanges(
     next.raca !== prev.raca
   ) {
     result = applyClassRules(result);
-    // Reaplicamos bônus de PV/PM vindos da raça após calcular a base da classe.
+    result = applyClassProficiencies(result);
     result = applyRaceLifeAndManaBonuses(result);
   }
 

@@ -1,4 +1,5 @@
 import type { CharacterSheet } from "@/lib/models/character";
+import { getConjuradorMagiaInfo } from "@/lib/t20/class";
 
 interface SpellsBlockProps {
   sheet: CharacterSheet;
@@ -7,6 +8,7 @@ interface SpellsBlockProps {
 
 export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
   const magias = sheet.magias;
+  const conjurador = getConjuradorMagiaInfo(sheet);
 
   function handleChange(index: number, partial: Partial<CharacterSheet["magias"][number]>) {
     const next = magias.map((spell, idx) =>
@@ -58,6 +60,67 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
         </button>
       </div>
 
+      {conjurador && (
+        <div className="space-y-4 rounded-lg border border-zinc-200 bg-zinc-50 p-4 text-sm">
+          <p className="text-[11px] font-semibold uppercase text-zinc-500">
+            Conjuração (classe)
+          </p>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <p className="text-[11px] font-semibold text-zinc-500">
+                CD das magias
+              </p>
+              <p className="mt-0.5 text-[11px] text-zinc-500">
+                10 + metade do nível (arred. cima) + mod.{conjurador.atributoLabel}
+              </p>
+              <input
+                type="number"
+                value={sheet.magia?.cd ?? conjurador.cdBase}
+                onChange={(e) =>
+                  onChange({
+                    ...sheet,
+                    magia: {
+                      ...sheet.magia,
+                      cd: Number(e.target.value) || 0,
+                    },
+                  })
+                }
+                className="mt-1 w-full rounded border border-zinc-300 bg-white px-2 py-1.5 font-semibold text-zinc-900 shadow-sm focus:border-zinc-600 focus:outline-none"
+              />
+              <p className="mt-0.5 text-[10px] text-zinc-500">
+                Sugerido: {conjurador.cdBase}
+              </p>
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold text-zinc-500">
+                Bônus de teste de magia
+              </p>
+              <p className="mt-1 font-semibold text-zinc-900">
+                {conjurador.bonusTeste >= 0 ? `+${conjurador.bonusTeste}` : conjurador.bonusTeste}{" "}
+                <span className="text-xs font-normal text-zinc-500">(mod. + nível)</span>
+              </p>
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold text-zinc-500">
+                Número de magias conhecidas
+              </p>
+              <p className="mt-1 font-semibold text-zinc-900">
+                {conjurador.magiasConhecidas}{" "}
+                <span className="text-xs font-normal text-zinc-500">(nível {conjurador.nivelTotal})</span>
+              </p>
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold text-zinc-500">
+                Círculo máximo
+              </p>
+              <p className="mt-1 font-semibold text-zinc-900">
+                {conjurador.circuloMax}º
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {magias.length === 0 ? (
         <p className="text-sm text-zinc-600">
           Nenhuma magia cadastrada. Use &quot;Adicionar magia&quot; para criar
@@ -94,7 +157,7 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                       <input
                         type="number"
                         min={0}
-                        max={9}
+                        max={5}
                         value={spell.circulo ?? 0}
                         onChange={(event) =>
                           handleChange(index, {
