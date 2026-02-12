@@ -12,6 +12,7 @@ import { SkillsBlock } from "@/components/sheet/SkillsBlock";
 import { InventoryBlock } from "@/components/sheet/InventoryBlock";
 import { NotesBlock } from "@/components/sheet/NotesBlock";
 import { SpellsBlock } from "@/components/sheet/SpellsBlock";
+import { PowersTabsBlock } from "@/components/sheet/PowersTabsBlock";
 
 interface SheetFormProps {
   initialSheet: CharacterSheet;
@@ -60,6 +61,7 @@ export function SheetForm({
             <SheetHeader sheet={sheet} onChange={handleSheetChange} />
           </div>
           <AttributesGrid sheet={sheet} onChange={handleSheetChange} />
+          <PowersTabsBlock sheet={sheet} onChange={handleSheetChange} />
         </div>
       )}
 

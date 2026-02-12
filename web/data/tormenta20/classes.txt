@@ -29,7 +29,7 @@ Até 5º círculo.
 
 Começa com 3 magias. Aprende 1 por nível.
 
-Poderes de classe: Níveis pares (2, 4, 6...).
+
 
 Bárbaro
 PV inicial: 24 + Constituição
@@ -50,7 +50,7 @@ Habilidades:
 
 Fúria: 2 PM. +2 atq/dano corpo a corpo. +1 PM a cada 5 níveis para +1 nos bônus.
 
-Poderes de classe: Níveis pares (2, 4, 6...).
+
 
 Bardo
 PV inicial: 12 + Constituição
@@ -83,7 +83,7 @@ Atributo: Carisma.
 
 Escolhe 3 escolas no 1º nível.
 
-Poderes de classe: Níveis pares (2, 4, 6...).
+
 
 Bucaneiro
 PV inicial: 16 + Constituição
@@ -108,7 +108,7 @@ Insolência: Soma Carisma na Defesa (limitado por nível). Não com armadura pes
 
 Evasão (2º): Reflexos: dano 0 se passar.
 
-Poderes de classe: Níveis pares (2, 4, 6...).
+
 
 Caçador
 PV inicial: 16 + Constituição
@@ -131,7 +131,7 @@ Marca da Presa: Ação movimento, 1 PM. +1d4 dano contra alvo. +1 PM a cada 4 n�
 
 Rastreador: +2 em Sobrevivência. Move normal rastreando.
 
-Poderes de classe: Níveis pares (2, 4, 6...).
+
 
 Cavaleiro
 PV inicial: 20 + Constituição
@@ -160,7 +160,7 @@ Baluarte: 1 PM. +2 Defesa/resistências até próximo turno. +1 PM a cada 4 nív
 
 Duelo (2º): 2 PM. +2 atq/dano contra um oponente. +1 PM a cada 5 níveis para +1.
 
-Poderes de classe: Níveis pares (2, 4, 6...).
+
 
 Clérigo
 PV inicial: 16 + Constituição
@@ -189,7 +189,7 @@ Começa com 3 magias. Aprende 1 por nível.
 
 Atributo: Sabedoria.
 
-Poderes de classe: Níveis pares (2, 4, 6...).
+
 
 Druida
 PV inicial: 16 + Constituição
@@ -222,7 +222,7 @@ Atributo: Sabedoria.
 
 Escolhe 3 escolas no 1º nível.
 
-Poderes de classe: Níveis pares (2, 4, 6...).
+
 
 Guerreiro
 PV inicial: 20 + Constituição
@@ -243,7 +243,7 @@ Habilidades:
 
 Ataque Especial: 1 PM. +4 no ataque ou dano. +1 PM a cada 4 níveis para +4. Pode dividir.
 
-Poderes de classe: Níveis pares (2, 4, 6...).
+
 
 Inventor
 PV inicial: 12 + Constituição
@@ -268,7 +268,7 @@ Protótipo: Item superior ou 10 itens alquímicos (até T$ 500).
 
 Fabricar Item Superior (2º): Item superior T$ 2.000. Pode fabricar itens superiores com 1 melhoria. Aumenta em níveis 5, 8, 11.
 
-Poderes de classe: Níveis pares (2, 4, 6...).
+
 
 Lutador
 PV inicial: 20 + Constituição
@@ -291,7 +291,7 @@ Briga: Ataque desarmado 1d6. Aumenta a cada 4 níveis.
 
 Golpe Relâmpago: 1 PM. Ataque desarmado adicional com agredir.
 
-Poderes de classe: Níveis pares (2, 4, 6...).
+
 
 Nobre
 PV inicial: 16 + Constituição
@@ -316,7 +316,7 @@ Espólio: Item até T$ 2.000.
 
 Orgulho: Gasta PM (limite Carisma), +2 por PM em teste de perícia.
 
-Poderes de classe: Níveis pares (2, 4, 6...).
+
 
 Paladino
 PV inicial: 20 + Constituição
@@ -345,5 +345,5 @@ Cura pelas Mãos (2º): Ação movimento, 1 PM. Cura 1d8+1. +1 PM a cada 4 níve
 
 6º: +1 PM p/ anular condição.
 
-Poderes de classe: Níveis pares (2, 4, 6...).
+
 

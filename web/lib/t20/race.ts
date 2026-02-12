@@ -28,6 +28,10 @@ function findRaceByName(nome: string): RacaJson | undefined {
   );
 }
 
+export function getRaceDataByName(nome: string): RacaJson | undefined {
+  return findRaceByName(nome);
+}
+
 function buildFixedAbilityBonus(
   modificadores?: ModificadorAtributoRaca[],
 ): Partial<CharacterSheet["atributos"]> {
@@ -135,6 +139,50 @@ export function applyRaceByName(
     }
   }
 
+  // Aplicamos ajustes básicos de raça que são claramente automáticos:
+  // - deslocamento base
+  // - tamanho
+  // - sentidos (visão no escuro / penumbra)
+  // - proficiência simples em armas de fogo (quando a raça concede)
+  let combate = nextSheet.combate;
+  if (typeof race.deslocamento_base === "number") {
+    combate = {
+      ...combate,
+      deslocamento: race.deslocamento_base,
+    };
+  }
+
+  let tamanho = nextSheet.tamanho;
+  if (race.tamanho) {
+    tamanho = race.tamanho;
+  }
+
+  let proficiencias = nextSheet.proficiencias;
+  if (race.sentidos) {
+    proficiencias = {
+      ...proficiencias,
+      sentidos: {
+        ...proficiencias.sentidos,
+        visaoPenumbra: !!race.sentidos.visao_penumbra,
+        visaoEscuro: !!race.sentidos.visao_escuro,
+        outros: race.sentidos.outros?.join(", ") ?? proficiencias.sentidos.outros,
+      },
+    };
+  }
+
+  if (race.proficiencias?.armas?.length) {
+    const hasFirearms = race.proficiencias.armas.includes("armas_de_fogo");
+    if (hasFirearms) {
+      proficiencias = {
+        ...proficiencias,
+        armas: {
+          ...proficiencias.armas,
+          deFogo: true,
+        },
+      };
+    }
+  }
+
   let habilidadesRacaOrigem = nextSheet.habilidades.habilidadesRacaOrigem;
 
   // Se o jogador ainda não escreveu nada manualmente, podemos preencher
@@ -162,6 +210,9 @@ export function applyRaceByName(
   return {
     ...nextSheet,
     atributos,
+    combate,
+    tamanho,
+    proficiencias,
     habilidades: {
       ...nextSheet.habilidades,
       habilidadesRacaOrigem,

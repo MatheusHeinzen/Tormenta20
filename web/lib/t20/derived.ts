@@ -1,6 +1,6 @@
 import type { CharacterSheet } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
-import { applyRaceByName } from "@/lib/t20/race";
+import { applyRaceByName, getRaceDataByName } from "@/lib/t20/race";
 import { applyOriginByName } from "@/lib/t20/origin";
 import { applyClassRules } from "@/lib/t20/class";
 
@@ -23,6 +23,64 @@ function computePenalidadeArmadura(sheet: CharacterSheet): number {
   const armadura = sheet.proficiencias?.armadura?.penalidade ?? 0;
   const escudo = sheet.proficiencias?.escudo?.penalidade ?? 0;
   return armadura + escudo;
+}
+
+/**
+ * Aplica efeitos mecânicos simples de raça que afetam PV/PM máximos.
+ * Hoje avaliamos apenas efeitos definidos em poderes raciais:
+ * - alvo "vida" ou "mana"
+ * - tipo_efeito "bonus_por_nivel" ou "bonus_fixo"/"ajuste_mana"
+ */
+function applyRaceLifeAndManaBonuses(sheet: CharacterSheet): CharacterSheet {
+  const race = getRaceDataByName(sheet.raca);
+  if (!race) return sheet;
+
+  const totalNivel =
+    sheet.classes && sheet.classes.length > 0
+      ? sheet.classes.reduce((acc, klass) => acc + klass.nivel, 0)
+      : sheet.nivel || 1;
+
+  const efeitos =
+    race.poderes_automaticos?.flatMap((poder) => poder.efeitos_mecanicos) ?? [];
+
+  let extraVida = 0;
+  let extraMana = 0;
+
+  for (const efeito of efeitos) {
+    if (efeito.alvo !== "vida" && efeito.alvo !== "mana") continue;
+
+    const nivelMinimo = efeito.nivel_minimo ?? 1;
+    if (totalNivel < nivelMinimo) continue;
+
+    if (efeito.tipo_efeito === "bonus_por_nivel") {
+      const niveisConsiderados = Math.max(0, totalNivel - (nivelMinimo - 1));
+      const valor = niveisConsiderados * efeito.valor_base;
+      if (efeito.alvo === "vida") extraVida += valor;
+      else extraMana += valor;
+    } else if (
+      efeito.tipo_efeito === "bonus_fixo" ||
+      efeito.tipo_efeito === "ajuste_mana"
+    ) {
+      if (efeito.alvo === "vida") extraVida += efeito.valor_base;
+      else extraMana += efeito.valor_base;
+    }
+  }
+
+  if (extraVida === 0 && extraMana === 0) {
+    return sheet;
+  }
+
+  const basePv = sheet.combate.pvMaximo;
+  const basePm = sheet.combate.pmMaximo;
+
+  return {
+    ...sheet,
+    combate: {
+      ...sheet.combate,
+      pvMaximo: basePv + extraVida,
+      pmMaximo: basePm + extraMana,
+    },
+  };
 }
 
 /**
@@ -53,9 +111,12 @@ export function applyT20DerivedChanges(
   if (
     next.classes !== prev.classes ||
     next.atributos !== prev.atributos ||
-    next.config.derived.atributoHp !== prev.config.derived.atributoHp
+    next.config.derived.atributoHp !== prev.config.derived.atributoHp ||
+    next.raca !== prev.raca
   ) {
     result = applyClassRules(result);
+    // Reaplicamos bônus de PV/PM vindos da raça após calcular a base da classe.
+    result = applyRaceLifeAndManaBonuses(result);
   }
 
   result = {
