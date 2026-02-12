@@ -4,7 +4,7 @@ import type {
   CharacterSkill,
 } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
-import { getClassByNome, skillRules } from "@/lib/data/tormenta20";
+import { getClassByNome, getOrigemByNome, skillRules } from "@/lib/data/tormenta20";
 
 interface SkillsBlockProps {
   sheet: CharacterSheet;
@@ -49,6 +49,8 @@ function getPericiasFromClasses(sheet: CharacterSheet): {
       totalTreinadas += n + mod;
     }
   }
+  const origem = getOrigemByNome(sheet.origem);
+  (origem?.pericias ?? []).forEach((id) => baseSet.add(id));
   return {
     base: [...baseSet],
     treinaveis: [...treinaveisSet],
@@ -223,7 +225,7 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
     baseFiltered.length > 0 || treinaveisFiltered.length > 0 ? (
       <p className="text-xs text-zinc-600">
         {baseFiltered.length > 0 && (
-          <>Perícias base da classe: {baseFiltered.map((id) => skillRules.find((s) => s.id === id)?.nome ?? id).join(", ")} (sempre +2).</>
+          <>Perícias base (classe e origem): {baseFiltered.map((id) => skillRules.find((s) => s.id === id)?.nome ?? id).join(", ")} (sempre +2).</>
         )}
         {treinaveisFiltered.length > 0 && (
           <>

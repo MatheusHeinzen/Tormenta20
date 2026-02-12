@@ -5,7 +5,7 @@ import origensJson from "@/data/tormenta20/origens.json";
 import deusesJson from "@/data/tormenta20/deuses.json";
 import periciasJson from "@/data/tormenta20/pericias.json";
 import type { AbilityScoreName } from "@/lib/models/character";
-import type { ClasseJson, PoderClasseJson, RacaJson } from "@/lib/t20/jsonTypes";
+import type { ClasseJson, OrigemJson, PoderClasseJson, RacaJson } from "@/lib/t20/jsonTypes";
 
 export interface SimpleOption {
   id: string;
@@ -44,6 +44,14 @@ export function getPoderesClasseByIds(ids: string[]): PoderClasseJson[] {
 
 export function getOrigens(): OriginOption[] {
   return origensJson;
+}
+
+export function getOrigemByNome(nome: string): OrigemJson | undefined {
+  if (!nome?.trim()) return undefined;
+  const n = nome.trim();
+  return (origensJson as OrigemJson[]).find(
+    (o) => o.nome === n || o.nome.toLowerCase() === n.toLowerCase(),
+  );
 }
 
 export function getDeuses(): DeityOption[] {

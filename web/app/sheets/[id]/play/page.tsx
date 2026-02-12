@@ -99,13 +99,22 @@ export default function PlaySheetPage() {
               Use os botões para ajustar PV e PM rapidamente durante a sessão.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => router.push(`/sheets/${sheet.id}/edit`)}
-            className="rounded border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 hover:bg-zinc-50"
-          >
-            Editar ficha
-          </button>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => router.push("/")}
+              className="rounded border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 hover:bg-zinc-50"
+            >
+              Voltar ao menu
+            </button>
+            <button
+              type="button"
+              onClick={() => router.push(`/sheets/${sheet.id}/edit`)}
+              className="rounded border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 hover:bg-zinc-50"
+            >
+              Editar ficha
+            </button>
+          </div>
         </header>
 
         <section className="grid gap-4 md:grid-cols-2">

@@ -258,7 +258,9 @@ export interface MagiaJson {
 export interface OrigemJson {
   id: string;
   nome: string;
+  itens?: string[];
   pericias?: string[];
+  poderes?: string[];
   beneficios_mecanicos?: EfeitoMecanico[];
   descricao_resumida?: string;
 }

@@ -45,6 +45,13 @@ export default function EditSheetPage() {
           <p className="text-xs text-zinc-600">
             Ajuste os campos da sua ficha. As mudanças são salvas neste navegador.
           </p>
+          <button
+            type="button"
+            onClick={() => router.push("/")}
+            className="mt-2 inline-flex items-center rounded border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 shadow-sm hover:bg-zinc-50"
+          >
+            Voltar ao menu
+          </button>
         </header>
 
         <SheetForm

@@ -9,6 +9,7 @@ import type {
 import { abilityModifier } from "@/lib/models/character";
 import {
   getClassByNome,
+  getOrigemByNome,
   skillRules,
   type SkillRule,
 } from "@/lib/data/tormenta20";
@@ -36,6 +37,8 @@ function getPericiasFromClasses(sheet: CharacterSheet): {
     (data.pericias_base ?? []).forEach((id: string) => baseSet.add(id));
     (data.pericias_treinaveis ?? []).forEach((id: string) => treinaveisSet.add(id));
   }
+  const origem = getOrigemByNome(sheet.origem);
+  (origem?.pericias ?? []).forEach((id: string) => baseSet.add(id));
   return { base: [...baseSet], treinaveis: [...treinaveisSet] };
 }
 

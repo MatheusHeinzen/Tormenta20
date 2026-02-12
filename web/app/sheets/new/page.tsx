@@ -31,6 +31,13 @@ export default function NewSheetPage() {
           <p className="text-xs text-zinc-600">
             Campos inspirados na ficha automática oficial de Tormenta 20.
           </p>
+          <button
+            type="button"
+            onClick={() => router.push("/")}
+            className="mt-2 inline-flex items-center rounded border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 shadow-sm hover:bg-zinc-50"
+          >
+            Voltar ao menu
+          </button>
         </header>
 
         <SheetForm

@@ -41,12 +41,20 @@ export default function SheetsListPage() {
             </p>
           </div>
 
-          <Link
-            href="/sheets/new"
-            className="rounded bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-zinc-800"
-          >
-            Nova ficha
-          </Link>
+          <div className="flex gap-2">
+            <Link
+              href="/"
+              className="rounded border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 shadow-sm hover:bg-zinc-50"
+            >
+              Voltar ao menu
+            </Link>
+            <Link
+              href="/sheets/new"
+              className="rounded bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-zinc-800"
+            >
+              Nova ficha
+            </Link>
+          </div>
         </header>
 
         {characters.length === 0 ? (

@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { CharacterSheet } from "@/lib/models/character";
 import {
   getClassByNome,
+  getOrigemByNome,
   getPoderesClasseByIds,
   getRacas,
 } from "@/lib/data/tormenta20";
@@ -188,6 +189,44 @@ export function PowersTabsBlock({ sheet }: PowersTabsBlockProps) {
     );
   }
 
+  function renderOriginPowers() {
+    const origem =
+      sheet.origem && sheet.origem.trim().length > 0
+        ? getOrigemByNome(sheet.origem)
+        : undefined;
+
+    if (!origem) {
+      return (
+        <p className="text-sm text-zinc-600">
+          Selecione uma origem no cabeçalho para ver os poderes.
+        </p>
+      );
+    }
+
+    const poderes = origem.poderes ?? [];
+
+    if (poderes.length === 0) {
+      return (
+        <p className="text-sm text-zinc-600">
+          Esta origem não tem poderes listados no sistema.
+        </p>
+      );
+    }
+
+    return (
+      <ul className="space-y-2">
+        {poderes.map((nome) => (
+          <li
+            key={nome}
+            className="rounded border border-zinc-200 bg-zinc-50 p-2"
+          >
+            <p className="text-sm font-semibold text-zinc-900">{nome}</p>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
   function renderPlaceholder(label: string) {
     return (
       <p className="text-sm text-zinc-600">
@@ -203,7 +242,7 @@ export function PowersTabsBlock({ sheet }: PowersTabsBlockProps) {
   if (activeTab === "raciais") {
     content = renderRacialPowers();
   } else if (activeTab === "origem") {
-    content = renderPlaceholder("Origem");
+    content = renderOriginPowers();
   } else if (activeTab === "classes") {
     content = renderClassPowers();
   } else {
