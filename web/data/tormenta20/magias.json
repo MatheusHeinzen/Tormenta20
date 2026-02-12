@@ -1,0 +1,45 @@
+[
+  {
+    "id": "curar_ferimentos_simples",
+    "nome": "Curar Ferimentos Simples",
+    "circulo": 1,
+    "escola": "conjuracao",
+    "descricao_resumida": "Magia básica de cura. Consulte o livro para detalhes completos.",
+    "parametros": {
+      "alcance": "toque",
+      "alvo": "criatura",
+      "area": null,
+      "duracao": "instantanea",
+      "custo_mana": 2
+    }
+  },
+  {
+    "id": "raio_sagrado",
+    "nome": "Raio Sagrado",
+    "circulo": 1,
+    "escola": "evocacao",
+    "descricao_resumida": "Magia ofensiva divina de longo alcance. Consulte o livro para detalhes completos.",
+    "parametros": {
+      "alcance": "medio",
+      "alvo": "criatura_ou_objeto",
+      "area": null,
+      "duracao": "instantanea",
+      "custo_mana": 2
+    }
+  },
+  {
+    "id": "misseis_magicos",
+    "nome": "Mísseis Mágicos",
+    "circulo": 1,
+    "escola": "evocacao",
+    "descricao_resumida": "Magia arcana ofensiva com múltiplos projéteis. Consulte o livro para detalhes completos.",
+    "parametros": {
+      "alcance": "medio",
+      "alvo": "criatura",
+      "area": null,
+      "duracao": "instantanea",
+      "custo_mana": 3
+    }
+  }
+]
+

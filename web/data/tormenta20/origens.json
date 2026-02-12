@@ -1,5 +1,18 @@
 [
-  { "id": "acolito", "nome": "Acólito" },
+  {
+    "id": "acolito",
+    "nome": "Acólito",
+    "pericias": ["religiao", "diplomacia"],
+    "beneficios_mecanicos": [
+      {
+        "alvo": "mana",
+        "tipo_efeito": "ajuste_mana",
+        "operacao": "add",
+        "valor_base": 1
+      }
+    ],
+    "descricao_resumida": "Origem ligada ao serviço religioso. Consulte o livro para detalhes completos."
+  },
   { "id": "amigo-dos-animais", "nome": "Amigo dos Animais" },
   { "id": "amnesico", "nome": "Amnésico" },
   { "id": "aristocrata", "nome": "Aristocrata" },

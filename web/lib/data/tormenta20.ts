@@ -4,13 +4,14 @@ import origensJson from "@/data/tormenta20/origens.json";
 import deusesJson from "@/data/tormenta20/deuses.json";
 import periciasJson from "@/data/tormenta20/pericias.json";
 import type { AbilityScoreName } from "@/lib/models/character";
+import type { RacaJson } from "@/lib/t20/jsonTypes";
 
 export interface SimpleOption {
   id: string;
   nome: string;
 }
 
-export type RaceOption = SimpleOption;
+export type RaceOption = RacaJson;
 export type ClassOption = SimpleOption;
 export type OriginOption = SimpleOption;
 export type DeityOption = SimpleOption;

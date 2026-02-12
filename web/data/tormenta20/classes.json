@@ -5,9 +5,61 @@
   { "id": "bucaneiro", "nome": "Bucaneiro" },
   { "id": "cacador", "nome": "Caçador" },
   { "id": "cavaleiro", "nome": "Cavaleiro" },
-  { "id": "clerigo", "nome": "Clérigo" },
+  {
+    "id": "clerigo",
+    "nome": "Clérigo",
+    "vida_nivel_1": 16,
+    "vida_por_nivel": 4,
+    "mana_por_nivel": 4,
+    "pericias_iniciais": {
+      "quantidade": 4,
+      "opcoes": ["religiao", "cura", "diplomacia", "intimidacao", "misticismo", "guerra"]
+    },
+    "proficiencias": {
+      "armas": ["simples"],
+      "armaduras": ["leves", "medias"],
+      "escudos": ["leves", "pesados"]
+    },
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["clerigo_devoção", "clerigo_canalizar_energia"]
+      },
+      {
+        "nivel": 5,
+        "poderes": ["clerigo_canalizar_energia_aprimorado"]
+      }
+    ],
+    "descricao_resumida": "Conjurador divino versátil, com foco em suporte e cura. Consulte o livro para detalhes completos."
+  },
   { "id": "druida", "nome": "Druida" },
-  { "id": "guerreiro", "nome": "Guerreiro" },
+  {
+    "id": "guerreiro",
+    "nome": "Guerreiro",
+    "vida_nivel_1": 20,
+    "vida_por_nivel": 5,
+    "mana_por_nivel": 3,
+    "pericias_iniciais": {
+      "quantidade": 4,
+      "opcoes": ["atletismo", "luta", "guerra", "iniciativa", "pontaria", "intimidacao"]
+    },
+    "proficiencias": {
+      "armas": ["simples", "marciais"],
+      "armaduras": ["leves", "medias", "pesadas"],
+      "escudos": ["leves", "pesados"]
+    },
+    "habilidades_por_nivel": [
+      {
+        "nivel": 1,
+        "poderes": ["guerreiro_arma_favorita", "guerreiro_golpe_poderoso"]
+      },
+      {
+        "nivel": 2,
+        "poderes": ["guerreiro_treino_militar"]
+      }
+    ],
+    "descricao_resumida": "Combatente marcial resistente, especialista em armas e armaduras. Consulte o livro para detalhes completos."
+  },
   { "id": "inventor", "nome": "Inventor" },
   { "id": "ladino", "nome": "Ladino" },
   { "id": "lutador", "nome": "Lutador" },

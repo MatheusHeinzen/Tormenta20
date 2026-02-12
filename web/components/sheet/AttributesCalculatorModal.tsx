@@ -4,7 +4,10 @@ import type {
   CharacterSheet,
 } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
-import { getRaceAbilityBonusByName } from "@/lib/t20/race";
+import {
+  getFlexRaceRule,
+  getRaceAbilityBonusByName,
+} from "@/lib/t20/race";
 
 const ABILITIES_IN_ORDER: AbilityScoreName[] = [
   "forca",
@@ -65,11 +68,16 @@ export function AttributesCalculatorModal({
   onOpenChange,
   onApply,
 }: AttributesCalculatorModalProps) {
+  const flexRule = useMemo(() => getFlexRaceRule(sheet.raca), [sheet.raca]);
+
   const [baseMods, setBaseMods] = useState<ModsState>(() =>
     buildInitialBaseMods(sheet),
   );
   const [bonusMods, setBonusMods] = useState<ModsState>(() =>
     buildEmptyMods(),
+  );
+  const [flexMods, setFlexMods] = useState<ModsState>(() =>
+    buildInitialFlexMods(sheet, flexRule),
   );
 
   useEffect(() => {
@@ -79,9 +87,13 @@ export function AttributesCalculatorModal({
 
     setBaseMods(buildInitialBaseMods(sheet));
     setBonusMods(buildEmptyMods());
-  }, [open, sheet]);
+    setFlexMods(buildInitialFlexMods(sheet, flexRule));
+  }, [open, sheet, flexRule]);
 
-  const raceMods: ModsState = useMemo(() => buildRaceMods(sheet), [sheet]);
+  const raceMods: ModsState = useMemo(
+    () => buildRaceMods(sheet, flexRule ? flexMods : undefined),
+    [sheet, flexRule, flexMods],
+  );
 
   const { totalCost, overLimit } = useMemo(() => {
     const cost = ABILITIES_IN_ORDER.reduce((sum, key) => {
@@ -112,8 +124,33 @@ export function AttributesCalculatorModal({
     }));
   }
 
+  function toggleFlexMod(ability: AbilityScoreName) {
+    if (!flexRule) return;
+    const except = flexRule.except ?? [];
+    if (except.includes(ability)) return;
+    const current = flexMods[ability];
+    const points = flexRule.pointsPerAttr;
+    const totalChosen = ABILITIES_IN_ORDER.filter(
+      (a) => !except.includes(a) && flexMods[a] >= points,
+    ).length;
+    if (current >= points) {
+      setFlexMods((prev) => ({ ...prev, [ability]: 0 }));
+      return;
+    }
+    if (totalChosen >= flexRule.count) return;
+    setFlexMods((prev) => ({ ...prev, [ability]: points }));
+  }
+
+  const flexChosenCount = flexRule
+    ? ABILITIES_IN_ORDER.filter(
+        (a) =>
+          !(flexRule.except ?? []).includes(a) && flexMods[a] >= flexRule.pointsPerAttr,
+      ).length
+    : 0;
+  const flexValid = !flexRule || flexChosenCount === flexRule.count;
+
   function handleApply() {
-    if (overLimit) {
+    if (overLimit || !flexValid) {
       return;
     }
 
@@ -126,10 +163,19 @@ export function AttributesCalculatorModal({
       nextAtributos[ability] = rawScore;
     }
 
-    onApply({
+    const nextSheet: CharacterSheet = {
       ...sheet,
       atributos: nextAtributos,
-    });
+    };
+    if (flexRule) {
+      const choice: Partial<CharacterSheet["atributos"]> = {};
+      for (const key of ABILITIES_IN_ORDER) {
+        if (flexMods[key] > 0) choice[key] = flexMods[key];
+      }
+      nextSheet.racaBonusFlexivel = choice;
+    }
+
+    onApply(nextSheet);
     onOpenChange(false);
   }
 
@@ -153,6 +199,19 @@ export function AttributesCalculatorModal({
           Todos os atributos começam em 0. Você tem{" "}
           <strong>{BASE_POINTS} pontos</strong> para distribuir. Pode reduzir
           um atributo para −1 para ganhar 1 ponto extra.
+          {flexRule && (
+            <span className="mt-2 block">
+              Raça com bônus flexível: escolha{" "}
+              <strong>
+                {flexRule.count} atributo{flexRule.count !== 1 ? "s" : ""}
+              </strong>{" "}
+              na coluna Raça para +{flexRule.pointsPerAttr} cada
+              {flexRule.except?.length
+                ? ` (exceto ${flexRule.except.map((a) => LABELS[a]).join(", ")})`
+                : ""}
+              . Escolhidos: {flexChosenCount}/{flexRule.count}.
+            </span>
+          )}
         </p>
 
         <div className="mb-3 overflow-x-auto">
@@ -196,7 +255,34 @@ export function AttributesCalculatorModal({
                       />
                     </td>
                     <td className="px-2 py-2 text-center text-zinc-700">
-                      {formatSigned(raceMod)}
+                      {flexRule &&
+                      !(flexRule.except ?? []).includes(ability) ? (
+                        <button
+                          type="button"
+                          className={`rounded border px-1.5 py-0.5 text-xs ${
+                            flexMods[ability] >= flexRule.pointsPerAttr
+                              ? "border-zinc-600 bg-zinc-700 text-white"
+                              : "border-zinc-300 bg-white text-zinc-600 hover:bg-zinc-100"
+                          }`}
+                          onClick={() => toggleFlexMod(ability)}
+                          title={
+                            flexMods[ability] >= flexRule.pointsPerAttr
+                              ? "Remover +1 da raça"
+                              : "Adicionar +1 da raça"
+                          }
+                        >
+                          +{flexRule.pointsPerAttr}
+                        </button>
+                      ) : flexRule && (flexRule.except ?? []).includes(ability) ? (
+                        <span
+                          className="text-zinc-500"
+                          title="Este atributo não recebe bônus da raça"
+                        >
+                          {formatSigned(raceMod)}
+                        </span>
+                      ) : (
+                        formatSigned(raceMod)
+                      )}
                     </td>
                     <td className="px-2 py-2 text-center">
                       <input
@@ -240,7 +326,7 @@ export function AttributesCalculatorModal({
           <button
             type="button"
             className="rounded bg-zinc-900 px-4 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-400"
-            disabled={overLimit}
+            disabled={overLimit || !flexValid}
             onClick={handleApply}
           >
             Aplicar atributos
@@ -263,7 +349,8 @@ function buildEmptyMods(): ModsState {
 }
 
 function buildInitialBaseMods(sheet: CharacterSheet): ModsState {
-  const raceBonus = getRaceAbilityBonusByName(sheet.raca) ?? {};
+  const raceBonus =
+    getRaceAbilityBonusByName(sheet.raca, sheet.racaBonusFlexivel) ?? {};
   const result: ModsState = buildEmptyMods();
 
   for (const ability of ABILITIES_IN_ORDER) {
@@ -277,8 +364,27 @@ function buildInitialBaseMods(sheet: CharacterSheet): ModsState {
   return result;
 }
 
-function buildRaceMods(sheet: CharacterSheet): ModsState {
-  const bonus = getRaceAbilityBonusByName(sheet.raca) ?? {};
+function buildInitialFlexMods(
+  sheet: CharacterSheet,
+  flexRule: ReturnType<typeof getFlexRaceRule>,
+): ModsState {
+  const empty = buildEmptyMods();
+  if (!flexRule || !sheet.racaBonusFlexivel) return empty;
+  return ABILITIES_IN_ORDER.reduce(
+    (acc, key) => ({
+      ...acc,
+      [key]: sheet.racaBonusFlexivel?.[key] ?? 0,
+    }),
+    empty,
+  );
+}
+
+function buildRaceMods(
+  sheet: CharacterSheet,
+  flexMods?: ModsState,
+): ModsState {
+  const bonus =
+    getRaceAbilityBonusByName(sheet.raca, flexMods) ?? {};
   const result: ModsState = buildEmptyMods();
 
   for (const ability of ABILITIES_IN_ORDER) {

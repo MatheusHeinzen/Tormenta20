@@ -145,6 +145,7 @@ export interface CharacterSheet {
   tamanho: string;
 
   atributos: AbilityScores;
+  racaBonusFlexivel?: Partial<AbilityScores>;
   combate: CombatStats;
   proficiencias: ProficienciasCombate;
   magia: MagicInfo;

@@ -1,11 +1,31 @@
 [
-  { "id": "aharadak", "nome": "Aharadak" },
+  {
+    "id": "aharadak",
+    "nome": "Aharadak",
+    "dominios": ["destruicao", "escuridao"],
+    "efeitos_mecanicos": [],
+    "descricao_resumida": "Divindade associada à destruição. Consulte o livro para detalhes completos."
+  },
   { "id": "alihanna", "nome": "Alihanna" },
   { "id": "arsenal", "nome": "Arsenal" },
   { "id": "azgher", "nome": "Azgher" },
   { "id": "hyninn", "nome": "Hyninn" },
   { "id": "kallyadranoch", "nome": "Kallyadranoch" },
-  { "id": "khalmyr", "nome": "Khalmyr" },
+  {
+    "id": "khalmyr",
+    "nome": "Khalmyr",
+    "dominios": ["justica", "ordem", "guerra"],
+    "efeitos_mecanicos": [
+      {
+        "alvo": "defesa",
+        "tipo_efeito": "bonus_fixo",
+        "operacao": "add",
+        "valor_base": 1,
+        "condicao": "em_defesa_de_inocentes"
+      }
+    ],
+    "descricao_resumida": "Exemplo de divindade com foco em justiça e ordem. Consulte o livro para detalhes completos."
+  },
   { "id": "lena", "nome": "Lena" },
   { "id": "lin-wu", "nome": "Lin-Wu" },
   { "id": "marah", "nome": "Marah" },
@@ -18,6 +38,20 @@
   { "id": "thwor", "nome": "Thwor" },
   { "id": "thyatis", "nome": "Thyatis" },
   { "id": "valkaria", "nome": "Valkaria" },
-  { "id": "wynna", "nome": "Wynna" }
+  {
+    "id": "wynna",
+    "nome": "Wynna",
+    "dominios": ["magia"],
+    "efeitos_mecanicos": [
+      {
+        "alvo": "mana",
+        "tipo_efeito": "ajuste_mana",
+        "operacao": "add",
+        "valor_base": 1,
+        "condicao": "magias_arcana"
+      }
+    ],
+    "descricao_resumida": "Exemplo de divindade ligada à magia. Consulte o livro para detalhes completos."
+  }
 ]
 

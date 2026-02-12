@@ -1,20 +1,762 @@
 [
-  { "id": "humano", "nome": "Humano" },
-  { "id": "anao", "nome": "Anão" },
-  { "id": "dahllan", "nome": "Dahllan" },
-  { "id": "elfo", "nome": "Elfo" },
-  { "id": "goblin", "nome": "Goblin" },
-  { "id": "lefou", "nome": "Lefou" },
-  { "id": "minotauro", "nome": "Minotauro" },
-  { "id": "qareen", "nome": "Qareen" },
-  { "id": "suraggel", "nome": "Suraggel" },
-  { "id": "sifide", "nome": "Sífide" },
-  { "id": "sereia-tritao", "nome": "Sereia/Tritão" },
-  { "id": "osteon", "nome": "Osteon" },
-  { "id": "medusa", "nome": "Medusa" },
-  { "id": "kliren", "nome": "Kliren" },
-  { "id": "hynne", "nome": "Hynne" },
-  { "id": "golem", "nome": "Golem" },
-  { "id": "trog", "nome": "Trog" }
+  {
+    "id": "humano",
+    "nome": "Humano",
+    "modificadores_atributos": [],
+    "bonus_flexivel": {
+      "pontos_por_atributo": 1,
+      "quantidade": 3
+    },
+    "deslocamento_base": 9,
+    "tamanho": "medio",
+    "vida_extra_por_nivel": 0,
+    "tipo_criatura": "humanoide",
+    "pericias_extras": {
+      "quantidade": 2,
+      "livre": true,
+      "origem": "raca"
+    },
+    "poderes_automaticos": [
+      {
+        "id": "humano_versatil",
+        "nome": "Versátil",
+        "tipo": "passivo",
+        "descricao_resumida": "Treinado em duas perícias básicas ou pode trocar uma delas por um poder geral.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Raça versátil e adaptável, boa em quase tudo."
+  },
+  {
+    "id": "anao",
+    "nome": "Anão",
+    "modificadores_atributos": [
+      { "atributo": "constituicao", "valor": 2 },
+      { "atributo": "sabedoria", "valor": 1 },
+      { "atributo": "destreza", "valor": -1 }
+    ],
+    "deslocamento_base": 6,
+    "tamanho": "medio",
+    "sentidos": {
+      "visao_escuro": true
+    },
+    "vida_extra_por_nivel": 1,
+    "tipo_criatura": "humanoide",
+    "proficiencias": {
+      "armas": ["armas_tradicionais_anoes"]
+    },
+    "poderes_automaticos": [
+      {
+        "id": "anao_conhecimento_rochas",
+        "nome": "Conhecimento das Rochas",
+        "tipo": "passivo",
+        "descricao_resumida": "Visão no escuro e mais atenção a detalhes quando está em ambientes subterrâneos.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "anao_devagar_sempre",
+        "nome": "Devagar e Sempre",
+        "tipo": "passivo",
+        "descricao_resumida": "Deslocamento não é reduzido por armadura nem por excesso de carga.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "anao_duro_como_pedra",
+        "nome": "Duro como Pedra",
+        "tipo": "passivo",
+        "descricao_resumida": "+3 PV no 1º nível e +1 PV por nível seguinte.",
+        "efeitos_mecanicos": [
+          {
+            "alvo": "vida",
+            "tipo_efeito": "bonus_por_nivel",
+            "operacao": "add",
+            "valor_base": 1,
+            "por_nivel": true
+          },
+          {
+            "alvo": "vida",
+            "tipo_efeito": "bonus_fixo",
+            "operacao": "add",
+            "valor_base": 2,
+            "nivel_minimo": 1
+          }
+        ]
+      },
+      {
+        "id": "anao_tradicao_hedrimm",
+        "nome": "Tradição de Hedrimm",
+        "tipo": "passivo",
+        "descricao_resumida": "Perito com armas tradicionais anãs e com mais chance de acertar quando as usa.",
+        "efeitos_mecanicos": [
+          {
+            "alvo": "ataque",
+            "tipo_efeito": "bonus_fixo",
+            "operacao": "add",
+            "valor_base": 2,
+            "condicao": "armas_tradicionais_anas"
+          }
+        ]
+      }
+    ],
+    "descricao_resumida": "Anões são resistentes, lentos e muito difíceis de derrubar."
+  },
+  {
+    "id": "dahllan",
+    "nome": "Dahllan",
+    "modificadores_atributos": [
+      { "atributo": "sabedoria", "valor": 2 },
+      { "atributo": "destreza", "valor": 1 },
+      { "atributo": "inteligencia", "valor": -1 }
+    ],
+    "deslocamento_base": 9,
+    "tamanho": "medio",
+    "tipo_criatura": "humanoide",
+    "poderes_automaticos": [
+      {
+        "id": "dahllan_amiga_plantas",
+        "nome": "Amiga das Plantas",
+        "tipo": "ativo",
+        "descricao_resumida": "Consegue a magia controlar plantas e reduz o custo dessa magia em 1 PM se aprendê-la novamente.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "dahllan_armadura_allihanna",
+        "nome": "Armadura de Allihanna",
+        "tipo": "ativo",
+        "descricao_resumida": "Transforma a pele em casca de árvore, dando +2 na Defesa até o fim da cena ao gastar movimento e PM.",
+        "efeitos_mecanicos": [
+          {
+            "alvo": "defesa",
+            "tipo_efeito": "bonus_fixo",
+            "operacao": "add",
+            "valor_base": 2,
+            "condicao": "armadura_allihanna_ativa"
+          }
+        ]
+      },
+      {
+        "id": "dahllan_empatia_selvagem",
+        "nome": "Empatia Selvagem",
+        "tipo": "passivo",
+        "descricao_resumida": "Consegue se comunicar com animais e usar Adestramento e outras perícias sociais com mais facilidade com eles.",
+        "efeitos_mecanicos": []
+      }
+    ],
+        "descricao_resumida": "Dahllans são ligados à natureza, com magia vegetal e empatia com animais."
+  },
+  {
+    "id": "elfo",
+    "nome": "Elfo",
+    "modificadores_atributos": [
+      { "atributo": "inteligencia", "valor": 2 },
+      { "atributo": "destreza", "valor": 1 },
+      { "atributo": "constituicao", "valor": -1 }
+    ],
+    "deslocamento_base": 12,
+    "tamanho": "medio",
+    "sentidos": {
+      "visao_penumbra": true
+    },
+    "tipo_criatura": "humanoide",
+    "poderes_automaticos": [
+      {
+        "id": "elfo_graca_glorienn",
+        "nome": "Graça de Glórienn",
+        "tipo": "passivo",
+        "descricao_resumida": "Elfos se movem com leveza e rapidez.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "elfo_sangue_magico",
+        "nome": "Sangue Mágico",
+        "tipo": "passivo",
+        "descricao_resumida": "Recebe +1 PM por nível de personagem.",
+        "efeitos_mecanicos": [
+          {
+            "alvo": "mana",
+            "tipo_efeito": "bonus_por_nivel",
+            "operacao": "add",
+            "valor_base": 1,
+            "por_nivel": true
+          }
+        ]
+      },
+      {
+        "id": "elfo_sentidos_elficos",
+        "nome": "Sentidos Élficos",
+        "tipo": "passivo",
+        "descricao_resumida": "Visão na penumbra e mais percepção e conhecimento mágico.",
+        "efeitos_mecanicos": [
+          {
+            "alvo": "pericia",
+            "tipo_efeito": "bonus_fixo",
+            "operacao": "add",
+            "valor_base": 2,
+            "condicao": "misticismo"
+          },
+          {
+            "alvo": "pericia",
+            "tipo_efeito": "bonus_fixo",
+            "operacao": "add",
+            "valor_base": 2,
+            "condicao": "percepcao"
+          }
+        ]
+      }
+    ],
+    "descricao_resumida": "Elfos são ágeis, mágicos e atentos, com forte ligação arcana."
+  },
+  {
+    "id": "goblin",
+    "nome": "Goblin",
+    "modificadores_atributos": [
+      { "atributo": "destreza", "valor": 2 },
+      { "atributo": "inteligencia", "valor": 1 },
+      { "atributo": "carisma", "valor": -1 }
+    ],
+    "deslocamento_base": 9,
+    "tamanho": "pequeno",
+    "sentidos": {
+      "visao_escuro": true
+    },
+    "tipo_criatura": "humanoide",
+    "poderes_automaticos": [
+      {
+        "id": "goblin_engenhoso",
+        "nome": "Engenhoso",
+        "tipo": "passivo",
+        "descricao_resumida": "Não sofre penalidades por falta de ferramentas e se sai melhor em testes quando pode usá-las.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "goblin_espelunqueiro",
+        "nome": "Espelunqueiro",
+        "tipo": "passivo",
+        "descricao_resumida": "Enxerga no escuro e tem deslocamento de escalada igual ao deslocamento terrestre.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "goblin_peste_esguia",
+        "nome": "Peste Esguia",
+        "tipo": "passivo",
+        "descricao_resumida": "Tamanho Pequeno, mas mantém deslocamento de 9m.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "goblin_rato_ruas",
+        "nome": "Rato das Ruas",
+        "tipo": "passivo",
+        "descricao_resumida": "Mais resistência a doenças e vida dura nas ruas, com recuperação de PV/PM confiável.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Goblins são pequenos, rápidos e surpreendentemente resistentes."
+  },
+  {
+    "id": "lefou",
+    "nome": "Lefou",
+    "modificadores_atributos": [
+      { "atributo": "carisma", "valor": -1 }
+    ],
+    "bonus_flexivel": {
+      "pontos_por_atributo": 1,
+      "quantidade": 3,
+      "atributos_proibidos": ["carisma"]
+    },
+    "deslocamento_base": 9,
+    "tamanho": "medio",
+    "tipo_criatura": "monstro",
+    "poderes_automaticos": [
+      {
+        "id": "lefou_cria_tormenta",
+        "nome": "Cria da Tormenta",
+        "tipo": "passivo",
+        "descricao_resumida": "É do tipo monstro e tem mais resistência contra lefou e contra a Tormenta.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "lefou_deformidade",
+        "nome": "Deformidade",
+        "tipo": "passivo",
+        "descricao_resumida": "+2 em duas perícias à escolha ou pode trocar um desses bônus por um poder da Tormenta.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Lefou são marcados pela Tormenta, poderosos mas instáveis."
+  },
+  {
+    "id": "minotauro",
+    "nome": "Minotauro",
+    "modificadores_atributos": [
+      { "atributo": "forca", "valor": 2 },
+      { "atributo": "constituicao", "valor": 1 },
+      { "atributo": "sabedoria", "valor": -1 }
+    ],
+    "deslocamento_base": 9,
+    "tamanho": "medio",
+    "tipo_criatura": "humanoide",
+    "poderes_automaticos": [
+      {
+        "id": "minotauro_chifres",
+        "nome": "Chifres",
+        "tipo": "ativo",
+        "descricao_resumida": "Arma natural de chifres e ataque extra ao gastar PM.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "minotauro_couro_rigido",
+        "nome": "Couro Rígido",
+        "tipo": "passivo",
+        "descricao_resumida": "+1 na Defesa graças à pele espessa.",
+        "efeitos_mecanicos": [
+          {
+            "alvo": "defesa",
+            "tipo_efeito": "bonus_fixo",
+            "operacao": "add",
+            "valor_base": 1
+          }
+        ]
+      },
+      {
+        "id": "minotauro_faro",
+        "nome": "Faro",
+        "tipo": "passivo",
+        "descricao_resumida": "Usa o faro aguçado para detectar inimigos próximos mesmo sem enxergar bem.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "minotauro_medo_altura",
+        "nome": "Medo de Altura",
+        "tipo": "passivo",
+        "descricao_resumida": "Fica abalado quando está próximo de quedas de 3m ou mais.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Minotauros são guerreiros brutais com chifres e couro espesso."
+  },
+  {
+    "id": "qareen",
+    "nome": "Qareen",
+    "modificadores_atributos": [
+      { "atributo": "carisma", "valor": 2 },
+      { "atributo": "inteligencia", "valor": 1 },
+      { "atributo": "sabedoria", "valor": -1 }
+    ],
+    "deslocamento_base": 9,
+    "tamanho": "medio",
+    "poderes_automaticos": [
+      {
+        "id": "qareen_desejos",
+        "nome": "Desejos",
+        "tipo": "ativo",
+        "descricao_resumida": "Magias que alguém pediu desde seu último turno custam -1 PM para você.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "qareen_resistencia_elemental",
+        "nome": "Resistência Elemental",
+        "tipo": "passivo",
+        "descricao_resumida": "Possui redução 10 contra um tipo de dano elemental à sua escolha.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "qareen_tatuagem_mistica",
+        "nome": "Tatuagem Mística",
+        "tipo": "ativo",
+        "descricao_resumida": "Pode lançar uma magia de 1º círculo gravada como tatuagem e reduzir o custo se aprendê-la novamente.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Qareen são seres ligados a desejos e energia elemental."
+  },
+  {
+    "id": "golem",
+    "nome": "Golem",
+    "modificadores_atributos": [
+      { "atributo": "forca", "valor": 2 },
+      { "atributo": "constituicao", "valor": 1 },
+      { "atributo": "carisma", "valor": -1 }
+    ],
+    "deslocamento_base": 6,
+    "tamanho": "medio",
+    "sentidos": {
+      "visao_escuro": true
+    },
+    "tipo_criatura": "construto",
+    "poderes_automaticos": [
+      {
+        "id": "golem_chassi",
+        "nome": "Chassi",
+        "tipo": "passivo",
+        "descricao_resumida": "Corpo pesado com deslocamento 6m, +2 na Defesa e penalidade maior de armadura.",
+        "efeitos_mecanicos": [
+          {
+            "alvo": "defesa",
+            "tipo_efeito": "bonus_fixo",
+            "operacao": "add",
+            "valor_base": 2
+          }
+        ]
+      },
+      {
+        "id": "golem_criatura_artificial",
+        "nome": "Criatura Artificial",
+        "tipo": "passivo",
+        "descricao_resumida": "É um construto com várias imunidades e uma forma especial de descanso e recuperação.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "golem_fonte_elemental",
+        "nome": "Fonte Elemental",
+        "tipo": "passivo",
+        "descricao_resumida": "Imune a um tipo de dano elemental e cura PV quando sofre esse dano de magia.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "golem_proposito_criacao",
+        "nome": "Propósito de Criação",
+        "tipo": "passivo",
+        "descricao_resumida": "Não tem origem e, em vez disso, recebe um poder geral extra.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Golems são construtos pesados, resistentes e pouco sutis."
+  },
+  {
+    "id": "hynne",
+    "nome": "Hynne",
+    "modificadores_atributos": [
+      { "atributo": "destreza", "valor": 2 },
+      { "atributo": "carisma", "valor": 1 },
+      { "atributo": "forca", "valor": -1 }
+    ],
+    "deslocamento_base": 6,
+    "tamanho": "pequeno",
+    "tipo_criatura": "humanoide",
+    "poderes_automaticos": [
+      {
+        "id": "hynne_arremessador",
+        "nome": "Arremessador",
+        "tipo": "passivo",
+        "descricao_resumida": "Aumenta o dano com funda e outras armas de arremesso.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "hynne_pequeno_rechonchudo",
+        "nome": "Pequeno e Rechonchudo",
+        "tipo": "passivo",
+        "descricao_resumida": "Tamanho Pequeno, deslocamento 6m, +2 em Enganação e pode usar Destreza em Atletismo.",
+        "efeitos_mecanicos": [
+          {
+            "alvo": "pericia",
+            "tipo_efeito": "bonus_fixo",
+            "operacao": "add",
+            "valor_base": 2,
+            "condicao": "enganacao"
+          }
+        ]
+      },
+      {
+        "id": "hynne_sorte_salvadora",
+        "nome": "Sorte Salvadora",
+        "tipo": "ativo",
+        "descricao_resumida": "Pode gastar PM para repetir um teste de resistência ruim.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Hynnes são pequenos, sorridentes e surpreendentemente sortudos."
+  },
+  {
+    "id": "kliren",
+    "nome": "Kliren",
+    "modificadores_atributos": [
+      { "atributo": "inteligencia", "valor": 2 },
+      { "atributo": "carisma", "valor": 1 },
+      { "atributo": "forca", "valor": -1 }
+    ],
+    "deslocamento_base": 9,
+    "tamanho": "medio",
+    "tipo_criatura": "humanoide",
+    "proficiencias": {
+      "armas": ["armas_de_fogo"]
+    },
+    "poderes_automaticos": [
+      {
+        "id": "kliren_hibrido",
+        "nome": "Híbrido",
+        "tipo": "passivo",
+        "descricao_resumida": "Treinado em uma perícia extra à sua escolha.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "kliren_engenhosidade",
+        "nome": "Engenhosidade",
+        "tipo": "ativo",
+        "descricao_resumida": "Pode gastar PM para somar o modificador de Inteligência em um teste de perícia.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "kliren_ossos_frageis",
+        "nome": "Ossos Frágeis",
+        "tipo": "passivo",
+        "descricao_resumida": "Recebe mais dano quando sofre ataques de impacto.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "kliren_vanguardista",
+        "nome": "Vanguardista",
+        "tipo": "passivo",
+        "descricao_resumida": "Tem proficiência com armas de fogo e +2 em um Ofício escolhido.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Klirens são inventores arcanotecnológicos curiosos e frágeis."
+  },
+  {
+    "id": "medusa",
+    "nome": "Medusa",
+    "modificadores_atributos": [
+      { "atributo": "destreza", "valor": 2 },
+      { "atributo": "carisma", "valor": 1 }
+    ],
+    "deslocamento_base": 9,
+    "tamanho": "medio",
+    "tipo_criatura": "monstro",
+    "sentidos": {
+      "visao_escuro": true
+    },
+    "poderes_automaticos": [
+      {
+        "id": "medusa_cria_megalokk",
+        "nome": "Cria de Megalokk",
+        "tipo": "passivo",
+        "descricao_resumida": "Tipo monstro com visão no escuro.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "medusa_natureza_venenosa",
+        "nome": "Natureza Venenosa",
+        "tipo": "ativo",
+        "descricao_resumida": "Tem resistência a veneno e pode envenenar armas para causar dano extra.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "medusa_olhar_atordoante",
+        "nome": "Olhar Atordoante",
+        "tipo": "ativo",
+        "descricao_resumida": "Olhar capaz de atordoar inimigos próximos em alcance curto.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Medusas são monstros carismáticos com veneno e olhar terrível."
+  },
+  {
+    "id": "osteon",
+    "nome": "Osteon",
+    "modificadores_atributos": [
+      { "atributo": "constituicao", "valor": -1 }
+    ],
+    "bonus_flexivel": {
+      "pontos_por_atributo": 1,
+      "quantidade": 3,
+      "atributos_proibidos": ["constituicao"]
+    },
+    "deslocamento_base": 9,
+    "tamanho": "medio",
+    "sentidos": {
+      "visao_escuro": true
+    },
+    "tipo_criatura": "morto_vivo",
+    "poderes_automaticos": [
+      {
+        "id": "osteon_armadura_ossea",
+        "nome": "Armadura Óssea",
+        "tipo": "passivo",
+        "descricao_resumida": "Possui redução de dano contra corte, frio e perfuração.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "osteon_memoria_postuma",
+        "nome": "Memória Póstuma",
+        "tipo": "passivo",
+        "descricao_resumida": "Herda memórias de outra vida, ganhando uma perícia treinada ou um poder geral.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "osteon_natureza_esqueletica",
+        "nome": "Natureza Esquelética",
+        "tipo": "passivo",
+        "descricao_resumida": "É um morto‑vivo com várias imunidades e fraquezas específicas.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Osteons são esqueletos animados, duros de matar e cheios de memórias."
+  },
+  {
+    "id": "sereia-tritao",
+    "nome": "Sereia/Tritão",
+    "modificadores_atributos": [],
+    "bonus_flexivel": {
+      "pontos_por_atributo": 1,
+      "quantidade": 3
+    },
+    "deslocamento_base": 9,
+    "tamanho": "medio",
+    "poderes_automaticos": [
+      {
+        "id": "sereia_cancao_mares",
+        "nome": "Canção dos Mares",
+        "tipo": "ativo",
+        "descricao_resumida": "Conhece duas magias ligadas à sua voz e ao controle de emoções.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "sereia_mestre_tridente",
+        "nome": "Mestre do Tridente",
+        "tipo": "passivo",
+        "descricao_resumida": "Tridente conta como arma simples e causa mais dano com azagaias, lanças e tridentes.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "sereia_transformacao_anfibia",
+        "nome": "Transformação Anfíbia",
+        "tipo": "passivo",
+        "descricao_resumida": "Tem respiração aquática, natação 12m com cauda e pernas com deslocamento 9m fora d'água, sofrendo se ficar muito tempo sem água.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Sereias e tritões vivem entre mar e terra, com canto mágico e forma anfíbia."
+  },
+  {
+    "id": "sifide",
+    "nome": "Sílfide",
+    "modificadores_atributos": [
+      { "atributo": "carisma", "valor": 2 },
+      { "atributo": "destreza", "valor": 1 },
+      { "atributo": "forca", "valor": -2 }
+    ],
+    "deslocamento_base": 9,
+    "tamanho": "minusculo",
+    "tipo_criatura": "espirito",
+    "sentidos": {
+      "visao_penumbra": true
+    },
+    "poderes_automaticos": [
+      {
+        "id": "sifide_asas_borboleta",
+        "nome": "Asas de Borboleta",
+        "tipo": "ativo",
+        "descricao_resumida": "Tamanho Minúsculo, pode pairar até 1,5m do chão e voar 12m por rodada ao gastar 1 PM, ignorando terreno difícil e sem sofrer dano de queda.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "sifide_espirito_natureza",
+        "nome": "Espírito da Natureza",
+        "tipo": "passivo",
+        "descricao_resumida": "Tipo espírito, com sentidos aguçados e capacidade de falar com animais.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "sifide_magia_fadas",
+        "nome": "Magia das Fadas",
+        "tipo": "ativo",
+        "descricao_resumida": "Duas magias ilusórias e de controle ligadas às fadas.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Sílfides são pequenas fadas aladas ligadas à natureza e à ilusão."
+  },
+  {
+    "id": "suraggel",
+    "nome": "Suraggel",
+    "modificadores_atributos": [],
+    "bonus_flexivel": {
+      "pontos_por_atributo": 1,
+      "quantidade": 3
+    },
+    "deslocamento_base": 9,
+    "tamanho": "medio",
+    "tipo_criatura": "espirito",
+    "sentidos": {
+      "visao_escuro": true
+    },
+    "poderes_automaticos": [
+      {
+        "id": "suraggel_heranca_divina",
+        "nome": "Herança Divina",
+        "tipo": "passivo",
+        "descricao_resumida": "Tipo espírito com visão no escuro e sangue celestial ou profano.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "suraggel_luz_sagrada",
+        "nome": "Luz Sagrada (Aggelus)",
+        "tipo": "ativo",
+        "descricao_resumida": "Aggelus recebe bônus em Diplomacia e Intuição e pode lançar Luz.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "suraggel_sombras_profanas",
+        "nome": "Sombras Profanas (Sulfure)",
+        "tipo": "ativo",
+        "descricao_resumida": "Sulfure recebe bônus em Enganação e Furtividade e pode lançar Escuridão.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Suraggels são herdeiros de poder divino, com variações sagradas e profanas."
+  },
+  {
+    "id": "trog",
+    "nome": "Trog",
+    "modificadores_atributos": [
+      { "atributo": "constituicao", "valor": 2 },
+      { "atributo": "forca", "valor": 1 },
+      { "atributo": "inteligencia", "valor": -1 }
+    ],
+    "deslocamento_base": 9,
+    "tamanho": "medio",
+    "tipo_criatura": "monstro",
+    "sentidos": {
+      "visao_escuro": true
+    },
+    "poderes_automaticos": [
+      {
+        "id": "trog_mau_cheiro",
+        "nome": "Mau Cheiro",
+        "tipo": "ativo",
+        "descricao_resumida": "Ação padrão e 2 PM para exalar gás fétido que deixa inimigos enjoados por 1d6 rodadas.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "trog_mordida",
+        "nome": "Mordida",
+        "tipo": "ativo",
+        "descricao_resumida": "Arma natural (1d6, crítico x2, perfuração) e ataque extra com mordida ao gastar 1 PM.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "trog_reptiliano",
+        "nome": "Reptiliano",
+        "tipo": "passivo",
+        "descricao_resumida": "Tipo monstro, com visão no escuro, +1 na Defesa e talento natural para se esconder sem armadura pesada.",
+        "efeitos_mecanicos": [
+          {
+            "alvo": "defesa",
+            "tipo_efeito": "bonus_fixo",
+            "operacao": "add",
+            "valor_base": 1
+          }
+        ]
+      },
+      {
+        "id": "trog_sangue_frio",
+        "nome": "Sangue Frio",
+        "tipo": "passivo",
+        "descricao_resumida": "Causa mais dano com magias e outros efeitos de frio.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Trogs são répteis humanoides fétidos, duros e perigosos."
+  }
 ]
 

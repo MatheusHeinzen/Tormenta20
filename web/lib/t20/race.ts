@@ -1,80 +1,106 @@
-import type { CharacterSheet } from "@/lib/models/character";
+import type { AbilityScoreName, CharacterSheet } from "@/lib/models/character";
 import { getRacas } from "@/lib/data/tormenta20";
+import type {
+  BonusFlexivelRaca,
+  ModificadorAtributoRaca,
+  PericiasExtrasRaca,
+  ProficienciasRaca,
+  RacaJson,
+  SentidosRaca,
+} from "@/lib/t20/jsonTypes";
 
-interface RaceRules {
-  id: string;
-  nome: string;
-  bonusAtributos?: Partial<CharacterSheet["atributos"]>;
-  // Futuro: poderes/habilidades raciais textuais.
-  habilidades?: string[];
+export interface FlexRaceRule {
+  pointsPerAttr: number;
+  count: number;
+  except?: AbilityScoreName[];
 }
 
-// Modificadores de atributo por raça, conforme Tabela 1-2 do livro básico.
-// Raças com bônus flexível (+1 em três atributos diferentes) ou sub-raças
-// (como suraggel) não são aplicadas aqui por enquanto — exigem escolha
-// manual do jogador.
-const RAW_RACE_RULES: Record<
-  string,
-  Partial<CharacterSheet["atributos"]>
-> = {
-  // humano: +1 em três atributos diferentes (não fixo).
-  anao: { constituicao: 2, sabedoria: 1, destreza: -1 },
-  dahllan: { sabedoria: 2, destreza: 1, inteligencia: -1 },
-  elfo: { inteligencia: 2, destreza: 1, constituicao: -1 },
-  goblin: { destreza: 2, inteligencia: 1, carisma: -1 },
-  // lefou: +1 em três atributos diferentes (exceto Car) — não aplicamos ainda.
-  minotauro: { forca: 2, constituicao: 1, sabedoria: -1 },
-  qareen: { carisma: 2, inteligencia: 1, sabedoria: -1 },
-  golem: { forca: 2, constituicao: 1, carisma: -1 },
-  hynne: { destreza: 2, carisma: 1, forca: -1 },
-  kliren: { inteligencia: 2, carisma: 1, forca: -1 },
-  medusa: { destreza: 2, carisma: 1 },
-  osteon: { constituicao: -1 }, // +1 em três atributos diferentes (exceto Con) não aplicado aqui.
-  // sereia-tritao: +1 em três atributos diferentes — não aplicamos ainda.
-  sifide: { carisma: 2, destreza: 1, forca: -2 },
-  // suraggel: depende de sub-raça (aggelus/sulfure) — deixamos para escolha manual.
-  trog: { constituicao: 2, forca: 1, inteligencia: -1 },
-};
+const racasCache: RacaJson[] = getRacas();
 
-// Mapeia as raças conhecidas para permitir automação simples.
-function buildRaceRules(): RaceRules[] {
-  const racas = getRacas();
-
-  return racas.map((race) => ({
-    id: race.id,
-    nome: race.nome,
-    bonusAtributos: RAW_RACE_RULES[race.id],
-  }));
+function findRaceByName(nome: string): RacaJson | undefined {
+  if (!nome?.trim()) return undefined;
+  const normalized = nome.trim();
+  const lower = normalized.toLowerCase();
+  return (
+    racasCache.find((race) => race.nome === normalized) ??
+    racasCache.find((race) => race.nome.toLowerCase() === lower) ??
+    racasCache.find((race) => String(race.id).toLowerCase() === lower)
+  );
 }
 
-const raceRulesCache: RaceRules[] = buildRaceRules();
+function buildFixedAbilityBonus(
+  modificadores?: ModificadorAtributoRaca[],
+): Partial<CharacterSheet["atributos"]> {
+  if (!modificadores || modificadores.length === 0) return {};
+  return modificadores.reduce<Partial<CharacterSheet["atributos"]>>(
+    (acc, mod) => {
+      const current = acc[mod.atributo] ?? 0;
+      acc[mod.atributo] = current + mod.valor;
+      return acc;
+    },
+    {},
+  );
+}
 
-function findRaceRulesByName(nome: string): RaceRules | undefined {
-  if (!nome) return undefined;
-  return raceRulesCache.find((race) => race.nome === nome);
+function toFlexRaceRule(
+  bonusFlexivel?: BonusFlexivelRaca,
+): FlexRaceRule | undefined {
+  if (!bonusFlexivel) return undefined;
+  return {
+    pointsPerAttr: bonusFlexivel.pontos_por_atributo,
+    count: bonusFlexivel.quantidade,
+    except: bonusFlexivel.atributos_proibidos,
+  };
+}
+
+export function getFlexRaceRule(raceNome: string): FlexRaceRule | undefined {
+  const race = findRaceByName(raceNome);
+  if (!race) return undefined;
+  return toFlexRaceRule(race.bonus_flexivel);
 }
 
 export function getRaceAbilityBonusByName(
   nome: string,
+  flexChoice?: Partial<CharacterSheet["atributos"]>,
 ): Partial<CharacterSheet["atributos"]> | undefined {
-  const rules = findRaceRulesByName(nome);
-  return rules?.bonusAtributos;
+  const race = findRaceByName(nome);
+  if (!race) return undefined;
+
+  const flexRule = toFlexRaceRule(race.bonus_flexivel);
+  const fixos = buildFixedAbilityBonus(race.modificadores_atributos);
+
+  if (flexRule && flexChoice) {
+    const except = flexRule.except ?? [];
+    const result = { ...fixos };
+    for (const key of Object.keys(flexChoice) as (keyof CharacterSheet["atributos"])[]) {
+      if (!except.includes(key as AbilityScoreName)) {
+        const atual = result[key] ?? 0;
+        const extra = flexChoice[key] ?? 0;
+        result[key] = atual + extra;
+      }
+    }
+    return result;
+  }
+  if (flexRule) {
+    return Object.keys(fixos).length > 0 ? fixos : undefined;
+  }
+  return Object.keys(fixos).length > 0 ? fixos : undefined;
 }
 
 export function applyRaceByName(
   sheet: CharacterSheet,
   nextRaceName: string,
 ): CharacterSheet {
-  const rules = findRaceRulesByName(nextRaceName);
+  const race = findRaceByName(nextRaceName);
 
-  // Sempre atualizamos apenas o campo de texto de raça; se não houver
-  // regras cadastradas ainda, retornamos a ficha com o resto intacto.
   const nextSheet: CharacterSheet = {
     ...sheet,
     raca: nextRaceName,
+    racaBonusFlexivel:
+      sheet.raca === nextRaceName ? sheet.racaBonusFlexivel : undefined,
   };
 
-  if (!rules) {
+  if (!race) {
     return nextSheet;
   }
 
@@ -91,34 +117,44 @@ export function applyRaceByName(
     atributos.sabedoria === 10 &&
     atributos.carisma === 10;
 
-  if (todosPadrao && rules.bonusAtributos) {
-    atributos = {
-      ...atributos,
-      ...Object.entries(rules.bonusAtributos).reduce(
-        (acc, [key, value]) => {
-          const abilityKey = key as keyof typeof atributos;
-          const bonus = value ?? 0;
-          acc[abilityKey] = atributos[abilityKey] + bonus;
-          return acc;
-        },
-        {} as Partial<typeof atributos>,
-      ),
-    };
+  if (todosPadrao) {
+    const bonus = buildFixedAbilityBonus(race.modificadores_atributos);
+    if (Object.keys(bonus).length > 0) {
+      atributos = {
+        ...atributos,
+        ...Object.entries(bonus).reduce(
+          (acc, [key, value]) => {
+            const abilityKey = key as keyof typeof atributos;
+            const bonusValue = value ?? 0;
+            acc[abilityKey] = atributos[abilityKey] + bonusValue;
+            return acc;
+          },
+          {} as Partial<typeof atributos>,
+        ),
+      };
+    }
   }
 
   let habilidadesRacaOrigem = nextSheet.habilidades.habilidadesRacaOrigem;
 
   // Se o jogador ainda não escreveu nada manualmente, podemos preencher
-  // um resumo básico das habilidades raciais cadastradas.
+  // um resumo básico das habilidades raciais cadastradas com base nos
+  // poderes automáticos descritos no JSON.
   if (
     (!habilidadesRacaOrigem || habilidadesRacaOrigem.trim().length === 0) &&
-    rules.habilidades &&
-    rules.habilidades.length > 0
+    race.poderes_automaticos &&
+    race.poderes_automaticos.length > 0
   ) {
     const linhas = [
-      `Raça: ${rules.nome}`,
+      `Raça: ${race.nome}`,
       "",
-      ...rules.habilidades.map((texto) => `- ${texto}`),
+      ...race.poderes_automaticos.map((poder) => {
+        const descricao =
+          poder.descricao_resumida && poder.descricao_resumida.length > 0
+            ? `: ${poder.descricao_resumida}`
+            : "";
+        return `- ${poder.nome}${descricao}`;
+      }),
     ];
     habilidadesRacaOrigem = linhas.join("\n");
   }
@@ -131,5 +167,24 @@ export function applyRaceByName(
       habilidadesRacaOrigem,
     },
   };
+}
+
+export function getRaceSentidos(raceNome: string): SentidosRaca | undefined {
+  const race = findRaceByName(raceNome);
+  return race?.sentidos;
+}
+
+export function getRacePericiasExtras(
+  raceNome: string,
+): PericiasExtrasRaca | undefined {
+  const race = findRaceByName(raceNome);
+  return race?.pericias_extras;
+}
+
+export function getRaceProficiencias(
+  raceNome: string,
+): ProficienciasRaca | undefined {
+  const race = findRaceByName(raceNome);
+  return race?.proficiencias;
 }
 

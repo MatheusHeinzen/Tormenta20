@@ -1,0 +1,119 @@
+[
+  {
+    "id": "guerreiro_arma_favorita",
+    "nome": "Arma Favorita",
+    "classe": "guerreiro",
+    "tipo": "passivo",
+    "descricao_resumida": "Exemplo: bônus em ataques com uma arma escolhida. Consulte o livro para regras completas.",
+    "efeitos_mecanicos": [
+      {
+        "alvo": "ataque",
+        "tipo_efeito": "bonus_fixo",
+        "operacao": "add",
+        "valor_base": 1,
+        "condicao": "com_arma_favorita"
+      }
+    ],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "guerreiro_golpe_poderoso",
+    "nome": "Golpe Poderoso",
+    "classe": "guerreiro",
+    "tipo": "ativo",
+    "descricao_resumida": "Exemplo de poder ativo que aumenta o dano de um ataque. Consulte o livro para regras completas.",
+    "efeitos_mecanicos": [
+      {
+        "alvo": "ataque",
+        "tipo_efeito": "bonus_fixo",
+        "operacao": "add",
+        "valor_base": 2,
+        "condicao": "acao_especial"
+      }
+    ],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "guerreiro_treino_militar",
+    "nome": "Treino Militar",
+    "classe": "guerreiro",
+    "tipo": "passivo",
+    "descricao_resumida": "Exemplo: treinamento que melhora uso de armaduras e armas. Consulte o livro para regras completas.",
+    "efeitos_mecanicos": [
+      {
+        "alvo": "defesa",
+        "tipo_efeito": "bonus_fixo",
+        "operacao": "add",
+        "valor_base": 1,
+        "condicao": "usando_armadura_pesada_ou_escudo"
+      }
+    ],
+    "requisitos": {
+      "nivel_minimo": 2
+    }
+  },
+  {
+    "id": "clerigo_devoção",
+    "nome": "Devoção",
+    "classe": "clerigo",
+    "tipo": "passivo",
+    "descricao_resumida": "Exemplo: foco na fé que melhora magias divinas. Consulte o livro para regras completas.",
+    "efeitos_mecanicos": [
+      {
+        "alvo": "mana",
+        "tipo_efeito": "ajuste_mana",
+        "operacao": "add",
+        "valor_base": 1,
+        "por_nivel": true
+      }
+    ],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "clerigo_canalizar_energia",
+    "nome": "Canalizar Energia",
+    "classe": "clerigo",
+    "tipo": "ativo",
+    "descricao_resumida": "Exemplo de poder ativo de cura ou dano em área. Consulte o livro para regras completas.",
+    "efeitos_mecanicos": [
+      {
+        "alvo": "vida",
+        "tipo_efeito": "bonus_por_nivel",
+        "operacao": "add",
+        "valor_base": 2,
+        "por_nivel": true
+      }
+    ],
+    "requisitos": {
+      "nivel_minimo": 1
+    }
+  },
+  {
+    "id": "clerigo_canalizar_energia_aprimorado",
+    "nome": "Canalizar Energia Aprimorado",
+    "classe": "clerigo",
+    "tipo": "ativo",
+    "descricao_resumida": "Versão aprimorada de Canalizar Energia. Consulte o livro para regras completas.",
+    "efeitos_mecanicos": [
+      {
+        "alvo": "vida",
+        "tipo_efeito": "bonus_por_nivel",
+        "operacao": "add",
+        "valor_base": 3,
+        "por_nivel": true,
+        "nivel_minimo": 5
+      }
+    ],
+    "requisitos": {
+      "nivel_minimo": 5,
+      "outros_poderes": ["clerigo_canalizar_energia"]
+    }
+  }
+]
+
