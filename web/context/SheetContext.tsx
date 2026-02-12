@@ -14,6 +14,7 @@ import {
   normalizeCharacter,
   syncClassesToLegacyFields,
 } from "@/lib/models/character";
+import { computeFullDerivedSheet } from "@/lib/t20/derived";
 import {
   deleteCharacter as deleteFromStorage,
   listCharacters,
@@ -114,14 +115,16 @@ export function SheetProvider({ children }: { children: ReactNode }) {
 
     function createCharacter(nome: string): CharacterSheet {
       const fresh = createEmptyCharacterSheet(nome);
-      const prepared = syncClassesToLegacyFields(normalizeCharacter(fresh));
+      const derived = computeFullDerivedSheet(fresh);
+      const prepared = syncClassesToLegacyFields(normalizeCharacter(derived));
       const saved = saveCharacter(prepared);
       dispatch({ type: "UPSERT", payload: saved });
       return saved;
     }
 
     function updateCharacter(sheet: CharacterSheet): CharacterSheet {
-      const prepared = syncClassesToLegacyFields(normalizeCharacter(sheet));
+      const derived = computeFullDerivedSheet(sheet);
+      const prepared = syncClassesToLegacyFields(normalizeCharacter(derived));
       const saved = saveCharacter(prepared);
       dispatch({ type: "UPSERT", payload: saved });
       return saved;

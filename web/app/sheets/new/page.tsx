@@ -1,19 +1,24 @@
 'use client';
 
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { SheetForm } from "@/components/sheet/SheetForm";
 import { useSheetContext } from "@/context/SheetContext";
 import { createEmptyCharacterSheet } from "@/lib/models/character";
+import type { CharacterSheet } from "@/lib/models/character";
 
 export default function NewSheetPage() {
   const router = useRouter();
-  const { createCharacter } = useSheetContext();
+  const { updateCharacter } = useSheetContext();
 
-  const emptySheet = createEmptyCharacterSheet("Novo personagem");
+  const emptySheet = useMemo(
+    () => createEmptyCharacterSheet("Novo personagem"),
+    [],
+  );
 
-  function handleSubmit(sheet: typeof emptySheet) {
-    const created = createCharacter(sheet.nome || "Novo personagem");
-    router.push(`/sheets/${created.id}/edit`);
+  function handleSubmit(sheet: CharacterSheet) {
+    const saved = updateCharacter(sheet);
+    router.push(`/sheets/${saved.id}/edit`);
   }
 
   return (

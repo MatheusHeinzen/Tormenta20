@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import type { CharacterSheet } from "@/lib/models/character";
-import { applyClassProficiencies, applyClassRules } from "@/lib/t20/class";
-import { applyT20DerivedChanges } from "@/lib/t20/derived";
+import { applyT20DerivedChanges, computeFullDerivedSheet } from "@/lib/t20/derived";
 import { SheetHeader } from "@/components/sheet/SheetHeader";
 import { SheetTabs } from "@/components/sheet/SheetTabs";
 import { ClassListBlock } from "@/components/sheet/ClassListBlock";
@@ -27,7 +26,7 @@ export function SheetForm({
   submitLabel = "Salvar ficha",
 }: SheetFormProps) {
   const [sheet, setSheet] = useState<CharacterSheet>(() =>
-    applyClassProficiencies(applyClassRules(initialSheet)),
+    computeFullDerivedSheet(initialSheet),
   );
   const [activeTab, setActiveTab] = useState("basico");
 

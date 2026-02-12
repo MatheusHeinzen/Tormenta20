@@ -84,6 +84,24 @@ function applyRaceLifeAndManaBonuses(sheet: CharacterSheet): CharacterSheet {
 }
 
 /**
+ * Aplica regras derivadas completas em uma ficha (PV/PM, bônus raciais, CA, etc).
+ * Usado na inicialização do formulário para garantir valores corretos ao carregar.
+ */
+export function computeFullDerivedSheet(sheet: CharacterSheet): CharacterSheet {
+  let result = applyClassRules(sheet);
+  result = applyClassProficiencies(result);
+  result = applyRaceLifeAndManaBonuses(result);
+  return {
+    ...result,
+    combate: {
+      ...result.combate,
+      caTotal: computeCA(result),
+      penalidadeArmadura: computePenalidadeArmadura(result),
+    },
+  };
+}
+
+/**
  * Aplica regras derivadas de Tormenta 20 quando campos-chave da ficha mudam.
  *
  * - Quando a raça muda, tenta aplicar bônus raciais e habilidades.
