@@ -88,7 +88,7 @@ export function SessionCombatSkillsSpellsCard({
             key={id}
             type="button"
             onClick={() => setActiveTab(id)}
-            className={`flex-1 px-3 py-2.5 text-xs font-semibold transition-colors ${
+            className={`flex min-h-[44px] flex-1 items-center justify-center px-3 py-2.5 text-xs font-semibold transition-colors ${
               activeTab === id
                 ? "border-b-2 border-accent bg-paper-card text-ink"
                 : "text-ink-muted hover:bg-paper hover:text-ink"

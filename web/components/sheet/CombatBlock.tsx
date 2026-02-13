@@ -181,32 +181,32 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
   }
 
   return (
-    <section className="space-y-5 rounded-md border border-border bg-paper-card p-5 shadow-sm">
+    <section className="w-full max-w-full min-w-0 space-y-5 overflow-x-hidden rounded-md border border-border bg-paper-card p-5 shadow-sm">
       <h2 className="font-serif text-base font-semibold text-ink">Combate</h2>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="space-y-2 rounded-md border border-border bg-paper p-4">
+      <div className="grid gap-3 md:grid-cols-2">
+        <div className="space-y-1.5 rounded-md border border-border bg-paper p-3">
           <h3 className="text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
             Pontos de Vida
           </h3>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <label className="flex flex-1 flex-col text-xs text-ink-muted">
               Atual
               <input
                 type="number"
-                className="mt-1 rounded border border-border px-2 py-1 text-base font-semibold shadow-sm focus:border-accent focus:outline-none"
+                className="mt-0.5 rounded border border-border px-2 py-0.5 text-sm font-semibold shadow-sm focus:border-accent focus:outline-none"
                 value={combate.pvAtual}
                 onChange={(event) =>
                   handleChange("pvAtual", Number(event.target.value) || 0)
                 }
               />
             </label>
-            <span className="mt-5 text-sm text-ink-muted">/</span>
+            <span className="mt-4 text-xs text-ink-muted">/</span>
             <label className="flex flex-1 flex-col text-xs text-ink-muted">
               Máximo
               <input
                 type="number"
-                className="mt-1 rounded border border-border px-2 py-1 text-base font-semibold shadow-sm focus:border-accent focus:outline-none"
+                className="mt-0.5 rounded border border-border px-2 py-0.5 text-sm font-semibold shadow-sm focus:border-accent focus:outline-none"
                 value={combate.pvMaximo}
                 onChange={(event) =>
                   handleChange("pvMaximo", Number(event.target.value) || 0)
@@ -214,7 +214,7 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
               />
             </label>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <label className="text-[11px] font-semibold text-ink-muted">
               Atributo:
             </label>
@@ -223,7 +223,7 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
               onChange={(event) =>
                 handleConfigChange("atributoHp", event.target.value as AbilityScoreName)
               }
-              className="rounded border border-border bg-paper-card px-2 py-0.5 text-xs shadow-sm focus:border-accent focus:outline-none"
+              className="rounded border border-border bg-paper-card px-1.5 py-0.5 text-[11px] shadow-sm focus:border-accent focus:outline-none"
             >
               <option value="forca">Força</option>
               <option value="destreza">Destreza</option>
@@ -238,28 +238,28 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
           </div>
         </div>
 
-        <div className="space-y-2 rounded-md border border-border bg-paper p-4">
+        <div className="space-y-1.5 rounded-md border border-border bg-paper p-3">
           <h3 className="text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
             Pontos de Mana
           </h3>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <label className="flex flex-1 flex-col text-xs text-ink-muted">
               Atual
               <input
                 type="number"
-                className="mt-1 rounded border border-border px-2 py-1 text-base font-semibold shadow-sm focus:border-accent focus:outline-none"
+                className="mt-0.5 rounded border border-border px-2 py-0.5 text-sm font-semibold shadow-sm focus:border-accent focus:outline-none"
                 value={combate.pmAtual}
                 onChange={(event) =>
                   handleChange("pmAtual", Number(event.target.value) || 0)
                 }
               />
             </label>
-            <span className="mt-5 text-sm text-ink-muted">/</span>
+            <span className="mt-4 text-xs text-ink-muted">/</span>
             <label className="flex flex-1 flex-col text-xs text-ink-muted">
               Máximo
               <input
                 type="number"
-                className="mt-1 rounded border border-border px-2 py-1 text-base font-semibold shadow-sm focus:border-accent focus:outline-none"
+                className="mt-0.5 rounded border border-border px-2 py-0.5 text-sm font-semibold shadow-sm focus:border-accent focus:outline-none"
                 value={combate.pmMaximo}
                 onChange={(event) =>
                   handleChange("pmMaximo", Number(event.target.value) || 0)
@@ -270,9 +270,9 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
         </div>
       </div>
 
-      <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
-        <div className="space-y-2 rounded-md border border-border bg-paper p-4">
-          <div className="flex items-center justify-between gap-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="min-w-0 space-y-2 rounded-md border border-border bg-paper p-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <label className="text-sm font-semibold text-ink">
               Classe de Armadura (CA)
             </label>
@@ -326,7 +326,7 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
           </div>
         </div>
 
-        <div className="space-y-1">
+        <div className="min-w-0 space-y-1">
           <label className="block text-xs font-semibold text-ink-muted">
             Penalidade armadura
           </label>
@@ -340,7 +340,7 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
           </p>
         </div>
 
-        <div className="space-y-1">
+        <div className="min-w-0 space-y-1">
           <label className="block text-xs font-semibold text-ink-muted">
             Deslocamento (m)
           </label>
@@ -629,7 +629,7 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
             Nenhum ataque cadastrado. Use &quot;Adicionar ataque&quot; para começar.
           </p>
         ) : (
-          <div className="overflow-x-auto rounded-md border border-border bg-paper-card">
+          <div className="min-w-0 overflow-x-auto rounded-md border border-border bg-paper-card">
             <table className="min-w-full border-collapse text-sm">
               <thead>
                 <tr className="border-b border-border bg-paper text-xs font-semibold text-ink-muted">

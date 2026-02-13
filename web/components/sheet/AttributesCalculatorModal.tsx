@@ -214,7 +214,7 @@ export function AttributesCalculatorModal({
           )}
         </p>
 
-        <div className="mb-3 overflow-x-auto">
+        <div className="mb-3 min-w-0 overflow-x-auto">
           <table className="min-w-full border-collapse text-xs">
             <thead>
               <tr className="border-b border-border bg-paper text-[11px] uppercase tracking-wide text-ink-muted">

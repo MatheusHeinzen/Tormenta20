@@ -49,7 +49,7 @@ export function SheetForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="w-full max-w-full min-w-0 space-y-6">
       <SheetTabs
         tabs={tabs}
         activeTab={activeTab}

@@ -32,7 +32,7 @@ export default function SheetsListPage() {
   return (
     <main className="min-h-screen px-4 py-8">
       <div className="mx-auto max-w-6xl">
-        <header className="mb-6 flex items-center justify-between gap-4">
+        <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="font-serif text-2xl font-semibold text-ink">
               Fichas salvas
@@ -45,13 +45,13 @@ export default function SheetsListPage() {
           <div className="flex gap-2">
             <Link
               href="/"
-              className="rounded border border-border bg-paper-card px-3 py-1.5 text-xs font-medium text-ink shadow-sm hover:bg-paper"
+              className="flex min-h-[44px] items-center justify-center rounded border border-border bg-paper-card px-4 text-xs font-medium text-ink shadow-sm hover:bg-paper"
             >
               Voltar ao menu
             </Link>
             <Link
               href="/sheets/new"
-              className="rounded bg-accent px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:opacity-90"
+              className="flex min-h-[44px] items-center justify-center rounded bg-accent px-4 text-xs font-medium text-white shadow-sm hover:opacity-90"
             >
               Nova ficha
             </Link>
@@ -68,9 +68,9 @@ export default function SheetsListPage() {
             {characters.map((sheet) => (
               <li
                 key={sheet.id}
-                className="flex items-center justify-between gap-4 rounded-md border border-border bg-paper-card p-4 shadow-sm"
+                className="flex flex-col gap-3 rounded-md border border-border bg-paper-card p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between"
               >
-                <div className="space-y-1">
+                <div className="min-w-0 space-y-1">
                   <div className="flex flex-wrap items-center gap-2 text-sm">
                     <span className="font-semibold text-ink">
                       {sheet.nome || "Sem nome"}
@@ -88,20 +88,20 @@ export default function SheetsListPage() {
                 <div className="flex flex-shrink-0 gap-2">
                   <Link
                     href={`/sheets/${sheet.id}/play`}
-                    className="rounded border border-border bg-paper-card px-3 py-1.5 text-xs font-medium text-ink hover:bg-paper"
+                    className="flex min-h-[44px] flex-1 items-center justify-center rounded border border-border bg-paper-card px-4 text-xs font-medium text-ink hover:bg-paper sm:flex-initial"
                   >
                     Usar
                   </Link>
                   <Link
                     href={`/sheets/${sheet.id}/edit`}
-                    className="rounded border border-border bg-paper-card px-3 py-1.5 text-xs font-medium text-ink hover:bg-paper"
+                    className="flex min-h-[44px] flex-1 items-center justify-center rounded border border-border bg-paper-card px-4 text-xs font-medium text-ink hover:bg-paper sm:flex-initial"
                   >
                     Editar
                   </Link>
                   <button
                     type="button"
                     onClick={() => handleDelete(sheet.id)}
-                    className="rounded border border-red-300 bg-paper-card px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-50"
+                    className="flex min-h-[44px] flex-1 items-center justify-center rounded border border-red-300 bg-paper-card px-4 text-xs font-medium text-red-700 hover:bg-red-50 sm:flex-initial"
                   >
                     Apagar
                   </button>

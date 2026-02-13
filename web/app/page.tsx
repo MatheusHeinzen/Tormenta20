@@ -2,15 +2,13 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="mx-auto flex max-w-4xl flex-col gap-8 px-4 py-10">
+    <main className="mx-auto flex max-w-4xl flex-col gap-8 px-4 py-6 sm:py-10">
       <header className="space-y-2">
-        <h1 className="font-serif text-3xl font-semibold text-ink">
+        <h1 className="font-serif text-2xl font-semibold text-ink sm:text-3xl">
           Ficha Tormenta 20 – Sessão Rápida
         </h1>
         <p className="max-w-2xl text-sm text-ink-muted">
-          Crie, edite e use fichas de personagem diretamente no navegador. Os
-          dados ficam salvos no seu dispositivo (localStorage), prontos para
-          futuramente sincronizar com Firebase para uso em grupo.
+          Crie, edite e use fichas de personagem diretamente no navegador
         </p>
       </header>
 

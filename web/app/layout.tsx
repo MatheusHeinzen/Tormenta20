@@ -21,7 +21,7 @@ const cinzel = Cinzel({
 
 export const metadata: Metadata = {
   title: "Ficha Editável Tormenta 20",
-  description: "Crie, edite e use fichas de personagem diretamente no navegador. Os dados ficam salvos no seu dispositivo (localStorage), prontos para futuramente sincronizar com Firebase para uso em grupo.",
+  description: "Crie, edite e use fichas de personagem diretamente no navegador",
 };
 
 export default function RootLayout({
@@ -35,7 +35,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} antialiased`}
       >
         <SheetProvider>
-          <div className="min-h-screen paper-texture text-ink">
+          <div className="min-h-screen overflow-x-hidden pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)] paper-texture text-ink">
             {children}
           </div>
         </SheetProvider>

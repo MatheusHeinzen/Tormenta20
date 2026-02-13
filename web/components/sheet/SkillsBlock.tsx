@@ -255,7 +255,7 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
       {resumoClasse}
 
       <div className="grid gap-2 md:grid-cols-2">
-        <div className="overflow-x-auto">
+        <div className="min-w-0 overflow-x-auto">
           <table className="min-w-full border-collapse text-xs">
             <thead>
               <tr className="border-b border-border bg-paper">
@@ -280,7 +280,7 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
           </table>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="min-w-0 overflow-x-auto">
           <table className="min-w-full border-collapse text-xs">
             <thead>
               <tr className="border-b border-border bg-paper">
