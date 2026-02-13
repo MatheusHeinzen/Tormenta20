@@ -1,5 +1,6 @@
 import type { AbilityScoreName, CharacterSheet } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
+import { getBonusDefesaPoderesConcedidos } from "@/lib/data/tormenta20";
 import { getConjuradorMagiaInfo } from "@/lib/t20/class";
 
 interface CombatBlockProps {
@@ -37,12 +38,20 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
   const ataques = sheet.ataques ?? [];
   const proficiencias = sheet.proficiencias;
 
+  const idsPoderesConcedidos = [
+    ...(sheet.poderesDivindadeIds ?? []),
+    ...(sheet.poderConcedidoLinhagemAbencoadaId
+      ? [sheet.poderConcedidoLinhagemAbencoadaId]
+      : []),
+  ];
+  const bonusDefesaPoderes = getBonusDefesaPoderesConcedidos(idsPoderesConcedidos);
   const caCalculada =
     10 +
     atributoDefesaMod +
     (proficiencias?.armadura?.defesa ?? 0) +
     (proficiencias?.escudo?.defesa ?? 0) +
-    (combate.caBonus ?? 0);
+    (combate.caBonus ?? 0) +
+    bonusDefesaPoderes;
   const magia = sheet.magia;
 
   const classesResumo =
@@ -300,7 +309,10 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
             </div>
           </div>
           <p className="text-[11px] text-ink-muted">
-            10 + {atributoDefesaMod >= 0 ? `+${atributoDefesaMod}` : atributoDefesaMod} (atributo) + {proficiencias?.armadura?.defesa ?? 0} (armadura) + {proficiencias?.escudo?.defesa ?? 0} (escudo) + {combate.caBonus ?? 0} (bônus)
+            10 + {atributoDefesaMod >= 0 ? `+${atributoDefesaMod}` : atributoDefesaMod} (atributo) + {proficiencias?.armadura?.defesa ?? 0} (armadura) + {proficiencias?.escudo?.defesa ?? 0} (escudo)
+            {((combate.caBonus ?? 0) !== 0 || bonusDefesaPoderes !== 0) && (
+              <> + {(combate.caBonus ?? 0) + bonusDefesaPoderes} (bônus{bonusDefesaPoderes > 0 ? ", incl. poderes" : ""})</>
+            )}
           </p>
           <div className="flex items-baseline gap-3">
             <span className="text-2xl font-semibold tabular-nums text-ink">

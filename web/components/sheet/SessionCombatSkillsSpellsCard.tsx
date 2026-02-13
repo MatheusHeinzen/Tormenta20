@@ -8,6 +8,7 @@ import type {
 } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
 import {
+  getBonusPericiaPoderesConcedidos,
   getClassByNome,
   getOrigemByNome,
   skillRules,
@@ -62,7 +63,17 @@ function getSkillTotal(
   const modAtributo = abilityModifier(sheet.atributos[config.atributoUsado]);
   const treinada = effectiveTreinada ?? config.treinada ?? baseIds.includes(skillId);
   const bonusTreinado = treinada ? SKILL_TRAINED_BONUS : 0;
-  return modAtributo + bonusTreinado + config.bonusOutros;
+  const idsPoderesConcedidos = [
+    ...(sheet.poderesDivindadeIds ?? []),
+    ...(sheet.poderConcedidoLinhagemAbencoadaId
+      ? [sheet.poderConcedidoLinhagemAbencoadaId]
+      : []),
+  ];
+  const bonusPoderesConcedidos = getBonusPericiaPoderesConcedidos(
+    idsPoderesConcedidos,
+    skillId,
+  );
+  return modAtributo + bonusTreinado + config.bonusOutros + bonusPoderesConcedidos;
 }
 
 interface SessionCombatSkillsSpellsCardProps {

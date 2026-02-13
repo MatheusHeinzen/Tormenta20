@@ -91,6 +91,77 @@ export function getPoderesConcedidosByIds(
     .filter(Boolean) as PoderConcedidoDivindadeJson[];
 }
 
+export function getBonusPericiaPoderesConcedidos(
+  poderIds: string[],
+  skillId: string,
+): number {
+  if (!poderIds?.length) return 0;
+  const poderes = getPoderesConcedidosByIds(poderIds);
+  let total = 0;
+  for (const poder of poderes) {
+    for (const ef of poder.efeitos_mecanicos ?? []) {
+      if (ef.alvo === "pericia" && ef.condicao === skillId && ef.operacao === "add") {
+        total += ef.valor_base ?? 0;
+      }
+    }
+  }
+  return total;
+}
+
+export function getBonusDefesaPoderesConcedidos(poderIds: string[]): number {
+  if (!poderIds?.length) return 0;
+  const poderes = getPoderesConcedidosByIds(poderIds);
+  let total = 0;
+  for (const poder of poderes) {
+    for (const ef of poder.efeitos_mecanicos ?? []) {
+      if (ef.alvo === "defesa" && ef.operacao === "add") {
+        total += ef.valor_base ?? 0;
+      }
+    }
+  }
+  return total;
+}
+
+export function getAtributoHpPoderesConcedidos(
+  poderIds: string[],
+): AbilityScoreName | undefined {
+  if (!poderIds?.length) return undefined;
+  const poderes = getPoderesConcedidosByIds(poderIds);
+  for (const poder of poderes) {
+    for (const ef of poder.efeitos_mecanicos ?? []) {
+      if (
+        ef.alvo === "vida" &&
+        ef.condicao === "atributo_pv" &&
+        ef.atributo
+      ) {
+        return ef.atributo as AbilityScoreName;
+      }
+    }
+  }
+  return undefined;
+}
+
+export function getBonusManaNiveisImparesPoderesConcedidos(
+  poderIds: string[],
+  totalNivel: number,
+): number {
+  if (!poderIds?.length || totalNivel <= 0) return 0;
+  const poderes = getPoderesConcedidosByIds(poderIds);
+  for (const poder of poderes) {
+    for (const ef of poder.efeitos_mecanicos ?? []) {
+      if (
+        ef.alvo === "mana" &&
+        ef.condicao === "niveis_impares" &&
+        ef.por_nivel
+      ) {
+        const niveisImpares = Math.floor((totalNivel + 1) / 2);
+        return (ef.valor_base ?? 0) * niveisImpares;
+      }
+    }
+  }
+  return 0;
+}
+
 export function getPoderesConcedidosPorDivindade(
   divindadeNomeOuId: string,
 ): PoderConcedidoDivindadeJson[] {
@@ -126,4 +197,17 @@ export interface SkillRule {
 }
 
 export const skillRules: SkillRule[] = periciasJson as SkillRule[];
+
+export const periciasInteligenciaIds: SkillId[] = (
+  periciasJson as { id: SkillId; atributoPadrao: string }[]
+)
+  .filter((p) => p.atributoPadrao === "inteligencia")
+  .map((p) => p.id);
+
+export function hasPoderConcedido(
+  poderIds: string[],
+  poderId: string,
+): boolean {
+  return poderIds.includes(poderId);
+}
 
