@@ -78,7 +78,12 @@ export interface BonusFlexivelRaca {
 
 export type TamanhoRaca = "Minusculo" | "Pequeno" | "Medio" | "Grande" | "Enorme";
 
-export type TipoCriaturaRaca = "Humanoide" | "Monstro" | "Espirito" | "Morto-vivo" | "Construto";
+export type TipoCriaturaRaca =
+  | "humanoide"
+  | "monstro"
+  | "espirito"
+  | "morto_vivo"
+  | "construto";
 
 export interface SentidosRaca {
   visao_escuro?: boolean;
