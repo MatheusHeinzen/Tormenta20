@@ -7,6 +7,7 @@ import type {
   ProficienciasRaca,
   RacaJson,
   SentidosRaca,
+  TipoCriaturaRaca,
 } from "@/lib/t20/jsonTypes";
 
 export interface FlexRaceRule {
@@ -30,6 +31,19 @@ function findRaceByName(nome: string): RacaJson | undefined {
 
 export function getRaceDataByName(nome: string): RacaJson | undefined {
   return findRaceByName(nome);
+}
+
+const TIPO_CRIATURA_LABELS: Record<TipoCriaturaRaca, string> = {
+  humanoide: "Humanoide",
+  monstro: "Monstro",
+  espirito: "Espírito",
+  morto_vivo: "Morto-vivo",
+  construto: "Construto",
+};
+
+export function getTipoCriaturaLabel(tipo: TipoCriaturaRaca | undefined): string {
+  if (!tipo) return "—";
+  return TIPO_CRIATURA_LABELS[tipo] ?? tipo;
 }
 
 function buildFixedAbilityBonus(
@@ -165,6 +179,7 @@ export function applyRaceByName(
         ...proficiencias.sentidos,
         visaoPenumbra: !!race.sentidos.visao_penumbra,
         visaoEscuro: !!race.sentidos.visao_escuro,
+        visaoMistica: !!race.sentidos.visao_mistica,
         outros: race.sentidos.outros?.join(", ") ?? proficiencias.sentidos.outros,
       },
     };

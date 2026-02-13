@@ -35,7 +35,7 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-1">
           <label className="block text-xs font-semibold text-zinc-500">
-            Nome do personagem
+            Nome
           </label>
           <input
             type="text"

@@ -3,6 +3,7 @@
 import { useRouter, useParams } from "next/navigation";
 import { useSheetContext } from "@/context/SheetContext";
 import { abilityModifier, type AbilityScoreName } from "@/lib/models/character";
+import { getRaceDataByName, getTipoCriaturaLabel } from "@/lib/t20/race";
 import { SessionCombatSkillsSpellsCard } from "@/components/sheet/SessionCombatSkillsSpellsCard";
 import { SessionPowersNotesCard } from "@/components/sheet/SessionPowersNotesCard";
 
@@ -159,7 +160,7 @@ export default function PlaySheetPage() {
           <div className="space-y-2 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
             <h2 className="text-sm font-semibold text-zinc-900">Resumo</h2>
             <p className="text-xs text-zinc-600">
-              {sheet.raca} • {sheet.origem} • {classesResumo}
+              {sheet.raca} • {sheet.origem} • Tipo: {getTipoCriaturaLabel(getRaceDataByName(sheet.raca)?.tipo_criatura)} • {classesResumo}
             </p>
             <p className="text-xs text-zinc-600">
               CA {sheet.combate.caTotal} (

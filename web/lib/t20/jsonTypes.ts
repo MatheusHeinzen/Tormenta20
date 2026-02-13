@@ -76,18 +76,14 @@ export interface BonusFlexivelRaca {
   atributos_proibidos?: AbilityScoreName[];
 }
 
-export type TamanhoRaca = "minusculo" | "pequeno" | "medio" | "grande" | "enorme";
+export type TamanhoRaca = "Minusculo" | "Pequeno" | "Medio" | "Grande" | "Enorme";
 
-export type TipoCriaturaRaca =
-  | "humanoide"
-  | "monstro"
-  | "espirito"
-  | "morto_vivo"
-  | "construto";
+export type TipoCriaturaRaca = "Humanoide" | "Monstro" | "Espirito" | "Morto-vivo" | "Construto";
 
 export interface SentidosRaca {
   visao_escuro?: boolean;
   visao_penumbra?: boolean;
+  visao_mistica?: boolean;
   outros?: string[];
 }
 

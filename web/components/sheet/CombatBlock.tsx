@@ -555,6 +555,16 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
               />
               Visão no Escuro
             </label>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={proficiencias.sentidos.visaoMistica}
+                onChange={(event) =>
+                  updateSentidos({ visaoMistica: event.target.checked })
+                }
+              />
+              Visão mística
+            </label>
             <input
               type="text"
               value={proficiencias.sentidos.outros}

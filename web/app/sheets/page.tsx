@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSheetContext } from "@/context/SheetContext";
+import { getRaceDataByName, getTipoCriaturaLabel } from "@/lib/t20/race";
 
 export default function SheetsListPage() {
   const { characters, deleteCharacter } = useSheetContext();
@@ -75,7 +76,7 @@ export default function SheetsListPage() {
                       {sheet.nome || "Sem nome"}
                     </span>
                     <span className="text-xs text-zinc-500">
-                      {sheet.raca} • {sheet.origem} • {getClassesResumo(sheet)}
+                      {sheet.raca} • {sheet.origem} • Tipo: {getTipoCriaturaLabel(getRaceDataByName(sheet.raca)?.tipo_criatura)} • {getClassesResumo(sheet)}
                     </span>
                   </div>
                   <p className="text-xs text-zinc-500">

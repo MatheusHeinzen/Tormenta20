@@ -64,6 +64,7 @@ export interface WeaponProficiencies {
 export interface SenseInfo {
   visaoPenumbra: boolean;
   visaoEscuro: boolean;
+  visaoMistica: boolean;
   outros: string;
 }
 
@@ -200,32 +201,41 @@ export function normalizeCharacter(raw: CharacterSheet): CharacterSheet {
 
   const pericias: CharacterSkill[] = raw.pericias ?? [];
 
+  const sentidosBruto = raw.proficiencias?.sentidos;
+  const sentidos: SenseInfo = {
+    visaoPenumbra: !!sentidosBruto?.visaoPenumbra,
+    visaoEscuro: !!sentidosBruto?.visaoEscuro,
+    visaoMistica: !!sentidosBruto?.visaoMistica,
+    outros: sentidosBruto?.outros ?? "",
+  };
+
   const proficiencias: ProficienciasCombate =
-    raw.proficiencias ?? {
-      armadura: {
-        tipo: "",
-        defesa: 0,
-        penalidade: 0,
-        proficiencia: "",
-      },
-      escudo: {
-        tipo: "",
-        defesa: 0,
-        penalidade: 0,
-        proficiencia: "",
-      },
-      armas: {
-        simples: false,
-        marciais: false,
-        exoticas: false,
-        deFogo: false,
-      },
-      sentidos: {
-        visaoPenumbra: false,
-        visaoEscuro: false,
-        outros: "",
-      },
-    };
+    raw.proficiencias
+      ? {
+          ...raw.proficiencias,
+          sentidos,
+        }
+      : {
+          armadura: {
+            tipo: "",
+            defesa: 0,
+            penalidade: 0,
+            proficiencia: "",
+          },
+          escudo: {
+            tipo: "",
+            defesa: 0,
+            penalidade: 0,
+            proficiencia: "",
+          },
+          armas: {
+            simples: false,
+            marciais: false,
+            exoticas: false,
+            deFogo: false,
+          },
+          sentidos,
+        };
 
   const magia: MagicInfo = raw.magia ?? { cd: 10 };
   const inventario: Inventory = {
@@ -325,6 +335,7 @@ export function createEmptyCharacterSheet(nome: string): CharacterSheet {
       sentidos: {
         visaoPenumbra: false,
         visaoEscuro: false,
+        visaoMistica: false,
         outros: "",
       },
     },
