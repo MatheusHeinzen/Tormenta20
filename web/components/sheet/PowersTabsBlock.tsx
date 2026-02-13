@@ -1,12 +1,13 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import type { CharacterSheet } from "@/lib/models/character";
 import {
   getClassByNome,
+  getLinhagemById,
   getOrigemByNome,
   getPoderesClasseByIds,
   getRacas,
 } from "@/lib/data/tormenta20";
-import type { RacaJson } from "@/lib/t20/jsonTypes";
+import type { LinhagemJson, RacaJson } from "@/lib/t20/jsonTypes";
 
 interface PowersTabsBlockProps {
   sheet: CharacterSheet;
@@ -98,6 +99,13 @@ export function PowersTabsBlock({ sheet }: PowersTabsBlockProps) {
       );
     }
 
+    const LINHAGEM_PODERES_IDS: Record<string, [string, string]> = {
+      draconica: ["feiticeiro_linhagem_draconica_aprimorada", "feiticeiro_linhagem_draconica_superior"],
+      feerica: ["feiticeiro_linhagem_feerica_aprimorada", "feiticeiro_linhagem_feerica_superior"],
+      rubra: ["feiticeiro_linhagem_rubra_aprimorada", "feiticeiro_linhagem_rubra_superior"],
+      abencoada: ["feiticeiro_linhagem_abencoada_aprimorada", "feiticeiro_linhagem_abencoada_superior"],
+    };
+
     const blocks = classes
       .map((klass) => {
         const data = getClassByNome(klass.nome);
@@ -106,6 +114,23 @@ export function PowersTabsBlock({ sheet }: PowersTabsBlockProps) {
         const habilidadesPorNivel = data.habilidades_por_nivel ?? [];
         const poderesIds = habilidadesPorNivel.flatMap((h) => h.poderes);
         const poderes = getPoderesClasseByIds(poderesIds);
+
+        const poderesLinhagemOpcionais =
+          data.id === "arcanista" &&
+          klass.caminho === "feiticeiro" &&
+          klass.linhagem &&
+          LINHAGEM_PODERES_IDS[klass.linhagem]
+            ? getPoderesClasseByIds(LINHAGEM_PODERES_IDS[klass.linhagem]).filter(
+                (p) => (p.requisitos?.nivel_minimo ?? 0) <= klass.nivel,
+              )
+            : [];
+
+        const linhagemBasica: LinhagemJson | null =
+          data.id === "arcanista" &&
+          klass.caminho === "feiticeiro" &&
+          klass.linhagem
+            ? (getLinhagemById(klass.linhagem) ?? null)
+            : null;
 
         return {
           id: data.id,
@@ -116,6 +141,8 @@ export function PowersTabsBlock({ sheet }: PowersTabsBlockProps) {
             nivel: h.nivel,
             poderes: getPoderesClasseByIds(h.poderes),
           })),
+          poderesLinhagemOpcionais,
+          linhagemBasica,
         };
       })
       .filter(Boolean) as {
@@ -126,6 +153,8 @@ export function PowersTabsBlock({ sheet }: PowersTabsBlockProps) {
       poderesPorNivel: { nivel: number; poderes: ReturnType<
         typeof getPoderesClasseByIds
       > }[];
+      poderesLinhagemOpcionais: ReturnType<typeof getPoderesClasseByIds>;
+      linhagemBasica: LinhagemJson | null;
     }[];
 
     if (blocks.length === 0) {
@@ -183,6 +212,40 @@ export function PowersTabsBlock({ sheet }: PowersTabsBlockProps) {
                 Nenhum poder de classe cadastrado para esta classe.
               </p>
             )}
+            {block.linhagemBasica && (
+              <div className="mt-2 border-t border-zinc-200 pt-2">
+                <p className="text-[11px] font-semibold uppercase text-zinc-500">
+                  Herança básica (1º nível)
+                </p>
+                <div className="mt-1 rounded border border-zinc-200 bg-white p-2">
+                  <p className="text-xs font-semibold text-zinc-900">
+                    {block.linhagemBasica.nome}
+                  </p>
+                  {block.linhagemBasica.descricao_resumida && (
+                    <p className="mt-0.5 text-xs text-zinc-700">
+                      {block.linhagemBasica.descricao_resumida}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+            {block.poderesLinhagemOpcionais.length > 0 && (
+              <div className="mt-2 border-t border-zinc-200 pt-2">
+                <p className="text-[11px] font-semibold uppercase text-zinc-500">
+                  Poderes opcionais de linhagem (escolha em níveis futuros)
+                </p>
+                <ul className="mt-1 space-y-1 text-xs text-zinc-800">
+                  {block.poderesLinhagemOpcionais.map((poder) => (
+                    <li key={poder.id}>
+                      <span className="font-semibold">{poder.nome}</span>
+                      {poder.descricao_resumida
+                        ? ` — ${poder.descricao_resumida}`
+                        : ""}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -237,7 +300,7 @@ export function PowersTabsBlock({ sheet }: PowersTabsBlockProps) {
     );
   }
 
-  let content: JSX.Element;
+  let content: React.ReactNode;
 
   if (activeTab === "raciais") {
     content = renderRacialPowers();

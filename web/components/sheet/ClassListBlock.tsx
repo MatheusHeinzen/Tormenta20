@@ -3,6 +3,8 @@ import { applyClassProficiencies } from "@/lib/t20/class";
 import {
   getClasses,
   getClassByNome,
+  getLinhagemById,
+  getLinhagens,
   getPoderesClasse,
   getPoderesClasseByIds,
 } from "@/lib/data/tormenta20";
@@ -79,7 +81,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
               open={index === 0}
             >
               <summary className="flex items-center justify-between gap-2 cursor-pointer">
-                <div className="flex flex-1 items-center gap-2">
+                <div className="flex flex-1 flex-wrap items-center gap-2">
                   <select
                     value={klass.nome}
                     onChange={(event) =>
@@ -93,6 +95,51 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                       </option>
                     ))}
                   </select>
+                  {getClassByNome(klass.nome)?.id === "arcanista" && (
+                    <>
+                      <span className="text-xs font-semibold text-zinc-500">
+                        Caminho
+                      </span>
+                      <select
+                        value={klass.caminho ?? ""}
+                        onChange={(e) =>
+                          handleChange(index, {
+                            caminho: e.target.value || undefined,
+                            linhagem: e.target.value !== "feiticeiro" ? undefined : klass.linhagem,
+                          })
+                        }
+                        className="max-w-[120px] rounded border border-zinc-300 bg-white px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                      >
+                        <option value="">—</option>
+                        <option value="bruxo">Bruxo</option>
+                        <option value="feiticeiro">Feiticeiro</option>
+                        <option value="mago">Mago</option>
+                      </select>
+                      {klass.caminho === "feiticeiro" && (
+                        <>
+                          <span className="text-xs font-semibold text-zinc-500">
+                            Linhagem
+                          </span>
+                          <select
+                            value={klass.linhagem ?? ""}
+                            onChange={(e) =>
+                              handleChange(index, {
+                                linhagem: e.target.value || undefined,
+                              })
+                            }
+                            className="max-w-[160px] rounded border border-zinc-300 bg-white px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                          >
+                            <option value="">—</option>
+                            {getLinhagens().map((l) => (
+                              <option key={l.id} value={l.id}>
+                                {l.nome}
+                              </option>
+                            ))}
+                          </select>
+                        </>
+                      )}
+                    </>
+                  )}
                   <span className="text-xs font-semibold text-zinc-500">
                     Nível
                   </span>
@@ -148,9 +195,82 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                     ]
                       .filter(Boolean)
                       .join(" • ");
+                  const isArcanista = data.id === "arcanista";
+                  const caminho = klass.caminho;
+                  const atributoMagia =
+                    data.magia?.atributo_chave_por_caminho && caminho
+                      ? data.magia.atributo_chave_por_caminho[caminho]
+                      : data.magia?.atributo_chave ?? null;
+                  const labelAtributo =
+                    atributoMagia === "carisma"
+                      ? "Carisma"
+                      : atributoMagia === "inteligencia"
+                        ? "Inteligência"
+                        : atributoMagia === "sabedoria"
+                          ? "Sabedoria"
+                          : atributoMagia ?? "—";
+                  const linhagem =
+                    caminho === "feiticeiro" && klass.linhagem
+                      ? getLinhagemById(klass.linhagem)
+                      : null;
+
+                  function descricaoArcanista() {
+                    if (!caminho) {
+                      return (
+                        <p className="text-zinc-700">
+                          Conjurador arcano. Escolha o <strong>Caminho</strong> acima
+                          (Bruxo, Feiticeiro ou Mago) para ver as regras que se
+                          aplicam a você.
+                        </p>
+                      );
+                    }
+                    if (caminho === "bruxo") {
+                      return (
+                        <p className="text-zinc-700">
+                          <strong>Bruxo:</strong> conjura por um foco (varinha,
+                          cajado, chapéu). Atributo: Inteligência. Aprende 1 magia
+                          nova por nível. Sem o foco, teste de Misticismo (CD 20 +
+                          custo em PM) ou a magia falha.
+                        </p>
+                      );
+                    }
+                    if (caminho === "feiticeiro") {
+                      return (
+                        <>
+                          <p className="text-zinc-700">
+                            <strong>Feiticeiro:</strong> magia inata no sangue.
+                            Atributo: Carisma. Aprende 1 magia nova a cada nível
+                            ímpar (3º, 5º, 7º…). Não depende de grimório nem
+                            foco.
+                          </p>
+                          {linhagem && (
+                            <p className="text-zinc-700">
+                              <strong>Linhagem ({linhagem.nome}):</strong>{" "}
+                              {linhagem.descricao_resumida}
+                            </p>
+                          )}
+                        </>
+                      );
+                    }
+                    if (caminho === "mago") {
+                      return (
+                        <p className="text-zinc-700">
+                          <strong>Mago:</strong> conjura por estudo e grimório.
+                          Atributo: Inteligência. Começa com 4 magias; ao
+                          desbloquear um novo círculo, aprende +1 magia daquele
+                          círculo. Memoriza metade das magias conhecidas (marque
+                          na aba Magias).
+                        </p>
+                      );
+                    }
+                    return data.descricao_resumida ? (
+                      <p className="text-zinc-700">{data.descricao_resumida}</p>
+                    ) : null;
+                  }
+
                   return (
                     <>
-                      {data.descricao_resumida && (
+                      {isArcanista ? descricaoArcanista() : data.descricao_resumida && (
                         <p className="text-zinc-700">
                           {data.descricao_resumida}
                         </p>
@@ -183,13 +303,8 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                       {data.magia?.conjurador && (
                         <p>
                           <strong>Magia:</strong> até {data.magia.circulo_maximo}
-                          º círculo. Atributo:{" "}
-                          {data.magia.atributo_chave ??
-                            (data.magia.atributo_chave_por_caminho
-                              ? "depende do caminho (Int/Car)"
-                              : "—")}
-                          . CD = 10 + círculo + mod. Bônus de teste = mod +
-                          nível.
+                          º círculo. Atributo: {labelAtributo}. CD = 10 + círculo
+                          + mod. Bônus de teste = mod + nível.
                         </p>
                       )}
                       {poderes.length > 0 && (

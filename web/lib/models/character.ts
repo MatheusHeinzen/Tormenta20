@@ -22,6 +22,10 @@ export interface CharacterClass {
   nome: string;
   nivel: number;
   notas?: string;
+  /** Arcanista: "bruxo" | "feiticeiro" | "mago" */
+  caminho?: string;
+  /** Feiticeiro: id da linhagem (ex.: "draconica") */
+  linhagem?: string;
 }
 
 export interface DerivedStatsConfig {
@@ -125,6 +129,8 @@ export interface CharacterSpell {
   efeito?: string;
   atributoChave?: string;
   cd?: number;
+  /** Mago: indica se a magia está memorizada (máx. metade das conhecidas) */
+  memorizada?: boolean;
 }
 
 export interface CharacterNotes {
@@ -188,7 +194,14 @@ export function normalizeCharacter(raw: CharacterSheet): CharacterSheet {
 
   const classes: CharacterClass[] =
     raw.classes && raw.classes.length > 0
-      ? raw.classes
+      ? raw.classes.map((k) => ({
+          id: k.id,
+          nome: k.nome,
+          nivel: k.nivel ?? 1,
+          notas: k.notas,
+          caminho: k.caminho,
+          linhagem: k.linhagem,
+        }))
       : raw.classePrincipal
         ? [
             {

@@ -4,8 +4,9 @@ import poderesClasseJson from "@/data/tormenta20/poderes_classe.json";
 import origensJson from "@/data/tormenta20/origens.json";
 import deusesJson from "@/data/tormenta20/deuses.json";
 import periciasJson from "@/data/tormenta20/pericias.json";
+import linhagensJson from "@/data/tormenta20/linhagens.json";
 import type { AbilityScoreName } from "@/lib/models/character";
-import type { ClasseJson, OrigemJson, PoderClasseJson, RacaJson } from "@/lib/t20/jsonTypes";
+import type { ClasseJson, LinhagemJson, OrigemJson, PoderClasseJson, RacaJson } from "@/lib/t20/jsonTypes";
 
 export interface SimpleOption {
   id: string;
@@ -18,7 +19,7 @@ export type OriginOption = SimpleOption;
 export type DeityOption = SimpleOption;
 
 export function getRacas(): RaceOption[] {
-  return racasJson;
+  return racasJson as RaceOption[];
 }
 
 export function getClasses(): ClassOption[] {
@@ -58,6 +59,17 @@ export function getDeuses(): DeityOption[] {
   return deusesJson;
 }
 
+export function getLinhagens(): LinhagemJson[] {
+  return linhagensJson as LinhagemJson[];
+}
+
+export function getLinhagemById(id: string): LinhagemJson | undefined {
+  if (!id?.trim()) return undefined;
+  return (linhagensJson as LinhagemJson[]).find(
+    (l) => l.id === id || l.id.toLowerCase() === id.toLowerCase(),
+  );
+}
+
 export type SkillId = (typeof periciasJson)[number]["id"];
 
 export interface SkillRule {
@@ -66,5 +78,5 @@ export interface SkillRule {
   atributoPadrao: AbilityScoreName;
 }
 
-export const skillRules: SkillRule[] = periciasJson;
+export const skillRules: SkillRule[] = periciasJson as SkillRule[];
 

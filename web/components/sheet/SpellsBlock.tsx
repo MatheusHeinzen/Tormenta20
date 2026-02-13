@@ -117,6 +117,16 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                 {conjurador.circuloMax}º
               </p>
             </div>
+            {conjurador.memorizaMetade && (
+              <div>
+                <p className="text-[11px] font-semibold text-zinc-500">
+                  Magias memorizadas
+                </p>
+                <p className="mt-1 font-semibold text-zinc-900">
+                  {magias.filter((m) => m.memorizada).length} / {conjurador.maxMemorizadas}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -135,6 +145,30 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
             >
               <summary className="flex cursor-pointer items-center justify-between gap-2">
                 <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600">
+                  {conjurador?.memorizaMetade && (
+                    <div
+                      className="flex items-center gap-1"
+                      onClick={(e) => e.stopPropagation()}
+                      onMouseDown={(e) => e.stopPropagation()}
+                    >
+                      <input
+                        type="checkbox"
+                        id={`mem-${spell.id}`}
+                        checked={!!spell.memorizada}
+                        disabled={
+                          !spell.memorizada &&
+                          magias.filter((m) => m.memorizada).length >= (conjurador?.maxMemorizadas ?? 0)
+                        }
+                        onChange={(e) =>
+                          handleChange(index, { memorizada: e.target.checked })
+                        }
+                        className="rounded border-zinc-300"
+                      />
+                      <label htmlFor={`mem-${spell.id}`} className="cursor-pointer text-[11px]">
+                        Memorizada
+                      </label>
+                    </div>
+                  )}
                   <span className="font-semibold uppercase">Círculo</span>
                   <span className="text-sm font-semibold text-zinc-900">
                     {spell.circulo ?? 0}
@@ -152,6 +186,23 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
               <div className="mt-3 space-y-3">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex flex-wrap items-center gap-2">
+                    {conjurador?.memorizaMetade && (
+                      <label className="flex cursor-pointer items-center gap-1 text-xs font-semibold text-zinc-600">
+                        <input
+                          type="checkbox"
+                          checked={!!spell.memorizada}
+                          disabled={
+                            !spell.memorizada &&
+                            magias.filter((m) => m.memorizada).length >= (conjurador?.maxMemorizadas ?? 0)
+                          }
+                          onChange={(e) =>
+                            handleChange(index, { memorizada: e.target.checked })
+                          }
+                          className="rounded border-zinc-300"
+                        />
+                        Memorizada
+                      </label>
+                    )}
                     <label className="flex items-center gap-1 text-xs font-semibold text-zinc-600">
                       Círculo
                       <input

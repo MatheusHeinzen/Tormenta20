@@ -127,6 +127,78 @@
     }
   },
   {
+    "id": "feiticeiro_linhagem_draconica_aprimorada",
+    "nome": "Linhagem Dracônica (Aprimorada)",
+    "classe": "arcanista",
+    "tipo": "passivo",
+    "descricao_resumida": "Feiticeiro com Linhagem Dracônica. Magias do tipo escolhido custam -1 PM e causam +1 ponto de dano por dado.",
+    "efeitos_mecanicos": [],
+    "requisitos": { "nivel_minimo": 6 }
+  },
+  {
+    "id": "feiticeiro_linhagem_draconica_superior",
+    "nome": "Linhagem Dracônica (Superior)",
+    "classe": "arcanista",
+    "tipo": "passivo",
+    "descricao_resumida": "Feiticeiro com Linhagem Dracônica. Soma o dobro do Carisma em PV iniciais, imune ao tipo de dano escolhido; ao reduzir inimigo a 0 PV com magia do tipo, ganha PM temp. = círculo da magia.",
+    "efeitos_mecanicos": [],
+    "requisitos": { "nivel_minimo": 10 }
+  },
+  {
+    "id": "feiticeiro_linhagem_feerica_aprimorada",
+    "nome": "Linhagem Feérica (Aprimorada)",
+    "classe": "arcanista",
+    "tipo": "passivo",
+    "descricao_resumida": "Feiticeiro com Linhagem Feérica. CD +2 para magias de encantamento e ilusão; essas magias custam -1 PM.",
+    "efeitos_mecanicos": [],
+    "requisitos": { "nivel_minimo": 6 }
+  },
+  {
+    "id": "feiticeiro_linhagem_feerica_superior",
+    "nome": "Linhagem Feérica (Superior)",
+    "classe": "arcanista",
+    "tipo": "passivo",
+    "descricao_resumida": "Feiticeiro com Linhagem Feérica. +2 Carisma; se criatura passar no teste de resistência contra magia de encantamento/ilusão sua, fica alquebrado até o fim da cena.",
+    "efeitos_mecanicos": [],
+    "requisitos": { "nivel_minimo": 10 }
+  },
+  {
+    "id": "feiticeiro_linhagem_rubra_aprimorada",
+    "nome": "Linhagem Rubra (Aprimorada)",
+    "classe": "arcanista",
+    "tipo": "passivo",
+    "descricao_resumida": "Feiticeiro com Linhagem Rubra. Escolha uma magia por poder da Tormenta; essas magias custam -1 PM.",
+    "efeitos_mecanicos": [],
+    "requisitos": { "nivel_minimo": 6 }
+  },
+  {
+    "id": "feiticeiro_linhagem_rubra_superior",
+    "nome": "Linhagem Rubra (Superior)",
+    "classe": "arcanista",
+    "tipo": "passivo",
+    "descricao_resumida": "Feiticeiro com Linhagem Rubra. +4 PM para cada poder da Tormenta.",
+    "efeitos_mecanicos": [],
+    "requisitos": { "nivel_minimo": 10 }
+  },
+  {
+    "id": "feiticeiro_linhagem_abencoada_aprimorada",
+    "nome": "Linhagem Abençoada (Aprimorada)",
+    "classe": "arcanista",
+    "tipo": "passivo",
+    "descricao_resumida": "Feiticeiro com Linhagem Abençoada. Magias divinas de círculo ≤ Sabedoria custam -1 PM; pode aprender magias divinas de 2º e 3º círculo como de feiticeiro.",
+    "efeitos_mecanicos": [],
+    "requisitos": { "nivel_minimo": 6 }
+  },
+  {
+    "id": "feiticeiro_linhagem_abencoada_superior",
+    "nome": "Linhagem Abençoada (Superior)",
+    "classe": "arcanista",
+    "tipo": "passivo",
+    "descricao_resumida": "Feiticeiro com Linhagem Abençoada. +1 Sabedoria; aprende uma magia divina de cada círculo (limitada pela Sab); pode trocar essas magias diariamente.",
+    "efeitos_mecanicos": [],
+    "requisitos": { "nivel_minimo": 10 }
+  },
+  {
     "id": "barbaro_furia",
     "nome": "Fúria",
     "classe": "barbaro",

@@ -5,8 +5,8 @@ import type {
   CharacterSheet,
 } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
-import { getClassByNome } from "@/lib/data/tormenta20";
-import type { MagiaClasseJson } from "@/lib/t20/jsonTypes";
+import { getClassByNome, getLinhagemById } from "@/lib/data/tormenta20";
+import type { MagiaClasseJson, RegrasMagiaCaminho } from "@/lib/t20/jsonTypes";
 
 interface ClassRule {
   nome: string;
@@ -81,6 +81,23 @@ function calcularPmClasse(klass: CharacterClass): number {
   return klass.nivel * rule.pmPorNivel;
 }
 
+function bonusPvLinhagemFeiticeiro(
+  sheet: CharacterSheet,
+  primeiraClasse: CharacterClass,
+): number {
+  const data = getClassByNome(primeiraClasse.nome);
+  if (data?.id !== "arcanista" || primeiraClasse.caminho !== "feiticeiro" || !primeiraClasse.linhagem) {
+    return 0;
+  }
+  const linhagem = getLinhagemById(primeiraClasse.linhagem);
+  if (!linhagem?.efeitos_mecanicos?.length) return 0;
+  const efeito = linhagem.efeitos_mecanicos.find(
+    (e) => e.condicao === "vida_inicial_soma_atributo" && e.atributo,
+  );
+  if (!efeito?.atributo) return 0;
+  return abilityModifier(sheet.atributos[efeito.atributo]);
+}
+
 export function applyClassRules(sheet: CharacterSheet): CharacterSheet {
   const classes = sheet.classes;
 
@@ -91,11 +108,14 @@ export function applyClassRules(sheet: CharacterSheet): CharacterSheet {
   const atributoHp: AbilityScoreName =
     sheet.config?.derived?.atributoHp ?? "constituicao";
 
-  const totalPv = classes
+  let totalPv = classes
     .map((klass, index) =>
       calcularPvClasse(klass, sheet.atributos, atributoHp, index === 0),
     )
     .reduce((total, pv) => total + pv, 0);
+
+  const bonusLinhagem = bonusPvLinhagemFeiticeiro(sheet, classes[0]);
+  if (bonusLinhagem !== 0) totalPv += bonusLinhagem;
 
   const totalPm = classes
     .map((klass) => calcularPmClasse(klass))
@@ -138,15 +158,21 @@ export interface ConjuradorMagiaInfo {
   bonusTeste: number;
   magiasConhecidas: number;
   nivelTotal: number;
+  memorizaMetade: boolean;
+  maxMemorizadas: number;
 }
 
 export function getConjuradorMagiaInfo(sheet: CharacterSheet): ConjuradorMagiaInfo | null {
   const classes = sheet.classes ?? [];
   let magiaData: MagiaClasseJson | undefined;
+  let conjuradorClass: CharacterClass | undefined;
+  let classDataId: string | undefined;
   for (const klass of classes) {
     const data = getClassByNome(klass.nome);
     if (data?.magia?.conjurador) {
       magiaData = data.magia;
+      conjuradorClass = klass;
+      classDataId = data.id;
       break;
     }
   }
@@ -160,7 +186,11 @@ export function getConjuradorMagiaInfo(sheet: CharacterSheet): ConjuradorMagiaIn
     .filter((p) => p.nivel_personagem <= nivelTotal)
     .reduce((max, p) => Math.max(max, p.circulo), 0) || 1;
 
-  const atributoChave = magiaData.atributo_chave ?? null;
+  const caminho = classDataId === "arcanista" ? conjuradorClass?.caminho : undefined;
+  const atributoChave =
+    magiaData.atributo_chave_por_caminho && caminho
+      ? magiaData.atributo_chave_por_caminho[caminho]
+      : magiaData.atributo_chave ?? null;
   const atributoLabel = atributoChave
     ? (atributoChave === "carisma"
         ? "Carisma"
@@ -176,13 +206,27 @@ export function getConjuradorMagiaInfo(sheet: CharacterSheet): ConjuradorMagiaIn
   const cdBase = 10 + Math.ceil(nivelTotal / 2) + modAttr;
   const bonusTeste = modAttr + nivelTotal;
 
-  let magiasConhecidas = magiaData.magias_iniciais ?? 0;
-  const regra = magiaData.magias_por_nivel ?? "";
+  const regrasCaminho: RegrasMagiaCaminho | undefined =
+    caminho && magiaData.regras_por_caminho
+      ? magiaData.regras_por_caminho[caminho]
+      : undefined;
+  const iniciais = regrasCaminho?.magias_iniciais ?? magiaData.magias_iniciais ?? 0;
+  const regra = regrasCaminho?.magias_por_nivel ?? magiaData.magias_por_nivel ?? "";
+
+  let magiasConhecidas = iniciais;
   if (regra === "1_por_nivel") {
     magiasConhecidas += nivelTotal - 1;
   } else if (regra === "1_niveis_pares") {
     magiasConhecidas += Math.floor((nivelTotal - 1) / 2);
+  } else if (regra === "1_niveis_impares") {
+    magiasConhecidas += Math.floor((nivelTotal - 1) / 2);
+  } else if (regra === "1_por_novo_circulo") {
+    const circulosDesbloqueados = progressao.filter((p) => p.nivel_personagem <= nivelTotal).length;
+    magiasConhecidas = iniciais + Math.max(0, circulosDesbloqueados - 1);
   }
+
+  const memorizaMetade = !!regrasCaminho?.memoriza_metade;
+  const maxMemorizadas = memorizaMetade ? Math.ceil(magiasConhecidas / 2) : 0;
 
   return {
     atributoChave,
@@ -192,6 +236,8 @@ export function getConjuradorMagiaInfo(sheet: CharacterSheet): ConjuradorMagiaIn
     bonusTeste,
     magiasConhecidas,
     nivelTotal,
+    memorizaMetade,
+    maxMemorizadas,
   };
 }
 

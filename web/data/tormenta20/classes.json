@@ -43,7 +43,22 @@
         { "nivel_personagem": 17, "circulo": 5 }
       ],
       "magias_iniciais": 3,
-      "magias_por_nivel": "1_por_nivel"
+      "magias_por_nivel": "1_por_nivel",
+      "regras_por_caminho": {
+        "bruxo": {
+          "magias_iniciais": 3,
+          "magias_por_nivel": "1_por_nivel"
+        },
+        "feiticeiro": {
+          "magias_iniciais": 3,
+          "magias_por_nivel": "1_niveis_impares"
+        },
+        "mago": {
+          "magias_iniciais": 4,
+          "magias_por_nivel": "1_por_novo_circulo",
+          "memoriza_metade": true
+        }
+      }
     },
     "descricao_resumida": "Conjurador arcano que canaliza magia por estudo, herança ou pactos, com ampla lista de magias."
   },

@@ -48,6 +48,15 @@ function getPericiasFromClasses(sheet: CharacterSheet): {
           : 0;
       totalTreinadas += n + mod;
     }
+
+    // Linhagem Feérica: Enganação treinada de base
+    if (
+      data.id === "arcanista" &&
+      klass.caminho === "feiticeiro" &&
+      klass.linhagem === "feerica"
+    ) {
+      baseSet.add("enganacao");
+    }
   }
   const origem = getOrigemByNome(sheet.origem);
   (origem?.pericias ?? []).forEach((id) => baseSet.add(id));

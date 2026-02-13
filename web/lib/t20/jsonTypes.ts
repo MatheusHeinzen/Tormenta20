@@ -154,6 +154,12 @@ export interface MagiaProgressaoCirculoClasse {
   circulo: number;
 }
 
+export interface RegrasMagiaCaminho {
+  magias_iniciais?: number;
+  magias_por_nivel: string;
+  memoriza_metade?: boolean;
+}
+
 export interface MagiaClasseJson {
   /** Indica se a classe realmente conjura magias. */
   conjurador: boolean;
@@ -181,6 +187,11 @@ export interface MagiaClasseJson {
    * - "1_niveis_pares"
    */
   magias_por_nivel: string;
+  /**
+   * Regras por caminho (Arcanista: bruxo, feiticeiro, mago).
+   * Quando presente, magias_iniciais e magias_por_nivel são sobrescritos pelo caminho.
+   */
+  regras_por_caminho?: Record<string, RegrasMagiaCaminho>;
 }
 
 export interface ClasseJson {
@@ -269,6 +280,15 @@ export interface DivindadeJson {
   dominios?: string[];
   efeitos_mecanicos?: EfeitoMecanico[];
   descricao_resumida?: string;
+}
+
+// Linhagens (Feiticeiro) -----------------------------------------------------
+
+export interface LinhagemJson {
+  id: string;
+  nome: string;
+  descricao_resumida?: string;
+  efeitos_mecanicos: EfeitoMecanico[];
 }
 
 

@@ -1,0 +1,35 @@
+[
+  {
+    "id": "draconica",
+    "nome": "Linhagem Dracônica",
+    "descricao_resumida": "Um antepassado dragão. Escolha um tipo de dano: ácido, eletricidade, fogo ou frio. Soma Carisma em PV iniciais e recebe redução de dano 5 ao tipo escolhido.",
+    "efeitos_mecanicos": [
+      {
+        "alvo": "vida",
+        "tipo_efeito": "bonus_fixo",
+        "operacao": "add",
+        "valor_base": 0,
+        "atributo": "carisma",
+        "condicao": "vida_inicial_soma_atributo"
+      }
+    ]
+  },
+  {
+    "id": "feerica",
+    "nome": "Linhagem Feérica",
+    "descricao_resumida": "Sangue tocado pelas fadas. Treinado em Enganação e aprende uma magia de 1º círculo de encantamento ou ilusão.",
+    "efeitos_mecanicos": []
+  },
+  {
+    "id": "rubra",
+    "nome": "Linhagem Rubra",
+    "descricao_resumida": "Sangue corrompido pela Tormenta. Recebe um poder da Tormenta e pode perder outro atributo em vez de Carisma por poderes da Tormenta.",
+    "efeitos_mecanicos": []
+  },
+  {
+    "id": "abencoada",
+    "nome": "Linhagem Abençoada (DH)",
+    "descricao_resumida": "Centelha divina no sangue. Escolha um deus maior; aprende magia divina de 1º círculo e no 2º nível recebe um poder concedido pelo deus.",
+    "efeitos_mecanicos": []
+  }
+]
