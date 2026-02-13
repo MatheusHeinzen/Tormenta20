@@ -5,7 +5,11 @@ import type {
   CharacterSheet,
 } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
-import { getClassByNome, getLinhagemById } from "@/lib/data/tormenta20";
+import {
+  getAtributoHpPoderesConcedidos,
+  getClassByNome,
+  getLinhagemById,
+} from "@/lib/data/tormenta20";
 import type { MagiaClasseJson, RegrasMagiaCaminho } from "@/lib/t20/jsonTypes";
 
 interface ClassRule {
@@ -105,8 +109,16 @@ export function applyClassRules(sheet: CharacterSheet): CharacterSheet {
     return sheet;
   }
 
+  const idsPoderes = [
+    ...(sheet.poderesDivindadeIds ?? []),
+    ...(sheet.poderConcedidoLinhagemAbencoadaId
+      ? [sheet.poderConcedidoLinhagemAbencoadaId]
+      : []),
+  ];
   const atributoHp: AbilityScoreName =
-    sheet.config?.derived?.atributoHp ?? "constituicao";
+    getAtributoHpPoderesConcedidos(idsPoderes) ??
+    sheet.config?.derived?.atributoHp ??
+    "constituicao";
 
   let totalPv = classes
     .map((klass, index) =>

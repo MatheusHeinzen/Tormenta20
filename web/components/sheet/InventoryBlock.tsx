@@ -132,7 +132,7 @@ export function InventoryBlock({ sheet, onChange }: InventoryBlockProps) {
           Nenhum item adicionado. Use &quot;Adicionar item&quot; para começar.
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-md border border-border">
+        <div className="min-w-0 overflow-x-auto rounded-md border border-border">
           <table className="min-w-full border-collapse text-sm">
             <thead>
               <tr className="border-b border-border bg-paper">

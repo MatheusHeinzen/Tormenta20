@@ -4,7 +4,13 @@ import type {
   CharacterSkill,
 } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
-import { getClassByNome, getOrigemByNome, skillRules } from "@/lib/data/tormenta20";
+import {
+  getBonusPericiaPoderesConcedidos,
+  getClassByNome,
+  getOrigemByNome,
+  hasPoderConcedido,
+  skillRules,
+} from "@/lib/data/tormenta20";
 
 interface SkillsBlockProps {
   sheet: CharacterSheet;
@@ -25,12 +31,14 @@ const abilityLabels: Record<AbilityScoreName, string> = {
 function getPericiasFromClasses(sheet: CharacterSheet): {
   base: string[];
   treinaveis: string[];
-  totalTreinadas: number;
+  slotsClasse: number;
+  slotsInteligencia: number;
 } {
   const classes = sheet.classes ?? [];
   const baseSet = new Set<string>();
   const treinaveisSet = new Set<string>();
-  let totalTreinadas = 0;
+  let slotsClasse = 0;
+  let slotsInteligencia = 0;
   for (const klass of classes) {
     const data = getClassByNome(klass.nome);
     if (!data) continue;
@@ -38,18 +46,19 @@ function getPericiasFromClasses(sheet: CharacterSheet): {
     (data.pericias_treinaveis ?? []).forEach((id) => treinaveisSet.add(id));
     const pt = data.pericias_treinadas;
     if (typeof pt === "number") {
-      totalTreinadas += pt;
+      slotsClasse += pt;
     } else if (typeof pt === "string" && pt.includes("+")) {
       const [fixed, attr] = pt.split("+").map((s) => s.trim().toLowerCase());
       const n = parseInt(fixed, 10) || 0;
-      const mod =
-        attr && sheet.atributos[attr as AbilityScoreName] != null
-          ? abilityModifier(sheet.atributos[attr as AbilityScoreName])
-          : 0;
-      totalTreinadas += n + mod;
+      slotsClasse += n;
+      if (attr === "inteligencia" && sheet.atributos.inteligencia != null) {
+        slotsInteligencia += Math.max(
+          0,
+          abilityModifier(sheet.atributos.inteligencia),
+        );
+      }
     }
 
-    // Linhagem Feérica: Enganação treinada de base
     if (
       data.id === "arcanista" &&
       klass.caminho === "feiticeiro" &&
@@ -63,19 +72,44 @@ function getPericiasFromClasses(sheet: CharacterSheet): {
   return {
     base: [...baseSet],
     treinaveis: [...treinaveisSet],
-    totalTreinadas: Math.max(0, totalTreinadas),
+    slotsClasse,
+    slotsInteligencia,
   };
 }
 
+const SLOTS_CONHECIMENTO_ENCICLOPEDICO = 2;
+
 export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
   const { atributos } = sheet;
-  const { base: periciasBaseClasse, treinaveis: periciasTreinaveisClasse, totalTreinadas: slotsTreinadas } =
-    getPericiasFromClasses(sheet);
+  const {
+    base: periciasBaseClasse,
+    treinaveis: periciasTreinaveisClasse,
+    slotsClasse,
+    slotsInteligencia,
+  } = getPericiasFromClasses(sheet);
   const skillIdsInRules = new Set(skillRules.map((s) => s.id));
   const baseFiltered = periciasBaseClasse.filter((id) => skillIdsInRules.has(id));
   const treinaveisFiltered = periciasTreinaveisClasse.filter((id) =>
     skillIdsInRules.has(id),
   );
+  const idsPoderesConcedidos = [
+    ...(sheet.poderesDivindadeIds ?? []),
+    ...(sheet.poderConcedidoLinhagemAbencoadaId
+      ? [sheet.poderConcedidoLinhagemAbencoadaId]
+      : []),
+  ];
+  const hasConhecimentoEnciclopedico = hasPoderConcedido(
+    idsPoderesConcedidos,
+    "conhecimento_enciclopedico",
+  );
+  const slotsCE = hasConhecimentoEnciclopedico
+    ? SLOTS_CONHECIMENTO_ENCICLOPEDICO
+    : 0;
+  const totalSlots = slotsClasse + slotsInteligencia + slotsCE;
+
+  const countTreinadasChosen = sheet.pericias.filter(
+    (s) => s.treinada && !baseFiltered.includes(s.id),
+  ).length;
 
   const byId = new Map<string, CharacterSkill>();
   for (const skill of sheet.pericias) {
@@ -136,8 +170,12 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
     const modAtributo = abilityModifier(atributos[attr]);
     const treinada = effectiveTreinada ?? config.treinada;
     const bonusTreinado = treinada ? SKILL_TRAINED_BONUS : 0;
+    const bonusPoderesConcedidos = getBonusPericiaPoderesConcedidos(
+      idsPoderesConcedidos,
+      skillId,
+    );
 
-    return modAtributo + bonusTreinado + config.bonusOutros;
+    return modAtributo + bonusTreinado + config.bonusOutros + bonusPoderesConcedidos;
   }
 
   const midIndex = Math.ceil(skillRules.length / 2);
@@ -156,16 +194,12 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
         } as CharacterSkill);
 
       const isBaseFromClass = baseFiltered.includes(rule.id);
-      const isTreinavelFromClass = treinaveisFiltered.includes(rule.id);
       const effectiveTreinada = current.treinada || isBaseFromClass;
       const total = getSkillTotal(rule.id, effectiveTreinada);
       const totalLabel = total >= 0 ? `+${total}` : total.toString();
-      const countTreinadasChosen = sheet.pericias.filter(
-        (s) => treinaveisFiltered.includes(s.id) && s.treinada,
-      ).length;
-      const canToggleTreinada =
-        isTreinavelFromClass &&
-        (effectiveTreinada ? true : countTreinadasChosen < slotsTreinadas);
+      const podeMarcar = countTreinadasChosen < totalSlots;
+      const podeDesmarcar = current.treinada && !isBaseFromClass;
+      const checkboxDisabled = !podeMarcar && !podeDesmarcar;
 
       return (
         <tr
@@ -184,7 +218,7 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
               <input
                 type="checkbox"
                 checked={effectiveTreinada}
-                disabled={!canToggleTreinada && !current.treinada}
+                disabled={checkboxDisabled}
                 onChange={(event) =>
                   handleChange(rule.id, {
                     treinada: event.target.checked,
@@ -231,15 +265,24 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
   }
 
   const resumoClasse =
-    baseFiltered.length > 0 || treinaveisFiltered.length > 0 ? (
+    baseFiltered.length > 0 ||
+    treinaveisFiltered.length > 0 ||
+    totalSlots > 0 ? (
       <p className="text-xs text-ink-muted">
         {baseFiltered.length > 0 && (
-          <>Perícias base (classe e origem): {baseFiltered.map((id) => skillRules.find((s) => s.id === id)?.nome ?? id).join(", ")} (sempre +2).</>
+          <>Perícias base (classe e origem): {baseFiltered.map((id) => skillRules.find((s) => s.id === id)?.nome ?? id).join(", ")} (sempre +2). </>
         )}
-        {treinaveisFiltered.length > 0 && (
+        {totalSlots > 0 && (
           <>
-            {" "}
-            Escolha até <strong>{slotsTreinadas}</strong> treinadas entre as listadas abaixo.
+            Escolha até <strong>{totalSlots}</strong> treinadas: até{" "}
+            <strong>{slotsClasse}</strong> da lista da classe
+            {slotsInteligencia > 0 && (
+              <>, até <strong>{slotsInteligencia}</strong> de qualquer perícia (Int)</>
+            )}
+            {slotsCE > 0 && (
+              <>, até <strong>{slotsCE}</strong> de perícias de Inteligência (Conhecimento Enciclopédico)</>
+            )}
+            .
           </>
         )}
       </p>
@@ -255,7 +298,7 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
       {resumoClasse}
 
       <div className="grid gap-2 md:grid-cols-2">
-        <div className="overflow-x-auto">
+        <div className="min-w-0 overflow-x-auto">
           <table className="min-w-full border-collapse text-xs">
             <thead>
               <tr className="border-b border-border bg-paper">
@@ -280,7 +323,7 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
           </table>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="min-w-0 overflow-x-auto">
           <table className="min-w-full border-collapse text-xs">
             <thead>
               <tr className="border-b border-border bg-paper">

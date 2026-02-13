@@ -1,19 +1,33 @@
 import type { CharacterSheet } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
+import {
+  getBonusDefesaPoderesConcedidos,
+  getBonusManaNiveisImparesPoderesConcedidos,
+} from "@/lib/data/tormenta20";
 import { applyRaceByName, getRaceDataByName } from "@/lib/t20/race";
 import { applyOriginByName } from "@/lib/t20/origin";
 import { applyClassProficiencies, applyClassRules } from "@/lib/t20/class";
 
+function idsPoderesConcedidos(sheet: CharacterSheet): string[] {
+  return [
+    ...(sheet.poderesDivindadeIds ?? []),
+    ...(sheet.poderConcedidoLinhagemAbencoadaId
+      ? [sheet.poderConcedidoLinhagemAbencoadaId]
+      : []),
+  ];
+}
+
 /**
- * CA = 10 + (modificador do atributo de defesa) + armadura + escudo + bônus.
+ * CA = 10 + (modificador do atributo de defesa) + armadura + escudo + bônus (manual + poderes concedidos).
  */
 function computeCA(sheet: CharacterSheet): number {
   const attr = sheet.config?.derived?.atributoDefesa ?? "destreza";
   const mod = abilityModifier(sheet.atributos[attr]);
   const armadura = sheet.proficiencias?.armadura?.defesa ?? 0;
   const escudo = sheet.proficiencias?.escudo?.defesa ?? 0;
-  const bonus = sheet.combate?.caBonus ?? 0;
-  return 10 + mod + armadura + escudo + bonus;
+  const bonusManual = sheet.combate?.caBonus ?? 0;
+  const bonusPoderes = getBonusDefesaPoderesConcedidos(idsPoderesConcedidos(sheet));
+  return 10 + mod + armadura + escudo + bonusManual + bonusPoderes;
 }
 
 /**
@@ -83,6 +97,24 @@ function applyRaceLifeAndManaBonuses(sheet: CharacterSheet): CharacterSheet {
   };
 }
 
+function applyPoderesConcedidosManaBonuses(sheet: CharacterSheet): CharacterSheet {
+  const ids = idsPoderesConcedidos(sheet);
+  if (ids.length === 0) return sheet;
+
+  const totalNivel =
+    sheet.classes?.reduce((acc, k) => acc + k.nivel, 0) ?? sheet.nivel ?? 1;
+  const extraPm = getBonusManaNiveisImparesPoderesConcedidos(ids, totalNivel);
+  if (extraPm === 0) return sheet;
+
+  return {
+    ...sheet,
+    combate: {
+      ...sheet.combate,
+      pmMaximo: sheet.combate.pmMaximo + extraPm,
+    },
+  };
+}
+
 /**
  * Aplica regras derivadas completas em uma ficha (PV/PM, bônus raciais, CA, etc).
  * Usado na inicialização do formulário para garantir valores corretos ao carregar.
@@ -91,6 +123,7 @@ export function computeFullDerivedSheet(sheet: CharacterSheet): CharacterSheet {
   let result = applyClassRules(sheet);
   result = applyClassProficiencies(result);
   result = applyRaceLifeAndManaBonuses(result);
+  result = applyPoderesConcedidosManaBonuses(result);
   return {
     ...result,
     combate: {
@@ -130,11 +163,14 @@ export function applyT20DerivedChanges(
     next.classes !== prev.classes ||
     next.atributos !== prev.atributos ||
     next.config.derived.atributoHp !== prev.config.derived.atributoHp ||
-    next.raca !== prev.raca
+    next.raca !== prev.raca ||
+    next.poderesDivindadeIds !== prev.poderesDivindadeIds ||
+    next.poderConcedidoLinhagemAbencoadaId !== prev.poderConcedidoLinhagemAbencoadaId
   ) {
     result = applyClassRules(result);
     result = applyClassProficiencies(result);
     result = applyRaceLifeAndManaBonuses(result);
+    result = applyPoderesConcedidosManaBonuses(result);
   }
 
   result = {

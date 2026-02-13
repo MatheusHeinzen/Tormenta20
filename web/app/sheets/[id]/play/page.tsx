@@ -18,7 +18,7 @@ function StatButton({
     <button
       type="button"
       onClick={onClick}
-      className="flex-1 rounded-md bg-accent px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90"
+      className="min-h-[44px] flex-1 rounded-md bg-accent px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90"
     >
       {label}
     </button>
@@ -91,7 +91,7 @@ export default function PlaySheetPage() {
   return (
     <main className="min-h-screen px-4 py-8">
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
-        <header className="flex items-center justify-between gap-4">
+        <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="font-serif text-2xl font-semibold text-ink">
               Sessão – {sheet.nome}
@@ -104,14 +104,14 @@ export default function PlaySheetPage() {
             <button
               type="button"
               onClick={() => router.push("/")}
-              className="rounded border border-border bg-paper-card px-3 py-1.5 text-xs font-medium text-ink shadow-sm hover:bg-paper"
+              className="flex min-h-[44px] items-center justify-center rounded border border-border bg-paper-card px-4 text-xs font-medium text-ink shadow-sm hover:bg-paper"
             >
               Voltar ao menu
             </button>
             <button
               type="button"
               onClick={() => router.push(`/sheets/${sheet.id}/edit`)}
-              className="rounded border border-border bg-paper-card px-3 py-1.5 text-xs font-medium text-ink shadow-sm hover:bg-paper"
+              className="flex min-h-[44px] items-center justify-center rounded border border-border bg-paper-card px-4 text-xs font-medium text-ink shadow-sm hover:bg-paper"
             >
               Editar ficha
             </button>
@@ -129,7 +129,7 @@ export default function PlaySheetPage() {
                 / {sheet.combate.pvMaximo}
               </span>
             </p>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <StatButton label="-1 PV" onClick={() => adjustPv(sheet, -1)} />
               <StatButton label="-5 PV" onClick={() => adjustPv(sheet, -5)} />
               <StatButton label="+1 PV" onClick={() => adjustPv(sheet, 1)} />
@@ -147,7 +147,7 @@ export default function PlaySheetPage() {
                 / {sheet.combate.pmMaximo}
               </span>
             </p>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <StatButton label="-1 PM" onClick={() => adjustPm(sheet, -1)} />
               <StatButton label="-5 PM" onClick={() => adjustPm(sheet, -5)} />
               <StatButton label="+1 PM" onClick={() => adjustPm(sheet, 1)} />

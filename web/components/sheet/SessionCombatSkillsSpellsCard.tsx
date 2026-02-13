@@ -8,6 +8,7 @@ import type {
 } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
 import {
+  getBonusPericiaPoderesConcedidos,
   getClassByNome,
   getOrigemByNome,
   skillRules,
@@ -62,7 +63,17 @@ function getSkillTotal(
   const modAtributo = abilityModifier(sheet.atributos[config.atributoUsado]);
   const treinada = effectiveTreinada ?? config.treinada ?? baseIds.includes(skillId);
   const bonusTreinado = treinada ? SKILL_TRAINED_BONUS : 0;
-  return modAtributo + bonusTreinado + config.bonusOutros;
+  const idsPoderesConcedidos = [
+    ...(sheet.poderesDivindadeIds ?? []),
+    ...(sheet.poderConcedidoLinhagemAbencoadaId
+      ? [sheet.poderConcedidoLinhagemAbencoadaId]
+      : []),
+  ];
+  const bonusPoderesConcedidos = getBonusPericiaPoderesConcedidos(
+    idsPoderesConcedidos,
+    skillId,
+  );
+  return modAtributo + bonusTreinado + config.bonusOutros + bonusPoderesConcedidos;
 }
 
 interface SessionCombatSkillsSpellsCardProps {
@@ -88,7 +99,7 @@ export function SessionCombatSkillsSpellsCard({
             key={id}
             type="button"
             onClick={() => setActiveTab(id)}
-            className={`flex-1 px-3 py-2.5 text-xs font-semibold transition-colors ${
+            className={`flex min-h-[44px] flex-1 items-center justify-center px-3 py-2.5 text-xs font-semibold transition-colors ${
               activeTab === id
                 ? "border-b-2 border-accent bg-paper-card text-ink"
                 : "text-ink-muted hover:bg-paper hover:text-ink"

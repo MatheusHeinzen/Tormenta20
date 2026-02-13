@@ -36,10 +36,10 @@ export default function EditSheetPage() {
   }
 
   return (
-    <main className="min-h-screen px-4 py-8">
-      <div className="mx-auto max-w-6xl">
+    <main className="min-h-screen w-full max-w-full overflow-x-hidden px-4 py-8">
+      <div className="mx-auto w-full min-w-0 lg:max-w-6xl">
         <header className="mb-6 space-y-1">
-          <h1 className="font-serif text-2xl font-semibold text-ink">
+          <h1 className="font-serif text-xl font-semibold text-ink sm:text-2xl">
             Editar ficha – {initial.nome}
           </h1>
           <p className="text-xs text-ink-muted">
@@ -48,7 +48,7 @@ export default function EditSheetPage() {
           <button
             type="button"
             onClick={() => router.push("/")}
-            className="mt-2 inline-flex items-center rounded border border-border bg-paper-card px-3 py-1.5 text-xs font-medium text-ink shadow-sm hover:bg-paper"
+            className="mt-2 inline-flex min-h-[44px] items-center justify-center rounded border border-border bg-paper-card px-4 text-xs font-medium text-ink shadow-sm hover:bg-paper"
           >
             Voltar ao menu
           </button>

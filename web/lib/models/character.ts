@@ -28,6 +28,13 @@ export interface CharacterClass {
   linhagem?: string;
 }
 
+export interface PoderClasseEscolhido {
+  classeId: string;
+  nivel: number;
+  poderId?: string;
+  poderCustom?: string;
+}
+
 export interface DerivedStatsConfig {
   atributoHp: AbilityScoreName;
   atributoDefesa: AbilityScoreName;
@@ -166,6 +173,8 @@ export interface CharacterSheet {
   poderesDivindadeIds?: string[];
   /** Id do poder concedido da linhagem abençoada (qualquer divindade) */
   poderConcedidoLinhagemAbencoadaId?: string;
+  /** Poderes de classe escolhidos por nível (um por classeId + nivel) */
+  poderesClasseEscolhidos?: PoderClasseEscolhido[];
   notas: CharacterNotes;
 
   classes: CharacterClass[];
@@ -273,6 +282,7 @@ export function normalizeCharacter(raw: CharacterSheet): CharacterSheet {
     inventario,
     poderesDivindadeIds: raw.poderesDivindadeIds ?? [],
     poderConcedidoLinhagemAbencoadaId: raw.poderConcedidoLinhagemAbencoadaId,
+    poderesClasseEscolhidos: raw.poderesClasseEscolhidos ?? [],
   };
 }
 
@@ -381,6 +391,7 @@ export function createEmptyCharacterSheet(nome: string): CharacterSheet {
 
     magias: [],
     poderesDivindadeIds: [],
+    poderesClasseEscolhidos: [],
 
     notas: {
       descricao: "",
