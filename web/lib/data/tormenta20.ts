@@ -6,7 +6,10 @@ import deusesJson from "@/data/tormenta20/deuses.json";
 import poderesConcedidosJson from "@/data/tormenta20/poderes_concedidos.json";
 import periciasJson from "@/data/tormenta20/pericias.json";
 import linhagensJson from "@/data/tormenta20/linhagens.json";
-import type { AbilityScoreName } from "@/lib/models/character";
+import type {
+  AbilityScoreName,
+  PoderClasseEscolhido,
+} from "@/lib/models/character";
 import type {
   ClasseJson,
   DivindadeJson,
@@ -43,6 +46,14 @@ export function getClassByNome(nome: string): ClasseJson | undefined {
   );
 }
 
+export function getClassById(id: string): ClasseJson | undefined {
+  if (!id?.trim()) return undefined;
+  const lower = id.trim().toLowerCase();
+  return (classesJson as ClasseJson[]).find(
+    (c) => c.id === id || c.id.toLowerCase() === lower,
+  );
+}
+
 export function getPoderesClasse(): PoderClasseJson[] {
   return poderesClasseJson as PoderClasseJson[];
 }
@@ -50,6 +61,34 @@ export function getPoderesClasse(): PoderClasseJson[] {
 export function getPoderesClasseByIds(ids: string[]): PoderClasseJson[] {
   const todos = getPoderesClasse();
   return ids.map((id) => todos.find((p) => p.id === id)).filter(Boolean) as PoderClasseJson[];
+}
+
+export function getPoderesClasseDisponiveisParaNivel(
+  classeId: string,
+  nivel: number,
+  escolhasDestaClasse: PoderClasseEscolhido[],
+): PoderClasseJson[] {
+  const classe = getClassById(classeId);
+  if (!classe?.habilidades_por_nivel?.length) return [];
+
+  const entradaNivel = classe.habilidades_por_nivel.find((h) => h.nivel === nivel);
+  if (!entradaNivel?.poderes?.length) return [];
+
+  const poderesIds = entradaNivel.poderes;
+  const poderes = getPoderesClasseByIds(poderesIds);
+  const idsEscolhidos = escolhasDestaClasse
+    .filter((e) => e.nivel < nivel && e.poderId)
+    .map((e) => e.poderId as string);
+
+  return poderes.filter((p) => {
+    const req = p.requisitos;
+    if (req?.nivel_minimo != null && req.nivel_minimo > nivel) return false;
+    if (req?.outros_poderes?.length) {
+      const todosAtendidos = req.outros_poderes.every((id) => idsEscolhidos.includes(id));
+      if (!todosAtendidos) return false;
+    }
+    return true;
+  });
 }
 
 export function getOrigens(): OriginOption[] {

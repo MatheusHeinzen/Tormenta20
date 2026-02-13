@@ -244,6 +244,7 @@ export interface PoderClasseJson {
   descricao_resumida?: string;
   efeitos_mecanicos: EfeitoMecanico[];
   requisitos?: RequisitosPoderClasse;
+  pode_escolher_multiplas_vezes?: boolean;
 }
 
 // Magias ---------------------------------------------------------------------
