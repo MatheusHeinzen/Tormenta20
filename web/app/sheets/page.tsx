@@ -30,14 +30,14 @@ export default function SheetsListPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 px-4 py-8">
+    <main className="min-h-screen px-4 py-8">
       <div className="mx-auto max-w-6xl">
         <header className="mb-6 flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold text-zinc-900">
+            <h1 className="font-serif text-2xl font-semibold text-ink">
               Fichas salvas
             </h1>
-            <p className="text-xs text-zinc-600">
+            <p className="text-xs text-ink-muted">
               As fichas abaixo estão salvas apenas neste navegador.
             </p>
           </div>
@@ -45,13 +45,13 @@ export default function SheetsListPage() {
           <div className="flex gap-2">
             <Link
               href="/"
-              className="rounded border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 shadow-sm hover:bg-zinc-50"
+              className="rounded border border-border bg-paper-card px-3 py-1.5 text-xs font-medium text-ink shadow-sm hover:bg-paper"
             >
               Voltar ao menu
             </Link>
             <Link
               href="/sheets/new"
-              className="rounded bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-zinc-800"
+              className="rounded bg-accent px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:opacity-90"
             >
               Nova ficha
             </Link>
@@ -59,7 +59,7 @@ export default function SheetsListPage() {
         </header>
 
         {characters.length === 0 ? (
-          <p className="text-sm text-zinc-600">
+          <p className="text-sm text-ink-muted">
             Nenhuma ficha encontrada. Clique em &quot;Nova ficha&quot; para
             começar.
           </p>
@@ -68,18 +68,18 @@ export default function SheetsListPage() {
             {characters.map((sheet) => (
               <li
                 key={sheet.id}
-                className="flex items-center justify-between gap-4 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm"
+                className="flex items-center justify-between gap-4 rounded-md border border-border bg-paper-card p-4 shadow-sm"
               >
                 <div className="space-y-1">
                   <div className="flex flex-wrap items-center gap-2 text-sm">
-                    <span className="font-semibold text-zinc-900">
+                    <span className="font-semibold text-ink">
                       {sheet.nome || "Sem nome"}
                     </span>
-                    <span className="text-xs text-zinc-500">
+                    <span className="text-xs text-ink-muted">
                       {sheet.raca} • {sheet.origem} • Tipo: {getTipoCriaturaLabel(getRaceDataByName(sheet.raca)?.tipo_criatura)} • {getClassesResumo(sheet)}
                     </span>
                   </div>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-xs text-ink-muted">
                     Atualizado em{" "}
                     {new Date(sheet.updatedAt).toLocaleString("pt-BR")}
                   </p>
@@ -88,20 +88,20 @@ export default function SheetsListPage() {
                 <div className="flex flex-shrink-0 gap-2">
                   <Link
                     href={`/sheets/${sheet.id}/play`}
-                    className="rounded border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 hover:bg-zinc-50"
+                    className="rounded border border-border bg-paper-card px-3 py-1.5 text-xs font-medium text-ink hover:bg-paper"
                   >
                     Usar
                   </Link>
                   <Link
                     href={`/sheets/${sheet.id}/edit`}
-                    className="rounded border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 hover:bg-zinc-50"
+                    className="rounded border border-border bg-paper-card px-3 py-1.5 text-xs font-medium text-ink hover:bg-paper"
                   >
                     Editar
                   </Link>
                   <button
                     type="button"
                     onClick={() => handleDelete(sheet.id)}
-                    className="rounded border border-red-200 bg-white px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-50"
+                    className="rounded border border-red-300 bg-paper-card px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-50"
                   >
                     Apagar
                   </button>

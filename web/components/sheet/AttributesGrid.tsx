@@ -27,12 +27,12 @@ export function AttributesGrid({ sheet, onChange }: AttributesGridProps) {
   }
 
   return (
-    <section className="space-y-5 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+    <section className="space-y-5 rounded-md border border-border bg-paper-card p-5 shadow-sm">
       <div className="flex items-center justify-between">
-        <h2 className="text-base font-semibold text-zinc-900">Atributos</h2>
+        <h2 className="font-serif text-base font-semibold text-ink">Atributos</h2>
         <button
           type="button"
-          className="rounded border border-zinc-300 bg-white px-3 py-1 text-xs font-medium text-zinc-800 shadow-sm hover:bg-zinc-50"
+          className="rounded border border-border bg-paper-card px-3 py-1 text-xs font-medium text-ink shadow-sm hover:bg-paper"
           onClick={() => setIsCalculatorOpen(true)}
         >
           Abrir calculadora de atributos
@@ -47,12 +47,12 @@ export function AttributesGrid({ sheet, onChange }: AttributesGridProps) {
           return (
             <div
               key={key}
-              className="flex flex-col items-center justify-between rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-center"
+              className="flex flex-col items-center justify-between rounded-md border border-border bg-paper p-3 text-center"
             >
-              <span className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
                 {LABELS[key]}
               </span>
-              <span className="mt-2 text-lg font-semibold tabular-nums text-zinc-900">
+              <span className="mt-2 text-lg font-semibold tabular-nums text-ink">
                 {mod >= 0 ? `+${mod}` : mod.toString()}
               </span>
             </div>

@@ -48,29 +48,29 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
   }
 
   return (
-    <section className="space-y-5 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+    <section className="space-y-5 rounded-md border border-border bg-paper-card p-5 shadow-sm">
       <div className="flex items-center justify-between gap-2">
-        <h2 className="text-base font-semibold text-zinc-900">Magias</h2>
+        <h2 className="font-serif text-base font-semibold text-ink">Magias</h2>
         <button
           type="button"
           onClick={handleAdd}
-          className="rounded bg-zinc-900 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-zinc-800"
+          className="rounded bg-accent px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90"
         >
           Adicionar magia
         </button>
       </div>
 
       {conjurador && (
-        <div className="space-y-4 rounded-lg border border-zinc-200 bg-zinc-50 p-4 text-sm">
-          <p className="text-[11px] font-semibold uppercase text-zinc-500">
+        <div className="space-y-4 rounded-md border border-border bg-paper p-4 text-sm">
+          <p className="text-[11px] font-semibold uppercase text-ink-muted">
             Conjuração (classe)
           </p>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <div>
-              <p className="text-[11px] font-semibold text-zinc-500">
+              <p className="text-[11px] font-semibold text-ink-muted">
                 CD das magias
               </p>
-              <p className="mt-0.5 text-[11px] text-zinc-500">
+              <p className="mt-0.5 text-[11px] text-ink-muted">
                 10 + metade do nível (arred. cima) + mod.{conjurador.atributoLabel}
               </p>
               <input
@@ -85,44 +85,44 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                     },
                   })
                 }
-                className="mt-1 w-full rounded border border-zinc-300 bg-white px-2 py-1.5 font-semibold text-zinc-900 shadow-sm focus:border-zinc-600 focus:outline-none"
+                className="mt-1 w-full rounded border border-border bg-paper-card px-2 py-1.5 font-semibold text-ink shadow-sm focus:border-accent focus:outline-none"
               />
-              <p className="mt-0.5 text-[10px] text-zinc-500">
+              <p className="mt-0.5 text-[10px] text-ink-muted">
                 Sugerido: {conjurador.cdBase}
               </p>
             </div>
             <div>
-              <p className="text-[11px] font-semibold text-zinc-500">
+              <p className="text-[11px] font-semibold text-ink-muted">
                 Bônus de teste de magia
               </p>
-              <p className="mt-1 font-semibold text-zinc-900">
+              <p className="mt-1 font-semibold text-ink">
                 {conjurador.bonusTeste >= 0 ? `+${conjurador.bonusTeste}` : conjurador.bonusTeste}{" "}
-                <span className="text-xs font-normal text-zinc-500">(mod. + nível)</span>
+                <span className="text-xs font-normal text-ink-muted">(mod. + nível)</span>
               </p>
             </div>
             <div>
-              <p className="text-[11px] font-semibold text-zinc-500">
+              <p className="text-[11px] font-semibold text-ink-muted">
                 Número de magias conhecidas
               </p>
-              <p className="mt-1 font-semibold text-zinc-900">
+              <p className="mt-1 font-semibold text-ink">
                 {conjurador.magiasConhecidas}{" "}
-                <span className="text-xs font-normal text-zinc-500">(nível {conjurador.nivelTotal})</span>
+                <span className="text-xs font-normal text-ink-muted">(nível {conjurador.nivelTotal})</span>
               </p>
             </div>
             <div>
-              <p className="text-[11px] font-semibold text-zinc-500">
+              <p className="text-[11px] font-semibold text-ink-muted">
                 Círculo máximo
               </p>
-              <p className="mt-1 font-semibold text-zinc-900">
+              <p className="mt-1 font-semibold text-ink">
                 {conjurador.circuloMax}º
               </p>
             </div>
             {conjurador.memorizaMetade && (
               <div>
-                <p className="text-[11px] font-semibold text-zinc-500">
+                <p className="text-[11px] font-semibold text-ink-muted">
                   Magias memorizadas
                 </p>
-                <p className="mt-1 font-semibold text-zinc-900">
+                <p className="mt-1 font-semibold text-ink">
                   {magias.filter((m) => m.memorizada).length} / {conjurador.maxMemorizadas}
                 </p>
               </div>
@@ -132,7 +132,7 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
       )}
 
       {magias.length === 0 ? (
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-ink-muted">
           Nenhuma magia cadastrada. Use &quot;Adicionar magia&quot; para criar
           entradas por círculo.
         </p>
@@ -141,10 +141,10 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
           {magias.map((spell, index) => (
             <details
               key={spell.id}
-              className="rounded-lg border border-zinc-200 bg-zinc-50 p-4"
+              className="rounded-md border border-border bg-paper p-4"
             >
               <summary className="flex cursor-pointer items-center justify-between gap-2">
-                <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600">
+                <div className="flex flex-wrap items-center gap-2 text-xs text-ink-muted">
                   {conjurador?.memorizaMetade && (
                     <div
                       className="flex items-center gap-1"
@@ -162,7 +162,7 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                         onChange={(e) =>
                           handleChange(index, { memorizada: e.target.checked })
                         }
-                        className="rounded border-zinc-300"
+                        className="rounded border-border"
                       />
                       <label htmlFor={`mem-${spell.id}`} className="cursor-pointer text-[11px]">
                         Memorizada
@@ -170,15 +170,15 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                     </div>
                   )}
                   <span className="font-semibold uppercase">Círculo</span>
-                  <span className="text-sm font-semibold text-zinc-900">
+                  <span className="text-sm font-semibold text-ink">
                     {spell.circulo ?? 0}
                   </span>
                   <span className="font-semibold uppercase">Nome</span>
-                  <span className="text-sm font-semibold text-zinc-900">
+                  <span className="text-sm font-semibold text-ink">
                     {spell.nome || "Sem nome"}
                   </span>
                 </div>
-                <span className="text-[11px] text-zinc-500">
+                <span className="text-[11px] text-ink-muted">
                   Clique para expandir
                 </span>
               </summary>
@@ -187,7 +187,7 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex flex-wrap items-center gap-2">
                     {conjurador?.memorizaMetade && (
-                      <label className="flex cursor-pointer items-center gap-1 text-xs font-semibold text-zinc-600">
+                      <label className="flex cursor-pointer items-center gap-1 text-xs font-semibold text-ink-muted">
                         <input
                           type="checkbox"
                           checked={!!spell.memorizada}
@@ -198,12 +198,12 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                           onChange={(e) =>
                             handleChange(index, { memorizada: e.target.checked })
                           }
-                          className="rounded border-zinc-300"
+                          className="rounded border-border"
                         />
                         Memorizada
                       </label>
                     )}
-                    <label className="flex items-center gap-1 text-xs font-semibold text-zinc-600">
+                    <label className="flex items-center gap-1 text-xs font-semibold text-ink-muted">
                       Círculo
                       <input
                         type="number"
@@ -215,7 +215,7 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                             circulo: Number(event.target.value) || 0,
                           })
                         }
-                        className="w-14 rounded border border-zinc-300 px-1 py-0.5 text-[11px] shadow-sm focus:border-zinc-600 focus:outline-none"
+                        className="w-14 rounded border border-border px-1 py-0.5 text-[11px] shadow-sm focus:border-accent focus:outline-none"
                       />
                     </label>
                     <input
@@ -225,13 +225,13 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                       onChange={(event) =>
                         handleChange(index, { nome: event.target.value })
                       }
-                      className="min-w-[160px] flex-1 rounded border border-zinc-300 px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                      className="min-w-[160px] flex-1 rounded border border-border px-2 py-1 text-sm shadow-sm focus:border-accent focus:outline-none"
                     />
                   </div>
                   <button
                     type="button"
                     onClick={() => handleRemove(index)}
-                    className="rounded border border-red-200 bg-white px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-50"
+                    className="rounded border border-red-200 bg-paper-card px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-50"
                   >
                     Remover
                   </button>
@@ -239,7 +239,7 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
 
                 <div className="grid gap-3 md:grid-cols-4">
                   <div className="space-y-1">
-                    <label className="block text-[11px] font-semibold text-zinc-600">
+                    <label className="block text-[11px] font-semibold text-ink-muted">
                       Escola
                     </label>
                     <input
@@ -248,11 +248,11 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                       onChange={(event) =>
                         handleChange(index, { escola: event.target.value })
                       }
-                      className="w-full rounded border border-zinc-300 px-2 py-1 text-xs shadow-sm focus:border-zinc-600 focus:outline-none"
+                      className="w-full rounded border border-border px-2 py-1 text-xs shadow-sm focus:border-accent focus:outline-none"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="block text-[11px] font-semibold text-zinc-600">
+                    <label className="block text-[11px] font-semibold text-ink-muted">
                       Alcance
                     </label>
                     <input
@@ -261,11 +261,11 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                       onChange={(event) =>
                         handleChange(index, { alcance: event.target.value })
                       }
-                      className="w-full rounded border border-zinc-300 px-2 py-1 text-xs shadow-sm focus:border-zinc-600 focus:outline-none"
+                      className="w-full rounded border border-border px-2 py-1 text-xs shadow-sm focus:border-accent focus:outline-none"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="block text-[11px] font-semibold text-zinc-600">
+                    <label className="block text-[11px] font-semibold text-ink-muted">
                       Área
                     </label>
                     <input
@@ -274,11 +274,11 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                       onChange={(event) =>
                         handleChange(index, { area: event.target.value })
                       }
-                      className="w-full rounded border border-zinc-300 px-2 py-1 text-xs shadow-sm focus:border-zinc-600 focus:outline-none"
+                      className="w-full rounded border border-border px-2 py-1 text-xs shadow-sm focus:border-accent focus:outline-none"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="block text-[11px] font-semibold text-zinc-600">
+                    <label className="block text-[11px] font-semibold text-ink-muted">
                       Duração
                     </label>
                     <input
@@ -287,14 +287,14 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                       onChange={(event) =>
                         handleChange(index, { duracao: event.target.value })
                       }
-                      className="w-full rounded border border-zinc-300 px-2 py-1 text-xs shadow-sm focus:border-zinc-600 focus:outline-none"
+                      className="w-full rounded border border-border px-2 py-1 text-xs shadow-sm focus:border-accent focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div className="grid gap-3 md:grid-cols-2">
                   <div className="space-y-1">
-                    <label className="block text-[11px] font-semibold text-zinc-600">
+                    <label className="block text-[11px] font-semibold text-ink-muted">
                       Resistência
                     </label>
                     <input
@@ -305,11 +305,11 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                           resistencia: event.target.value,
                         })
                       }
-                      className="w-full rounded border border-zinc-300 px-2 py-1 text-xs shadow-sm focus:border-zinc-600 focus:outline-none"
+                      className="w-full rounded border border-border px-2 py-1 text-xs shadow-sm focus:border-accent focus:outline-none"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="block text-[11px] font-semibold text-zinc-600">
+                    <label className="block text-[11px] font-semibold text-ink-muted">
                       Descrição / Efeito
                     </label>
                     <textarea
@@ -318,7 +318,7 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
                       onChange={(event) =>
                         handleChange(index, { efeito: event.target.value })
                       }
-                      className="w-full rounded border border-zinc-300 px-2 py-1 text-xs shadow-sm focus:border-zinc-600 focus:outline-none"
+                      className="w-full rounded border border-border px-2 py-1 text-xs shadow-sm focus:border-accent focus:outline-none"
                     />
                   </div>
                 </div>

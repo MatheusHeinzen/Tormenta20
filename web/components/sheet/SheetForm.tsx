@@ -90,7 +90,7 @@ export function SheetForm({
       <div className="flex justify-end">
         <button
           type="submit"
-          className="rounded bg-zinc-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-zinc-800"
+          className="rounded bg-accent px-4 py-2 text-sm font-medium text-white shadow-sm hover:opacity-90"
         >
           {submitLabel}
         </button>

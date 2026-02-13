@@ -55,20 +55,20 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
   const allClassOptions = getClasses();
 
   return (
-    <section className="space-y-5 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+    <section className="space-y-5 rounded-md border border-border bg-paper-card p-5 shadow-sm">
       <div className="flex items-center justify-between gap-2">
-        <h2 className="text-base font-semibold text-zinc-900">Classes</h2>
+        <h2 className="font-serif text-base font-semibold text-ink">Classes</h2>
         <button
           type="button"
           onClick={handleAdd}
-          className="rounded bg-zinc-900 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-zinc-800"
+          className="rounded bg-accent px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90"
         >
           Adicionar classe
         </button>
       </div>
 
       {classes.length === 0 ? (
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-ink-muted">
           Nenhuma classe adicionada. Use &quot;Adicionar classe&quot; para
           começar.
         </p>
@@ -77,7 +77,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
           {classes.map((klass, index) => (
             <details
               key={klass.id}
-              className="rounded-lg border border-zinc-200 bg-zinc-50 p-4"
+              className="rounded-md border border-border bg-paper p-4"
               open={index === 0}
             >
               <summary className="flex items-center justify-between gap-2 cursor-pointer">
@@ -87,7 +87,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                     onChange={(event) =>
                       handleChange(index, { nome: event.target.value })
                     }
-                    className="max-w-[180px] rounded border border-zinc-300 bg-white px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                    className="max-w-[180px] rounded border border-border bg-paper-card px-2 py-1 text-sm text-ink shadow-sm focus:border-accent focus:outline-none"
                   >
                     {allClassOptions.map((option) => (
                       <option key={option.id} value={option.nome}>
@@ -97,7 +97,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                   </select>
                   {getClassByNome(klass.nome)?.id === "arcanista" && (
                     <>
-                      <span className="text-xs font-semibold text-zinc-500">
+                      <span className="text-xs font-semibold text-ink-muted">
                         Caminho
                       </span>
                       <select
@@ -108,7 +108,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                             linhagem: e.target.value !== "feiticeiro" ? undefined : klass.linhagem,
                           })
                         }
-                        className="max-w-[120px] rounded border border-zinc-300 bg-white px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                        className="max-w-[120px] rounded border border-border bg-paper-card px-2 py-1 text-sm text-ink shadow-sm focus:border-accent focus:outline-none"
                       >
                         <option value="">—</option>
                         <option value="bruxo">Bruxo</option>
@@ -117,7 +117,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                       </select>
                       {klass.caminho === "feiticeiro" && (
                         <>
-                          <span className="text-xs font-semibold text-zinc-500">
+                          <span className="text-xs font-semibold text-ink-muted">
                             Linhagem
                           </span>
                           <select
@@ -127,7 +127,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                                 linhagem: e.target.value || undefined,
                               })
                             }
-                            className="max-w-[160px] rounded border border-zinc-300 bg-white px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                            className="max-w-[160px] rounded border border-border bg-paper-card px-2 py-1 text-sm text-ink shadow-sm focus:border-accent focus:outline-none"
                           >
                             <option value="">—</option>
                             {getLinhagens().map((l) => (
@@ -140,7 +140,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                       )}
                     </>
                   )}
-                  <span className="text-xs font-semibold text-zinc-500">
+                  <span className="text-xs font-semibold text-ink-muted">
                     Nível
                   </span>
                   <input
@@ -152,7 +152,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                         nivel: Number(event.target.value) || 1,
                       })
                     }
-                    className="w-16 rounded border border-zinc-300 px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                    className="w-16 rounded border border-border bg-paper-card px-2 py-1 text-sm text-ink shadow-sm focus:border-accent focus:outline-none"
                   />
                 </div>
                 <button
@@ -161,13 +161,13 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                     event.preventDefault();
                     handleRemove(index);
                   }}
-                  className="rounded border border-red-200 bg-white px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-50"
+                  className="rounded border border-red-300 bg-paper-card px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-50"
                 >
                   Remover
                 </button>
               </summary>
 
-              <div className="mt-3 space-y-3 text-xs text-zinc-600">
+              <div className="mt-3 space-y-3 text-xs text-ink-muted">
                 {(() => {
                   const data = getClassByNome(klass.nome);
                   if (!data) return null;
@@ -217,7 +217,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                   function descricaoArcanista() {
                     if (!caminho) {
                       return (
-                        <p className="text-zinc-700">
+                        <p className="text-ink">
                           Conjurador arcano. Escolha o <strong>Caminho</strong> acima
                           (Bruxo, Feiticeiro ou Mago) para ver as regras que se
                           aplicam a você.
@@ -226,7 +226,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                     }
                     if (caminho === "bruxo") {
                       return (
-                        <p className="text-zinc-700">
+                        <p className="text-ink">
                           <strong>Bruxo:</strong> conjura por um foco (varinha,
                           cajado, chapéu). Atributo: Inteligência. Aprende 1 magia
                           nova por nível. Sem o foco, teste de Misticismo (CD 20 +
@@ -237,14 +237,14 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                     if (caminho === "feiticeiro") {
                       return (
                         <>
-                          <p className="text-zinc-700">
+                          <p className="text-ink">
                             <strong>Feiticeiro:</strong> magia inata no sangue.
                             Atributo: Carisma. Aprende 1 magia nova a cada nível
                             ímpar (3º, 5º, 7º…). Não depende de grimório nem
                             foco.
                           </p>
                           {linhagem && (
-                            <p className="text-zinc-700">
+                            <p className="text-ink">
                               <strong>Linhagem ({linhagem.nome}):</strong>{" "}
                               {linhagem.descricao_resumida}
                             </p>
@@ -254,7 +254,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                     }
                     if (caminho === "mago") {
                       return (
-                        <p className="text-zinc-700">
+                        <p className="text-ink">
                           <strong>Mago:</strong> conjura por estudo e grimório.
                           Atributo: Inteligência. Começa com 4 magias; ao
                           desbloquear um novo círculo, aprende +1 magia daquele
@@ -264,14 +264,14 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                       );
                     }
                     return data?.descricao_resumida ? (
-                      <p className="text-zinc-700">{data.descricao_resumida}</p>
+                      <p className="text-ink">{data.descricao_resumida}</p>
                     ) : null;
                   }
 
                   return (
                     <>
                       {isArcanista ? descricaoArcanista() : data.descricao_resumida && (
-                        <p className="text-zinc-700">
+                        <p className="text-ink">
                           {data.descricao_resumida}
                         </p>
                       )}

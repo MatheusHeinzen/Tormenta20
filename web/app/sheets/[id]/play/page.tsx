@@ -18,7 +18,7 @@ function StatButton({
     <button
       type="button"
       onClick={onClick}
-      className="flex-1 rounded-lg bg-zinc-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-zinc-800"
+      className="flex-1 rounded-md bg-accent px-3 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90"
     >
       {label}
     </button>
@@ -33,7 +33,7 @@ export default function PlaySheetPage() {
   if (loading) {
     return (
       <main className="mx-auto max-w-6xl px-4 py-10">
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-ink-muted">
           Carregando ficha...
         </p>
       </main>
@@ -45,7 +45,7 @@ export default function PlaySheetPage() {
   if (!sheet) {
     return (
       <main className="mx-auto max-w-6xl px-4 py-10">
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-ink-muted">
           Ficha não encontrada. Verifique se ela ainda existe na lista de
           fichas.
         </p>
@@ -89,14 +89,14 @@ export default function PlaySheetPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 px-4 py-8">
+    <main className="min-h-screen px-4 py-8">
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
         <header className="flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold text-zinc-900">
+            <h1 className="font-serif text-2xl font-semibold text-ink">
               Sessão – {sheet.nome}
             </h1>
-            <p className="text-xs text-zinc-600">
+            <p className="text-xs text-ink-muted">
               Use os botões para ajustar PV e PM rapidamente durante a sessão.
             </p>
           </div>
@@ -104,14 +104,14 @@ export default function PlaySheetPage() {
             <button
               type="button"
               onClick={() => router.push("/")}
-              className="rounded border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 hover:bg-zinc-50"
+              className="rounded border border-border bg-paper-card px-3 py-1.5 text-xs font-medium text-ink shadow-sm hover:bg-paper"
             >
               Voltar ao menu
             </button>
             <button
               type="button"
               onClick={() => router.push(`/sheets/${sheet.id}/edit`)}
-              className="rounded border border-zinc-300 bg-white px-3 py-1.5 text-xs font-medium text-zinc-800 hover:bg-zinc-50"
+              className="rounded border border-border bg-paper-card px-3 py-1.5 text-xs font-medium text-ink shadow-sm hover:bg-paper"
             >
               Editar ficha
             </button>
@@ -119,13 +119,13 @@ export default function PlaySheetPage() {
         </header>
 
         <section className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-3 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
-            <h2 className="text-sm font-semibold text-zinc-900">
+          <div className="space-y-3 rounded-md border border-border bg-paper-card p-4 shadow-sm">
+            <h2 className="font-serif text-sm font-semibold text-ink">
               Pontos de Vida
             </h2>
-            <p className="text-2xl font-semibold text-zinc-900">
+            <p className="text-2xl font-semibold text-ink">
               {sheet.combate.pvAtual}{" "}
-              <span className="text-base font-normal text-zinc-500">
+              <span className="text-base font-normal text-ink-muted">
                 / {sheet.combate.pvMaximo}
               </span>
             </p>
@@ -137,13 +137,13 @@ export default function PlaySheetPage() {
             </div>
           </div>
 
-          <div className="space-y-3 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
-            <h2 className="text-sm font-semibold text-zinc-900">
+          <div className="space-y-3 rounded-md border border-border bg-paper-card p-4 shadow-sm">
+            <h2 className="font-serif text-sm font-semibold text-ink">
               Pontos de Mana
             </h2>
-            <p className="text-2xl font-semibold text-zinc-900">
+            <p className="text-2xl font-semibold text-ink">
               {sheet.combate.pmAtual}{" "}
-              <span className="text-base font-normal text-zinc-500">
+              <span className="text-base font-normal text-ink-muted">
                 / {sheet.combate.pmMaximo}
               </span>
             </p>
@@ -157,12 +157,12 @@ export default function PlaySheetPage() {
         </section>
 
         <section className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
-            <h2 className="text-sm font-semibold text-zinc-900">Resumo</h2>
-            <p className="text-xs text-zinc-600">
+          <div className="space-y-2 rounded-md border border-border bg-paper-card p-4 shadow-sm">
+            <h2 className="font-serif text-sm font-semibold text-ink">Resumo</h2>
+            <p className="text-xs text-ink-muted">
               {sheet.raca} • {sheet.origem} • Tipo: {getTipoCriaturaLabel(getRaceDataByName(sheet.raca)?.tipo_criatura)} • {classesResumo}
             </p>
-            <p className="text-xs text-zinc-600">
+            <p className="text-xs text-ink-muted">
               CA {sheet.combate.caTotal} (
               {atributoDefesa.toUpperCase()}{" "}
               {defesaMod >= 0 ? `+${defesaMod}` : defesaMod}) • Deslocamento{" "}
@@ -170,21 +170,21 @@ export default function PlaySheetPage() {
             </p>
           </div>
 
-          <div className="space-y-2 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
-            <h2 className="text-sm font-semibold text-zinc-900">Inventário</h2>
-            <p className="text-xs font-semibold text-zinc-600">
+          <div className="space-y-2 rounded-md border border-border bg-paper-card p-4 shadow-sm">
+            <h2 className="font-serif text-sm font-semibold text-ink">Inventário</h2>
+            <p className="text-xs font-semibold text-ink-muted">
               Dinheiro: {sheet.inventario.dinheiro ?? 0} T$
             </p>
             {sheet.inventario.itens.length === 0 ? (
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-ink-muted">
                 Nenhum item cadastrado. Edite a ficha para adicionar itens.
               </p>
             ) : (
-              <ul className="space-y-1 text-xs text-zinc-700">
+              <ul className="space-y-1 text-xs text-ink">
                 {sheet.inventario.itens.map((item) => (
                   <li key={item.id} className="flex justify-between gap-2">
                     <span>{item.nome}</span>
-                    <span className="text-zinc-500">
+                    <span className="text-ink-muted">
                       {item.quantidade} × {item.slots} slots
                     </span>
                   </li>
@@ -195,14 +195,14 @@ export default function PlaySheetPage() {
         </section>
 
         <section className="space-y-2">
-          <h2 className="text-sm font-semibold text-zinc-900">
+          <h2 className="font-serif text-sm font-semibold text-ink">
             Ataques, magias e perícias
           </h2>
           <SessionCombatSkillsSpellsCard sheet={sheet} />
         </section>
 
         <section className="space-y-2">
-          <h2 className="text-sm font-semibold text-zinc-900">
+          <h2 className="font-serif text-sm font-semibold text-ink">
             Poderes e anotações
           </h2>
           <SessionPowersNotesCard sheet={sheet} />

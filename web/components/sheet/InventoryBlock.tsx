@@ -70,35 +70,35 @@ export function InventoryBlock({ sheet, onChange }: InventoryBlockProps) {
   }
 
   return (
-    <section className="space-y-5 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+    <section className="space-y-5 rounded-md border border-border bg-paper-card p-5 shadow-sm">
       <div className="flex items-center justify-between gap-2">
-        <h2 className="text-base font-semibold text-zinc-900">Inventário</h2>
+        <h2 className="font-serif text-base font-semibold text-ink">Inventário</h2>
         <button
           type="button"
           onClick={handleAddItem}
-          className="rounded bg-zinc-900 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-zinc-800"
+          className="rounded bg-accent px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90"
         >
           Adicionar item
         </button>
       </div>
 
-      <div className="space-y-2 rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-sm">
+      <div className="space-y-2 rounded-md border border-border bg-paper p-3 text-sm">
         <div className="flex flex-wrap items-center gap-4">
           <div>
-          <span className="text-xs font-semibold text-zinc-500">
+          <span className="text-xs font-semibold text-ink-muted">
             Carga usada:
           </span>{" "}
-          <span className="font-semibold text-zinc-900">
+          <span className="font-semibold text-ink">
             {inventario.cargaUsada}
           </span>
           </div>
           <div>
-          <span className="text-xs font-semibold text-zinc-500">
+          <span className="text-xs font-semibold text-ink-muted">
             Limite de carga:
           </span>{" "}
           <input
             type="number"
-            className="w-20 rounded border border-zinc-300 px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+            className="w-20 rounded border border-border px-2 py-1 text-sm shadow-sm focus:border-accent focus:outline-none"
             value={inventario.limiteCarga}
             onChange={(event) =>
               handleLimiteChange(Number(event.target.value) || 0)
@@ -106,12 +106,12 @@ export function InventoryBlock({ sheet, onChange }: InventoryBlockProps) {
           />
           </div>
           <div>
-          <span className="text-xs font-semibold text-zinc-500">
+          <span className="text-xs font-semibold text-ink-muted">
             Dinheiro:
           </span>{" "}
           <input
             type="number"
-            className="w-24 rounded border border-zinc-300 px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+            className="w-24 rounded border border-border px-2 py-1 text-sm shadow-sm focus:border-accent focus:outline-none"
             value={inventario.dinheiro}
             onChange={(event) =>
               handleMoneyChange(Number(event.target.value) || 0)
@@ -119,36 +119,36 @@ export function InventoryBlock({ sheet, onChange }: InventoryBlockProps) {
           />
           </div>
         </div>
-        <div className="h-2 w-full rounded-full bg-white">
+        <div className="h-2 w-full rounded-full bg-paper-card">
           <div
-            className="h-2 rounded-full bg-zinc-900 transition-all"
+            className="h-2 rounded-full bg-accent transition-all"
             style={{ width: `${cargaPercentual}%` }}
           />
         </div>
       </div>
 
       {inventario.itens.length === 0 ? (
-        <p className="text-sm text-zinc-500">
+        <p className="text-sm text-ink-muted">
           Nenhum item adicionado. Use &quot;Adicionar item&quot; para começar.
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-zinc-200">
+        <div className="overflow-x-auto rounded-md border border-border">
           <table className="min-w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-zinc-200 bg-zinc-50">
-                <th className="px-2 py-2 text-left text-xs font-semibold text-zinc-600">
+              <tr className="border-b border-border bg-paper">
+                <th className="px-2 py-2 text-left text-xs font-semibold text-ink-muted">
                   Item
                 </th>
-                <th className="px-2 py-2 text-left text-xs font-semibold text-zinc-600">
+                <th className="px-2 py-2 text-left text-xs font-semibold text-ink-muted">
                   Qtd
                 </th>
-                <th className="px-2 py-2 text-left text-xs font-semibold text-zinc-600">
+                <th className="px-2 py-2 text-left text-xs font-semibold text-ink-muted">
                   Slots
                 </th>
-                <th className="px-2 py-2 text-left text-xs font-semibold text-zinc-600">
+                <th className="px-2 py-2 text-left text-xs font-semibold text-ink-muted">
                   Valor
                 </th>
-                <th className="px-2 py-2 text-left text-xs font-semibold text-zinc-600">
+                <th className="px-2 py-2 text-left text-xs font-semibold text-ink-muted">
                   Descrição
                 </th>
                 <th className="w-16 px-2 py-1.5" />
@@ -158,7 +158,7 @@ export function InventoryBlock({ sheet, onChange }: InventoryBlockProps) {
               {inventario.itens.map((item, index) => (
                 <tr
                   key={item.id}
-                  className="border-b border-zinc-100 last:border-b-0 hover:bg-zinc-50"
+                  className="border-b border-border last:border-b-0 hover:bg-paper"
                 >
                   <td className="px-2 py-1">
                     <input
@@ -168,7 +168,7 @@ export function InventoryBlock({ sheet, onChange }: InventoryBlockProps) {
                         handleItemChange(index, { nome: event.target.value })
                       }
                       placeholder="Nome do item"
-                      className="w-full rounded border border-zinc-300 px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                      className="w-full rounded border border-border px-2 py-1 text-sm shadow-sm focus:border-accent focus:outline-none"
                     />
                   </td>
                   <td className="px-2 py-1">
@@ -181,7 +181,7 @@ export function InventoryBlock({ sheet, onChange }: InventoryBlockProps) {
                           quantidade: Number(event.target.value) || 0,
                         })
                       }
-                      className="w-16 rounded border border-zinc-300 px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                      className="w-16 rounded border border-border px-2 py-1 text-sm shadow-sm focus:border-accent focus:outline-none"
                     />
                   </td>
                   <td className="px-2 py-1">
@@ -194,7 +194,7 @@ export function InventoryBlock({ sheet, onChange }: InventoryBlockProps) {
                           slots: Number(event.target.value) || 0,
                         })
                       }
-                      className="w-14 rounded border border-zinc-300 px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                      className="w-14 rounded border border-border px-2 py-1 text-sm shadow-sm focus:border-accent focus:outline-none"
                     />
                   </td>
                   <td className="px-2 py-1">
@@ -207,7 +207,7 @@ export function InventoryBlock({ sheet, onChange }: InventoryBlockProps) {
                           valor: Number(event.target.value) || 0,
                         })
                       }
-                      className="w-20 rounded border border-zinc-300 px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                      className="w-20 rounded border border-border px-2 py-1 text-sm shadow-sm focus:border-accent focus:outline-none"
                     />
                   </td>
                   <td className="px-2 py-1">
@@ -218,7 +218,7 @@ export function InventoryBlock({ sheet, onChange }: InventoryBlockProps) {
                         handleItemChange(index, { descricao: event.target.value })
                       }
                       placeholder="Descrição"
-                      className="w-full min-w-[180px] rounded border border-zinc-300 px-2 py-1 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+                      className="w-full min-w-[180px] rounded border border-border px-2 py-1 text-sm shadow-sm focus:border-accent focus:outline-none"
                     />
                   </td>
                   <td className="px-2 py-1">

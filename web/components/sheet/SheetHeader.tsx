@@ -27,32 +27,32 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
   }
 
   return (
-    <section className="space-y-5 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
-      <h2 className="text-base font-semibold text-zinc-900">
+    <section className="space-y-5 rounded-md border border-border bg-paper-card p-5 shadow-sm">
+      <h2 className="font-serif text-base font-semibold text-ink">
         Identificação da ficha
       </h2>
 
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-1">
-          <label className="block text-xs font-semibold text-zinc-500">
+          <label className="block text-xs font-semibold text-ink-muted">
             Nome
           </label>
           <input
             type="text"
             value={sheet.nome}
             onChange={(event) => handleFieldChange("nome", event.target.value)}
-            className="w-full rounded border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+            className="w-full rounded border border-border bg-paper-card px-3 py-2 text-sm text-ink shadow-sm focus:border-accent focus:outline-none"
           />
         </div>
 
         <div className="space-y-1">
-          <label className="block text-xs font-semibold text-zinc-500">
+          <label className="block text-xs font-semibold text-ink-muted">
             Raça
           </label>
           <select
             value={sheet.raca}
             onChange={(event) => handleFieldChange("raca", event.target.value)}
-            className="w-full rounded border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+            className="w-full rounded border border-border bg-paper-card px-3 py-2 text-sm text-ink shadow-sm focus:border-accent focus:outline-none"
           >
             <option value="">Selecione uma raça</option>
             {getRacas().map((race) => (
@@ -64,7 +64,7 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
         </div>
 
         <div className="space-y-1">
-          <label className="block text-xs font-semibold text-zinc-500">
+          <label className="block text-xs font-semibold text-ink-muted">
             Origem
           </label>
           <select
@@ -72,7 +72,7 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
             onChange={(event) =>
               handleFieldChange("origem", event.target.value)
             }
-            className="w-full rounded border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+            className="w-full rounded border border-border bg-paper-card px-3 py-2 text-sm text-ink shadow-sm focus:border-accent focus:outline-none"
           >
             <option value="">Selecione uma origem</option>
             {getOrigens().map((origin) => (
@@ -84,7 +84,7 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
         </div>
 
         <div className="space-y-1">
-          <label className="block text-xs font-semibold text-zinc-500">
+          <label className="block text-xs font-semibold text-ink-muted">
             Divindade
           </label>
           <select
@@ -92,7 +92,7 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
             onChange={(event) =>
               handleFieldChange("divindade", event.target.value)
             }
-            className="w-full rounded border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+            className="w-full rounded border border-border bg-paper-card px-3 py-2 text-sm text-ink shadow-sm focus:border-accent focus:outline-none"
           >
             <option value="">Selecione uma divindade</option>
             {getDeuses().map((god) => (
@@ -106,8 +106,8 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
 
       <div className="grid gap-4 grid-cols-1 md:grid-cols-4">
         <div className="space-y-1">
-          <p className="text-xs font-semibold text-zinc-500">Classe e nível</p>
-          <p className="text-sm font-medium text-zinc-800">
+          <p className="text-xs font-semibold text-ink-muted">Classe e nível</p>
+          <p className="text-sm font-medium text-ink">
             {sheet.classes.length > 0
               ? sheet.classes
                   .map((klass) => `${klass.nome} ${klass.nivel}`)
@@ -118,11 +118,11 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
           </p>
         </div>
         <div className="space-y-1">
-          <p className="text-xs font-semibold text-zinc-500">Nível total</p>
-          <p className="text-sm font-medium text-zinc-800">{nivelTotal}</p>
+          <p className="text-xs font-semibold text-ink-muted">Nível total</p>
+          <p className="text-sm font-medium text-ink">{nivelTotal}</p>
         </div>
         <div className="space-y-1">
-          <label className="block text-xs font-semibold text-zinc-500">
+          <label className="block text-xs font-semibold text-ink-muted">
             Tamanho
           </label>
           <input
@@ -131,18 +131,18 @@ export function SheetHeader({ sheet, onChange }: SheetHeaderProps) {
             onChange={(event) =>
               handleFieldChange("tamanho", event.target.value)
             }
-            className="w-full rounded border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+            className="w-full rounded border border-border bg-paper-card px-3 py-2 text-sm text-ink shadow-sm focus:border-accent focus:outline-none"
           />
         </div>
         <div className="space-y-1">
-          <label className="block text-xs font-semibold uppercase text-zinc-500">
+          <label className="block text-xs font-semibold uppercase text-ink-muted">
             Sistema
           </label>
           <input
             type="text"
             value={sheet.sistema}
             readOnly
-            className="w-full cursor-not-allowed rounded border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-700"
+            className="w-full cursor-not-allowed rounded border border-border bg-paper px-3 py-2 text-sm text-ink-muted"
           />
         </div>
       </div>

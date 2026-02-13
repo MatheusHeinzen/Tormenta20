@@ -4,10 +4,10 @@ export default function Home() {
   return (
     <main className="mx-auto flex max-w-4xl flex-col gap-8 px-4 py-10">
       <header className="space-y-2">
-        <h1 className="text-3xl font-semibold text-zinc-900">
+        <h1 className="font-serif text-3xl font-semibold text-ink">
           Ficha Tormenta 20 – Sessão Rápida
         </h1>
-        <p className="max-w-2xl text-sm text-zinc-600">
+        <p className="max-w-2xl text-sm text-ink-muted">
           Crie, edite e use fichas de personagem diretamente no navegador. Os
           dados ficam salvos no seu dispositivo (localStorage), prontos para
           futuramente sincronizar com Firebase para uso em grupo.
@@ -17,41 +17,41 @@ export default function Home() {
       <section className="grid gap-4 md:grid-cols-3">
         <Link
           href="/sheets/new"
-          className="flex flex-col justify-between rounded-lg border border-zinc-200 bg-white p-4 shadow-sm transition hover:border-zinc-400"
+          className="flex flex-col justify-between rounded-md border border-border bg-paper-card p-4 shadow-sm transition hover:border-ink-muted"
         >
           <div className="space-y-1">
-            <h2 className="text-base font-semibold text-zinc-900">
+            <h2 className="font-serif text-base font-semibold text-ink">
               Criar nova ficha
             </h2>
-            <p className="text-xs text-zinc-600">
+            <p className="text-xs text-ink-muted">
               Comece uma ficha nova a partir do modelo básico de Tormenta 20.
             </p>
           </div>
-          <span className="mt-4 text-sm font-medium text-zinc-800">
+          <span className="mt-4 text-sm font-medium text-ink">
             Começar →
           </span>
         </Link>
 
         <Link
           href="/sheets"
-          className="flex flex-col justify-between rounded-lg border border-zinc-200 bg-white p-4 shadow-sm transition hover:border-zinc-400"
+          className="flex flex-col justify-between rounded-md border border-border bg-paper-card p-4 shadow-sm transition hover:border-ink-muted"
         >
           <div className="space-y-1">
-            <h2 className="text-base font-semibold text-zinc-900">
+            <h2 className="font-serif text-base font-semibold text-ink">
               Fichas salvas
             </h2>
-            <p className="text-xs text-zinc-600">
+            <p className="text-xs text-ink-muted">
               Abra, edite ou apague fichas salvas neste navegador.
             </p>
           </div>
-          <span className="mt-4 text-sm font-medium text-zinc-800">
+          <span className="mt-4 text-sm font-medium text-ink">
             Ver fichas →
           </span>
         </Link>
 
-        <div className="flex flex-col justify-between rounded-lg border border-dashed border-zinc-200 bg-zinc-50 p-4 text-zinc-500">
+        <div className="flex flex-col justify-between rounded-md border border-dashed border-border bg-paper-card p-4 text-ink-muted">
           <div className="space-y-1">
-            <h2 className="text-base font-semibold text-zinc-800">
+            <h2 className="font-serif text-base font-semibold text-ink">
               Sessões em grupo
             </h2>
             <p className="text-xs">

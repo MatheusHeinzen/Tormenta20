@@ -81,8 +81,8 @@ export function SessionCombatSkillsSpellsCard({
   for (const s of sheet.pericias) byId.set(s.id, s);
 
   return (
-    <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
-      <div className="flex border-b border-zinc-200">
+    <section className="rounded-md border border-border bg-paper-card shadow-sm">
+      <div className="flex border-b border-border">
         {TABS.map(({ id, label }) => (
           <button
             key={id}
@@ -90,8 +90,8 @@ export function SessionCombatSkillsSpellsCard({
             onClick={() => setActiveTab(id)}
             className={`flex-1 px-3 py-2.5 text-xs font-semibold transition-colors ${
               activeTab === id
-                ? "border-b-2 border-zinc-900 bg-white text-zinc-900"
-                : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-700"
+                ? "border-b-2 border-accent bg-paper-card text-ink"
+                : "text-ink-muted hover:bg-paper hover:text-ink"
             }`}
           >
             {label}
@@ -102,7 +102,7 @@ export function SessionCombatSkillsSpellsCard({
         {activeTab === "ataques" && (
           <>
             {ataques.length === 0 ? (
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-ink-muted">
                 Nenhum ataque cadastrado. Edite a ficha para adicionar.
               </p>
             ) : (
@@ -110,16 +110,16 @@ export function SessionCombatSkillsSpellsCard({
                 {ataques.map((a) => (
                   <li
                     key={a.id}
-                    className="flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded border border-zinc-100 bg-zinc-50 px-3 py-2 text-xs"
+                    className="flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded border border-border bg-paper px-3 py-2 text-xs"
                   >
-                    <span className="font-semibold text-zinc-900">
+                    <span className="font-semibold text-ink">
                       {a.nome || "—"}
                     </span>
-                    <span className="text-zinc-600">
+                    <span className="text-ink-muted">
                       {a.teste} {a.bonusAtaque >= 0 ? `+${a.bonusAtaque}` : a.bonusAtaque}
                     </span>
-                    <span className="text-zinc-600">dano {a.dano}</span>
-                    <span className="text-zinc-500">
+                    <span className="text-ink-muted">dano {a.dano}</span>
+                    <span className="text-ink-muted">
                       crítico {a.critico} · {a.tipo} · {a.alcance}
                     </span>
                   </li>
@@ -130,78 +130,78 @@ export function SessionCombatSkillsSpellsCard({
         )}
         {activeTab === "magias" && (
           <>
-            <p className="mb-2 text-[11px] font-semibold text-zinc-500">
+            <p className="mb-2 text-[11px] font-semibold text-ink-muted">
               CD das magias: {cdMagia}
             </p>
             {magias.length === 0 ? (
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-ink-muted">
                 Nenhuma magia cadastrada. Edite a ficha para adicionar.
               </p>
             ) : (
               <ul className="space-y-2">
                 {magias.map((m) => (
                   <li key={m.id}>
-                    <details className="group rounded-lg border border-zinc-200 bg-zinc-50">
+                    <details className="group rounded-md border border-border bg-paper">
                       <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2 text-xs [&::-webkit-details-marker]:hidden">
-                        <span className="font-semibold text-zinc-900">
+                        <span className="font-semibold text-ink">
                           {m.nome || "—"}
                         </span>
-                        <span className="text-zinc-500">
+                        <span className="text-ink-muted">
                           {m.circulo ?? 0}º círculo
                           {m.alcance ? ` · ${m.alcance}` : ""}
                         </span>
-                        <span className="text-zinc-400 transition group-open:rotate-180">
+                        <span className="text-ink-muted transition group-open:rotate-180">
                           ▼
                         </span>
                       </summary>
-                      <div className="border-t border-zinc-200 px-3 py-2 text-xs text-zinc-700">
+                      <div className="border-t border-border px-3 py-2 text-xs text-ink">
                         <dl className="grid gap-1.5 sm:grid-cols-2">
                           {m.escola && (
                             <div>
-                              <dt className="font-semibold text-zinc-600">Escola</dt>
+                              <dt className="font-semibold text-ink-muted">Escola</dt>
                               <dd>{m.escola}</dd>
                             </div>
                           )}
                           {m.execucao && (
                             <div>
-                              <dt className="font-semibold text-zinc-600">Execução</dt>
+                              <dt className="font-semibold text-ink-muted">Execução</dt>
                               <dd>{m.execucao}</dd>
                             </div>
                           )}
                           {m.alcance && (
                             <div>
-                              <dt className="font-semibold text-zinc-600">Alcance</dt>
+                              <dt className="font-semibold text-ink-muted">Alcance</dt>
                               <dd>{m.alcance}</dd>
                             </div>
                           )}
                           {m.area && (
                             <div>
-                              <dt className="font-semibold text-zinc-600">Área</dt>
+                              <dt className="font-semibold text-ink-muted">Área</dt>
                               <dd>{m.area}</dd>
                             </div>
                           )}
                           {m.duracao && (
                             <div>
-                              <dt className="font-semibold text-zinc-600">Duração</dt>
+                              <dt className="font-semibold text-ink-muted">Duração</dt>
                               <dd>{m.duracao}</dd>
                             </div>
                           )}
                           {m.resistencia && (
                             <div>
-                              <dt className="font-semibold text-zinc-600">Resistência</dt>
+                              <dt className="font-semibold text-ink-muted">Resistência</dt>
                               <dd>{m.resistencia}</dd>
                             </div>
                           )}
                           {m.cd != null && (
                             <div>
-                              <dt className="font-semibold text-zinc-600">CD</dt>
+                              <dt className="font-semibold text-ink-muted">CD</dt>
                               <dd>{m.cd}</dd>
                             </div>
                           )}
                         </dl>
                         {m.efeito && (
                           <div className="mt-2">
-                            <dt className="font-semibold text-zinc-600">Efeito</dt>
+                            <dt className="font-semibold text-ink-muted">Efeito</dt>
                             <p className="mt-0.5 whitespace-pre-wrap">{m.efeito}</p>
                           </div>
                         )}
@@ -229,10 +229,10 @@ export function SessionCombatSkillsSpellsCard({
               return (
                 <div
                   key={rule.id}
-                  className="flex justify-between gap-2 rounded border border-zinc-100 bg-zinc-50 px-2 py-1 text-xs"
+                  className="flex justify-between gap-2 rounded border border-border bg-paper px-2 py-1 text-xs"
                 >
-                  <span className="font-semibold text-zinc-800">{label}</span>
-                  <span className="text-zinc-700">{rule.nome}</span>
+                  <span className="font-semibold text-ink">{label}</span>
+                  <span className="text-ink">{rule.nome}</span>
                 </div>
               );
             })}

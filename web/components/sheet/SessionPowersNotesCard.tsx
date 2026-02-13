@@ -31,8 +31,8 @@ export function SessionPowersNotesCard({
     "Nenhuma anotação. Edite a ficha para registrar anotações da sessão.";
 
   return (
-    <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
-      <div className="flex border-b border-zinc-200">
+    <section className="rounded-md border border-border bg-paper-card shadow-sm">
+      <div className="flex border-b border-border">
         {TABS.map(({ id, label }) => (
           <button
             key={id}
@@ -40,8 +40,8 @@ export function SessionPowersNotesCard({
             onClick={() => setActiveTab(id)}
             className={`flex-1 px-3 py-2.5 text-xs font-semibold transition-colors ${
               activeTab === id
-                ? "border-b-2 border-zinc-900 bg-white text-zinc-900"
-                : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-700"
+                ? "border-b-2 border-accent bg-paper-card text-ink"
+                : "text-ink-muted hover:bg-paper hover:text-ink"
             }`}
           >
             {label}
@@ -50,17 +50,17 @@ export function SessionPowersNotesCard({
       </div>
       <div className="min-h-[120px] p-4">
         {activeTab === "raca-origem" && (
-          <p className="whitespace-pre-wrap text-xs text-zinc-700">
+          <p className="whitespace-pre-wrap text-xs text-ink">
             {conteudoRacaOrigem}
           </p>
         )}
         {activeTab === "classe-poderes" && (
-          <p className="whitespace-pre-wrap text-xs text-zinc-700">
+          <p className="whitespace-pre-wrap text-xs text-ink">
             {conteudoClassePoderes}
           </p>
         )}
         {activeTab === "anotacoes" && (
-          <p className="whitespace-pre-wrap text-xs text-zinc-700">
+          <p className="whitespace-pre-wrap text-xs text-ink">
             {conteudoAnotacoes}
           </p>
         )}

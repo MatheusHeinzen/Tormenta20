@@ -170,14 +170,14 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
       return (
         <tr
           key={rule.id}
-          className="border-b border-zinc-100 hover:bg-zinc-50"
+          className="border-b border-border hover:bg-paper"
         >
-          <td className="px-1 py-0.5 align-middle font-semibold text-zinc-900">
+          <td className="px-1 py-0.5 align-middle font-semibold text-ink">
             {totalLabel}
           </td>
           <td className="px-1 py-0.5 align-middle">
             {isBaseFromClass ? (
-              <span className="text-[10px] text-zinc-500" title="Perícia base da classe">
+              <span className="text-[10px] text-ink-muted" title="Perícia base da classe">
                 base
               </span>
             ) : (
@@ -193,7 +193,7 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
               />
             )}
           </td>
-          <td className="px-1 py-0.5 align-middle text-zinc-800">
+          <td className="px-1 py-0.5 align-middle text-ink">
             {rule.nome}
           </td>
           <td className="px-1 py-0.5 align-middle">
@@ -204,7 +204,7 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
                   atributoUsado: event.target.value as AbilityScoreName,
                 })
               }
-              className="rounded border border-zinc-300 bg-white px-1 py-0.5 text-[10px] shadow-sm focus:border-zinc-600 focus:outline-none"
+              className="rounded border border-border bg-paper-card px-1 py-0.5 text-[10px] shadow-sm focus:border-accent focus:outline-none"
             >
               {(Object.keys(abilityLabels) as AbilityScoreName[]).map((key) => (
                 <option key={key} value={key}>
@@ -216,7 +216,7 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
           <td className="px-1 py-0.5 align-middle">
             <input
               type="number"
-              className="w-14 rounded border border-zinc-300 px-1 py-0.5 text-[10px] shadow-sm focus:border-zinc-600 focus:outline-none"
+              className="w-14 rounded border border-border px-1 py-0.5 text-[10px] shadow-sm focus:border-accent focus:outline-none"
               value={current.bonusOutros}
               onChange={(event) =>
                 handleChange(rule.id, {
@@ -232,7 +232,7 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
 
   const resumoClasse =
     baseFiltered.length > 0 || treinaveisFiltered.length > 0 ? (
-      <p className="text-xs text-zinc-600">
+      <p className="text-xs text-ink-muted">
         {baseFiltered.length > 0 && (
           <>Perícias base (classe e origem): {baseFiltered.map((id) => skillRules.find((s) => s.id === id)?.nome ?? id).join(", ")} (sempre +2).</>
         )}
@@ -246,9 +246,9 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
     ) : null;
 
   return (
-    <section className="space-y-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
-      <h2 className="text-base font-semibold text-zinc-900">Perícias</h2>
-      <p className="text-xs text-zinc-600">
+    <section className="space-y-4 rounded-md border border-border bg-paper-card p-5 shadow-sm">
+      <h2 className="font-serif text-base font-semibold text-ink">Perícias</h2>
+      <p className="text-xs text-ink-muted">
         Use o atributo sugerido ou ajuste conforme a mesa. O total já inclui
         modificador de atributo, treinamento (+2) e bônus extras.
       </p>
@@ -258,20 +258,20 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse text-xs">
             <thead>
-              <tr className="border-b border-zinc-200 bg-zinc-50">
-                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+              <tr className="border-b border-border bg-paper">
+                <th className="px-1 py-1 text-left font-semibold text-ink-muted">
                   Tot
                 </th>
-                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                <th className="px-1 py-1 text-left font-semibold text-ink-muted">
                   T
                 </th>
-                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                <th className="px-1 py-1 text-left font-semibold text-ink-muted">
                   Perícia
                 </th>
-                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                <th className="px-1 py-1 text-left font-semibold text-ink-muted">
                   Atr
                 </th>
-                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                <th className="px-1 py-1 text-left font-semibold text-ink-muted">
                   B.
                 </th>
               </tr>
@@ -283,20 +283,20 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse text-xs">
             <thead>
-              <tr className="border-b border-zinc-200 bg-zinc-50">
-                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+              <tr className="border-b border-border bg-paper">
+                <th className="px-1 py-1 text-left font-semibold text-ink-muted">
                   Tot
                 </th>
-                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                <th className="px-1 py-1 text-left font-semibold text-ink-muted">
                   T
                 </th>
-                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                <th className="px-1 py-1 text-left font-semibold text-ink-muted">
                   Perícia
                 </th>
-                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                <th className="px-1 py-1 text-left font-semibold text-ink-muted">
                   Atr
                 </th>
-                <th className="px-1 py-1 text-left font-semibold text-zinc-600">
+                <th className="px-1 py-1 text-left font-semibold text-ink-muted">
                   B.
                 </th>
               </tr>

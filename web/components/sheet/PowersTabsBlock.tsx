@@ -59,7 +59,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
   function renderRacialPowers() {
     if (!race) {
       return (
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-ink-muted">
           Selecione uma raça no cabeçalho para ver as habilidades raciais.
         </p>
       );
@@ -69,7 +69,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
 
     if (poderes.length === 0) {
       return (
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-ink-muted">
           Esta raça ainda não tem poderes raciais detalhados no sistema. Use a
           aba &quot;Anotações&quot; para registrar manualmente.
         </p>
@@ -79,17 +79,17 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
     return (
       <div className="space-y-3">
         {race.descricao_resumida && (
-          <p className="text-sm text-zinc-700">{race.descricao_resumida}</p>
+          <p className="text-sm text-ink">{race.descricao_resumida}</p>
         )}
 
         <ul className="space-y-2">
           {poderes.map((poder) => (
-            <li key={poder.id} className="rounded border border-zinc-200 bg-zinc-50 p-2">
-              <p className="text-sm font-semibold text-zinc-900">
+            <li key={poder.id} className="rounded border border-border bg-paper p-2">
+              <p className="text-sm font-semibold text-ink">
                 {poder.nome}
               </p>
               {poder.descricao_resumida && (
-                <p className="text-xs text-zinc-700">
+                <p className="text-xs text-ink">
                   {poder.descricao_resumida}
                 </p>
               )}
@@ -105,7 +105,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
 
     if (classes.length === 0) {
       return (
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-ink-muted">
           Adicione ao menos uma classe na aba{" "}
           <span className="font-semibold">Básico</span> para ver os poderes de
           classe aqui.
@@ -173,7 +173,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
 
     if (blocks.length === 0) {
       return (
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-ink-muted">
           As classes cadastradas ainda não têm poderes de classe detalhados no
           JSON. Use a aba &quot;Anotações&quot; para registrar manualmente.
         </p>
@@ -185,26 +185,26 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
         {blocks.map((block) => (
           <div
             key={block.id}
-            className="space-y-2 rounded border border-zinc-200 bg-zinc-50 p-3"
+            className="space-y-2 rounded border border-border bg-paper p-3"
           >
             <div className="flex items-baseline justify-between gap-2">
-              <p className="text-sm font-semibold text-zinc-900">
+              <p className="text-sm font-semibold text-ink">
                 {block.nome}{" "}
-                <span className="text-xs font-normal text-zinc-500">
+                <span className="text-xs font-normal text-ink-muted">
                   (nível {block.nivel})
                 </span>
               </p>
             </div>
             {block.descricao && (
-              <p className="text-xs text-zinc-700">{block.descricao}</p>
+              <p className="text-xs text-ink">{block.descricao}</p>
             )}
             {block.poderesPorNivel.length > 0 ? (
               <ul className="space-y-1">
                 {block.poderesPorNivel.map((grupo) => (
-                  <li key={grupo.nivel} className="text-xs text-zinc-800">
+                  <li key={grupo.nivel} className="text-xs text-ink">
                     <span className="font-semibold">Nível {grupo.nivel}:</span>{" "}
                     {grupo.poderes.length === 0 ? (
-                      <span className="text-zinc-500">
+                      <span className="text-ink-muted">
                         (sem poderes cadastrados)
                       </span>
                     ) : (
@@ -222,21 +222,21 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
                 ))}
               </ul>
             ) : (
-              <p className="text-xs text-zinc-600">
+              <p className="text-xs text-ink-muted">
                 Nenhum poder de classe cadastrado para esta classe.
               </p>
             )}
             {block.linhagemBasica && (
-              <div className="mt-2 border-t border-zinc-200 pt-2">
-                <p className="text-[11px] font-semibold uppercase text-zinc-500">
+              <div className="mt-2 border-t border-border pt-2">
+                <p className="text-[11px] font-semibold uppercase text-ink-muted">
                   Herança básica (1º nível)
                 </p>
-                <div className="mt-1 rounded border border-zinc-200 bg-white p-2">
-                  <p className="text-xs font-semibold text-zinc-900">
+                <div className="mt-1 rounded border border-border bg-paper-card p-2">
+                  <p className="text-xs font-semibold text-ink">
                     {block.linhagemBasica.nome}
                   </p>
                   {block.linhagemBasica.descricao_resumida && (
-                    <p className="mt-0.5 text-xs text-zinc-700">
+                    <p className="mt-0.5 text-xs text-ink">
                       {block.linhagemBasica.descricao_resumida}
                     </p>
                   )}
@@ -244,11 +244,11 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
               </div>
             )}
             {block.poderesLinhagemOpcionais.length > 0 && (
-              <div className="mt-2 border-t border-zinc-200 pt-2">
-                <p className="text-[11px] font-semibold uppercase text-zinc-500">
+              <div className="mt-2 border-t border-border pt-2">
+                <p className="text-[11px] font-semibold uppercase text-ink-muted">
                   Poderes opcionais de linhagem (escolha em níveis futuros)
                 </p>
-                <ul className="mt-1 space-y-1 text-xs text-zinc-800">
+                <ul className="mt-1 space-y-1 text-xs text-ink">
                   {block.poderesLinhagemOpcionais.map((poder) => (
                     <li key={poder.id}>
                       <span className="font-semibold">{poder.nome}</span>
@@ -274,7 +274,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
 
     if (!origem) {
       return (
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-ink-muted">
           Selecione uma origem no cabeçalho para ver os poderes.
         </p>
       );
@@ -284,7 +284,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
 
     if (poderes.length === 0) {
       return (
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-ink-muted">
           Esta origem não tem poderes listados no sistema.
         </p>
       );
@@ -295,9 +295,9 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
         {poderes.map((nome) => (
           <li
             key={nome}
-            className="rounded border border-zinc-200 bg-zinc-50 p-2"
+            className="rounded border border-border bg-paper p-2"
           >
-            <p className="text-sm font-semibold text-zinc-900">{nome}</p>
+            <p className="text-sm font-semibold text-ink">{nome}</p>
           </li>
         ))}
       </ul>
@@ -308,7 +308,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
     const divindade = sheet.divindade?.trim();
     if (!divindade) {
       return (
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-ink-muted">
           Selecione uma divindade no cabeçalho para escolher poderes concedidos.
         </p>
       );
@@ -357,11 +357,11 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
     return (
       <div className="space-y-4">
         {deus?.descricao_resumida && (
-          <p className="text-sm text-zinc-700">{deus.descricao_resumida}</p>
+          <p className="text-sm text-ink">{deus.descricao_resumida}</p>
         )}
 
         <div className="space-y-2">
-          <p className="text-[11px] font-semibold uppercase text-zinc-500">
+          <p className="text-[11px] font-semibold uppercase text-ink-muted">
             Poderes concedidos pela divindade
           </p>
           <div className="flex flex-wrap items-center gap-2">
@@ -372,7 +372,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
                 if (v) addPoderConcedido(v);
                 e.target.value = "";
               }}
-              className="rounded border border-zinc-300 bg-white px-2 py-1.5 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+              className="rounded border border-border bg-paper-card px-2 py-1.5 text-sm shadow-sm focus:border-accent focus:outline-none"
             >
               <option value="">Adicionar poder concedido</option>
               {opcoesDisponiveis.map((p) => (
@@ -385,14 +385,14 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
         </div>
 
         {linhagemAbencoada && (
-          <div className="space-y-2 border-t border-zinc-200 pt-3">
-            <p className="text-[11px] font-semibold uppercase text-zinc-500">
+          <div className="space-y-2 border-t border-border pt-3">
+            <p className="text-[11px] font-semibold uppercase text-ink-muted">
               Poder concedido (linhagem abençada — qualquer divindade)
             </p>
             <select
               value={idAbencoada ?? ""}
               onChange={(e) => setPoderAbencoada(e.target.value)}
-              className="rounded border border-zinc-300 bg-white px-2 py-1.5 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+              className="rounded border border-border bg-paper-card px-2 py-1.5 text-sm shadow-sm focus:border-accent focus:outline-none"
             >
               <option value="">Nenhum</option>
               {todosPoderes.map((p) => (
@@ -405,7 +405,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
         )}
 
         {poderesExibidos.length === 0 ? (
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-ink-muted">
             Nenhum poder concedido adicionado ainda.
           </p>
         ) : (
@@ -415,19 +415,19 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
               return (
                 <li
                   key={poder.id}
-                  className="flex items-start justify-between gap-2 rounded border border-zinc-200 bg-zinc-50 p-2"
+                  className="flex items-start justify-between gap-2 rounded border border-border bg-paper p-2"
                 >
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-semibold text-zinc-900">
+                    <p className="text-sm font-semibold text-ink">
                       {poder.nome}
                       {ehAbencoada && (
-                        <span className="ml-1 text-[10px] font-normal text-zinc-500">
+                        <span className="ml-1 text-[10px] font-normal text-ink-muted">
                           (linhagem abençada)
                         </span>
                       )}
                     </p>
                     {poder.descricao && (
-                      <p className="mt-0.5 text-xs text-zinc-700">
+                      <p className="mt-0.5 text-xs text-ink">
                         {poder.descricao}
                       </p>
                     )}
@@ -436,7 +436,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
                     <button
                       type="button"
                       onClick={() => setPoderAbencoada("")}
-                      className="rounded border border-red-200 bg-white px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-50"
+                      className="rounded border border-red-300 bg-paper-card px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-50"
                     >
                       Remover
                     </button>
@@ -444,7 +444,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
                     <button
                       type="button"
                       onClick={() => removePoderConcedido(poder.id)}
-                      className="rounded border border-red-200 bg-white px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-50"
+                      className="rounded border border-red-300 bg-paper-card px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-50"
                     >
                       Remover
                     </button>
@@ -460,7 +460,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
 
   function renderPlaceholder(label: string) {
     return (
-      <p className="text-sm text-zinc-600">
+      <p className="text-sm text-ink-muted">
         A aba <span className="font-semibold">{label}</span> ainda não está
         ligada automaticamente aos dados. Por enquanto, use a aba
         &nbsp;&quot;Anotações&quot; para registrar esses poderes.
@@ -483,14 +483,14 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
   }
 
   return (
-    <section className="space-y-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+    <section className="space-y-4 rounded-md border border-border bg-paper-card p-5 shadow-sm">
       <div className="flex items-center justify-between gap-2">
-        <h2 className="text-base font-semibold text-zinc-900">
+        <h2 className="text-base font-semibold text-ink">
           Poderes e Habilidades
         </h2>
       </div>
 
-      <div className="border-b border-zinc-200">
+      <div className="border-b border-border">
         <nav className="-mb-px flex gap-2 text-sm">
           {TAB_DEFINITIONS.map((tab) => {
             const isActive = tab.id === activeTab;
@@ -502,8 +502,8 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
                 className={
                   "border-b-2 px-3 py-1.5 text-xs font-medium transition-colors " +
                   (isActive
-                    ? "border-zinc-900 text-zinc-900"
-                    : "border-transparent text-zinc-500 hover:text-zinc-800")
+                    ? "border-accent text-ink"
+                    : "border-transparent text-ink-muted hover:text-ink")
                 }
               >
                 {tab.label}

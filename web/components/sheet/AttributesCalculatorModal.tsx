@@ -181,21 +181,21 @@ export function AttributesCalculatorModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-4xl rounded-lg bg-white p-6 shadow-xl">
+      <div className="w-full max-w-4xl rounded-md border border-border bg-paper-card p-6 shadow-xl">
         <header className="mb-4 flex items-center justify-between">
-          <h2 className="text-base font-semibold text-zinc-900">
+          <h2 className="font-serif text-base font-semibold text-ink">
             Compra de atributos (Tormenta 20)
           </h2>
           <button
             type="button"
-            className="rounded px-2 py-1 text-sm text-zinc-600 hover:bg-zinc-100"
+            className="rounded px-2 py-1 text-sm text-ink-muted hover:bg-paper"
             onClick={() => onOpenChange(false)}
           >
             Fechar
           </button>
         </header>
 
-        <p className="mb-4 text-xs text-zinc-600">
+        <p className="mb-4 text-xs text-ink-muted">
           Todos os atributos começam em 0. Você tem{" "}
           <strong>{BASE_POINTS} pontos</strong> para distribuir. Pode reduzir
           um atributo para −1 para ganhar 1 ponto extra.
@@ -217,7 +217,7 @@ export function AttributesCalculatorModal({
         <div className="mb-3 overflow-x-auto">
           <table className="min-w-full border-collapse text-xs">
             <thead>
-              <tr className="border-b border-zinc-200 bg-zinc-50 text-[11px] uppercase tracking-wide text-zinc-500">
+              <tr className="border-b border-border bg-paper text-[11px] uppercase tracking-wide text-ink-muted">
                 <th className="px-2 py-1 text-left">Atributo</th>
                 <th className="px-2 py-1 text-center">Mod (Compra)</th>
                 <th className="px-2 py-1 text-center">Raça</th>
@@ -235,14 +235,14 @@ export function AttributesCalculatorModal({
                 const cost = costForBaseMod(baseMod);
 
                 return (
-                  <tr key={ability} className="border-b border-zinc-100">
-                    <td className="px-2 py-2 text-left font-medium text-zinc-800">
+                  <tr key={ability} className="border-b border-border">
+                    <td className="px-2 py-2 text-left font-medium text-ink">
                       {LABELS[ability]}
                     </td>
                     <td className="px-2 py-2 text-center">
                       <input
                         type="number"
-                        className="w-16 rounded border border-zinc-300 px-1 py-0.5 text-center text-xs focus:border-zinc-600 focus:outline-none"
+                        className="w-16 rounded border border-border bg-paper-card px-1 py-0.5 text-center text-xs text-ink focus:border-accent focus:outline-none"
                         value={baseMod}
                         min={-1}
                         max={4}
@@ -254,15 +254,15 @@ export function AttributesCalculatorModal({
                         }
                       />
                     </td>
-                    <td className="px-2 py-2 text-center text-zinc-700">
+                    <td className="px-2 py-2 text-center text-ink">
                       {flexRule &&
                       !(flexRule.except ?? []).includes(ability) ? (
                         <button
                           type="button"
                           className={`rounded border px-1.5 py-0.5 text-xs ${
                             flexMods[ability] >= flexRule.pointsPerAttr
-                              ? "border-zinc-600 bg-zinc-700 text-white"
-                              : "border-zinc-300 bg-white text-zinc-600 hover:bg-zinc-100"
+                              ? "border-accent bg-accent text-white"
+                              : "border-border bg-paper-card text-ink-muted hover:bg-paper"
                           }`}
                           onClick={() => toggleFlexMod(ability)}
                           title={
@@ -275,7 +275,7 @@ export function AttributesCalculatorModal({
                         </button>
                       ) : flexRule && (flexRule.except ?? []).includes(ability) ? (
                         <span
-                          className="text-zinc-500"
+                          className="text-ink-muted"
                           title="Este atributo não recebe bônus da raça"
                         >
                           {formatSigned(raceMod)}
@@ -287,7 +287,7 @@ export function AttributesCalculatorModal({
                     <td className="px-2 py-2 text-center">
                       <input
                         type="number"
-                        className="w-16 rounded border border-zinc-300 px-1 py-0.5 text-center text-xs focus:border-zinc-600 focus:outline-none"
+                        className="w-16 rounded border border-border bg-paper-card px-1 py-0.5 text-center text-xs text-ink focus:border-accent focus:outline-none"
                         value={bonusMod}
                         onChange={(event) =>
                           handleChangeBonusMod(
@@ -297,10 +297,10 @@ export function AttributesCalculatorModal({
                         }
                       />
                     </td>
-                    <td className="px-2 py-2 text-center font-medium text-zinc-800">
+                    <td className="px-2 py-2 text-center font-medium text-ink">
                       {formatSigned(totalMod)}
                     </td>
-                    <td className="px-2 py-2 text-center text-zinc-700">
+                    <td className="px-2 py-2 text-center text-ink">
                       {cost === 0 ? "0" : `${cost} ponto${cost === 1 ? "" : "s"}`}
                     </td>
                   </tr>
@@ -313,7 +313,7 @@ export function AttributesCalculatorModal({
         <div className="flex items-center justify-between text-xs">
           <span
             className={
-              overLimit ? "font-semibold text-red-600" : "text-zinc-700"
+              overLimit ? "font-semibold text-red-600" : "text-ink"
             }
           >
             Pontos gastos:{" "}
@@ -325,7 +325,7 @@ export function AttributesCalculatorModal({
 
           <button
             type="button"
-            className="rounded bg-zinc-900 px-4 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-400"
+            className="rounded bg-accent px-4 py-1.5 text-xs font-medium text-white shadow-sm hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             disabled={overLimit || !flexValid}
             onClick={handleApply}
           >
