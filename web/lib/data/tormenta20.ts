@@ -3,10 +3,19 @@ import classesJson from "@/data/tormenta20/classes.json";
 import poderesClasseJson from "@/data/tormenta20/poderes_classe.json";
 import origensJson from "@/data/tormenta20/origens.json";
 import deusesJson from "@/data/tormenta20/deuses.json";
+import poderesConcedidosJson from "@/data/tormenta20/poderes_concedidos.json";
 import periciasJson from "@/data/tormenta20/pericias.json";
 import linhagensJson from "@/data/tormenta20/linhagens.json";
 import type { AbilityScoreName } from "@/lib/models/character";
-import type { ClasseJson, LinhagemJson, OrigemJson, PoderClasseJson, RacaJson } from "@/lib/t20/jsonTypes";
+import type {
+  ClasseJson,
+  DivindadeJson,
+  LinhagemJson,
+  OrigemJson,
+  PoderClasseJson,
+  PoderConcedidoDivindadeJson,
+  RacaJson,
+} from "@/lib/t20/jsonTypes";
 
 export interface SimpleOption {
   id: string;
@@ -57,6 +66,44 @@ export function getOrigemByNome(nome: string): OrigemJson | undefined {
 
 export function getDeuses(): DeityOption[] {
   return deusesJson;
+}
+
+export function getDeusByNome(nome: string): DivindadeJson | undefined {
+  if (!nome?.trim()) return undefined;
+  const n = nome.trim();
+  const list = deusesJson as DivindadeJson[];
+  return (
+    list.find((d) => d.nome === n) ??
+    list.find((d) => d.nome.toLowerCase() === n.toLowerCase())
+  );
+}
+
+export function getPoderesConcedidos(): PoderConcedidoDivindadeJson[] {
+  return poderesConcedidosJson as PoderConcedidoDivindadeJson[];
+}
+
+export function getPoderesConcedidosByIds(
+  ids: string[],
+): PoderConcedidoDivindadeJson[] {
+  const todos = getPoderesConcedidos();
+  return ids
+    .map((id) => todos.find((p) => p.id === id))
+    .filter(Boolean) as PoderConcedidoDivindadeJson[];
+}
+
+export function getPoderesConcedidosPorDivindade(
+  divindadeNomeOuId: string,
+): PoderConcedidoDivindadeJson[] {
+  if (!divindadeNomeOuId?.trim()) return [];
+  const list = deusesJson as DivindadeJson[];
+  const deus =
+    list.find(
+      (d) =>
+        d.nome === divindadeNomeOuId.trim() ||
+        d.id === divindadeNomeOuId.trim().toLowerCase(),
+    ) ?? list.find((d) => d.nome.toLowerCase() === divindadeNomeOuId.trim().toLowerCase());
+  const ids = deus?.poderes_concedidos ?? [];
+  return getPoderesConcedidosByIds(ids);
 }
 
 export function getLinhagens(): LinhagemJson[] {

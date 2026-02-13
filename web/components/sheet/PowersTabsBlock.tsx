@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import type { CharacterSheet } from "@/lib/models/character";
 import {
   getClassByNome,
+  getDeusByNome,
   getLinhagemById,
   getOrigemByNome,
   getPoderesClasseByIds,
+  getPoderesConcedidos,
+  getPoderesConcedidosByIds,
+  getPoderesConcedidosPorDivindade,
   getRacas,
 } from "@/lib/data/tormenta20";
 import type { LinhagemJson, RacaJson } from "@/lib/t20/jsonTypes";
@@ -14,12 +18,13 @@ interface PowersTabsBlockProps {
   onChange(next: CharacterSheet): void;
 }
 
-type PowersTabId = "raciais" | "origem" | "classes" | "diversos";
+type PowersTabId = "raciais" | "origem" | "classes" | "divindade" | "diversos";
 
 const TAB_DEFINITIONS: { id: PowersTabId; label: string }[] = [
   { id: "raciais", label: "Raciais" },
   { id: "origem", label: "Origem" },
   { id: "classes", label: "Classes" },
+  { id: "divindade", label: "Divindade" },
   { id: "diversos", label: "Diversos" },
 ];
 
@@ -34,7 +39,16 @@ function findRaceByName(nome: string): RacaJson | undefined {
   );
 }
 
-export function PowersTabsBlock({ sheet }: PowersTabsBlockProps) {
+function hasLinhagemAbencoada(sheet: CharacterSheet): boolean {
+  return (sheet.classes ?? []).some(
+    (k) =>
+      getClassByNome(k.nome)?.id === "arcanista" &&
+      k.caminho === "feiticeiro" &&
+      k.linhagem === "abencoada",
+  );
+}
+
+export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
   const [activeTab, setActiveTab] = useState<PowersTabId>("raciais");
 
   const race =
@@ -290,6 +304,160 @@ export function PowersTabsBlock({ sheet }: PowersTabsBlockProps) {
     );
   }
 
+  function renderDivindadePowers() {
+    const divindade = sheet.divindade?.trim();
+    if (!divindade) {
+      return (
+        <p className="text-sm text-zinc-600">
+          Selecione uma divindade no cabeçalho para escolher poderes concedidos.
+        </p>
+      );
+    }
+
+    const deus = getDeusByNome(divindade);
+    const poderesDaDivindade = getPoderesConcedidosPorDivindade(divindade);
+    const idsEscolhidos = sheet.poderesDivindadeIds ?? [];
+    const idAbencoada = sheet.poderConcedidoLinhagemAbencoadaId;
+    const idsExibidos = idAbencoada
+      ? [...idsEscolhidos, idAbencoada]
+      : idsEscolhidos;
+    const poderesExibidos = getPoderesConcedidosByIds(idsExibidos);
+    const idsJaEscolhidos = new Set(idsEscolhidos);
+    const opcoesDisponiveis = poderesDaDivindade.filter(
+      (p) => !idsJaEscolhidos.has(p.id),
+    );
+    const todosPoderes = getPoderesConcedidos();
+    const linhagemAbencoada = hasLinhagemAbencoada(sheet);
+
+    function addPoderConcedido(id: string) {
+      if (!id) return;
+      const atuais = sheet.poderesDivindadeIds ?? [];
+      if (atuais.includes(id)) return;
+      onChange({
+        ...sheet,
+        poderesDivindadeIds: [...atuais, id],
+      });
+    }
+
+    function removePoderConcedido(id: string) {
+      const atuais = sheet.poderesDivindadeIds ?? [];
+      onChange({
+        ...sheet,
+        poderesDivindadeIds: atuais.filter((x) => x !== id),
+      });
+    }
+
+    function setPoderAbencoada(id: string) {
+      onChange({
+        ...sheet,
+        poderConcedidoLinhagemAbencoadaId: id || undefined,
+      });
+    }
+
+    return (
+      <div className="space-y-4">
+        {deus?.descricao_resumida && (
+          <p className="text-sm text-zinc-700">{deus.descricao_resumida}</p>
+        )}
+
+        <div className="space-y-2">
+          <p className="text-[11px] font-semibold uppercase text-zinc-500">
+            Poderes concedidos pela divindade
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <select
+              value=""
+              onChange={(e) => {
+                const v = e.target.value;
+                if (v) addPoderConcedido(v);
+                e.target.value = "";
+              }}
+              className="rounded border border-zinc-300 bg-white px-2 py-1.5 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+            >
+              <option value="">Adicionar poder concedido</option>
+              {opcoesDisponiveis.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.nome}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {linhagemAbencoada && (
+          <div className="space-y-2 border-t border-zinc-200 pt-3">
+            <p className="text-[11px] font-semibold uppercase text-zinc-500">
+              Poder concedido (linhagem abençada — qualquer divindade)
+            </p>
+            <select
+              value={idAbencoada ?? ""}
+              onChange={(e) => setPoderAbencoada(e.target.value)}
+              className="rounded border border-zinc-300 bg-white px-2 py-1.5 text-sm shadow-sm focus:border-zinc-600 focus:outline-none"
+            >
+              <option value="">Nenhum</option>
+              {todosPoderes.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.nome}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {poderesExibidos.length === 0 ? (
+          <p className="text-sm text-zinc-500">
+            Nenhum poder concedido adicionado ainda.
+          </p>
+        ) : (
+          <ul className="space-y-2">
+            {poderesExibidos.map((poder) => {
+              const ehAbencoada = poder.id === idAbencoada;
+              return (
+                <li
+                  key={poder.id}
+                  className="flex items-start justify-between gap-2 rounded border border-zinc-200 bg-zinc-50 p-2"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold text-zinc-900">
+                      {poder.nome}
+                      {ehAbencoada && (
+                        <span className="ml-1 text-[10px] font-normal text-zinc-500">
+                          (linhagem abençada)
+                        </span>
+                      )}
+                    </p>
+                    {poder.descricao && (
+                      <p className="mt-0.5 text-xs text-zinc-700">
+                        {poder.descricao}
+                      </p>
+                    )}
+                  </div>
+                  {ehAbencoada ? (
+                    <button
+                      type="button"
+                      onClick={() => setPoderAbencoada("")}
+                      className="rounded border border-red-200 bg-white px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-50"
+                    >
+                      Remover
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => removePoderConcedido(poder.id)}
+                      className="rounded border border-red-200 bg-white px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-50"
+                    >
+                      Remover
+                    </button>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
+    );
+  }
+
   function renderPlaceholder(label: string) {
     return (
       <p className="text-sm text-zinc-600">
@@ -308,6 +476,8 @@ export function PowersTabsBlock({ sheet }: PowersTabsBlockProps) {
     content = renderOriginPowers();
   } else if (activeTab === "classes") {
     content = renderClassPowers();
+  } else if (activeTab === "divindade") {
+    content = renderDivindadePowers();
   } else {
     content = renderPlaceholder("Diversos");
   }

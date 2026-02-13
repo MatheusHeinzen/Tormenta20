@@ -263,7 +263,7 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
                         </p>
                       );
                     }
-                    return data.descricao_resumida ? (
+                    return data?.descricao_resumida ? (
                       <p className="text-zinc-700">{data.descricao_resumida}</p>
                     ) : null;
                   }

@@ -162,6 +162,10 @@ export interface CharacterSheet {
   inventario: Inventory;
   habilidades: CharacterAbilitySections;
   magias: CharacterSpell[];
+  /** Ids dos poderes concedidos pela divindade escolhida */
+  poderesDivindadeIds?: string[];
+  /** Id do poder concedido da linhagem abençoada (qualquer divindade) */
+  poderConcedidoLinhagemAbencoadaId?: string;
   notas: CharacterNotes;
 
   classes: CharacterClass[];
@@ -267,6 +271,8 @@ export function normalizeCharacter(raw: CharacterSheet): CharacterSheet {
     proficiencias,
     magia,
     inventario,
+    poderesDivindadeIds: raw.poderesDivindadeIds ?? [],
+    poderConcedidoLinhagemAbencoadaId: raw.poderConcedidoLinhagemAbencoadaId,
   };
 }
 
@@ -374,6 +380,7 @@ export function createEmptyCharacterSheet(nome: string): CharacterSheet {
     },
 
     magias: [],
+    poderesDivindadeIds: [],
 
     notas: {
       descricao: "",

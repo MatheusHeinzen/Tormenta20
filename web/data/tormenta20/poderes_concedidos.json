@@ -1,0 +1,94 @@
+[
+  { "id": "afinidade_com_a_tormenta", "nome": "Afinidade com a Tormenta", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "extase_da_loucura", "nome": "Êxtase da Loucura", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "percepcao_temporal", "nome": "Percepção Temporal", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "rejeicao_divina", "nome": "Rejeição Divina", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "compreender_os_ermos", "nome": "Compreender os Ermos", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "dedo_verde", "nome": "Dedo Verde", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "descanso_natural", "nome": "Descanso Natural", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "voz_da_natureza", "nome": "Voz da Natureza", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "conjurar_arma", "nome": "Conjurar Arma", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "coragem_total", "nome": "Coragem Total", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "fe_guerreira", "nome": "Fé Guerreira", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "sangue_de_ferro", "nome": "Sangue de Ferro", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "espada_solar", "nome": "Espada Solar", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "fulgor_solar", "nome": "Fulgor Solar", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "habitante_do_deserto", "nome": "Habitante do Deserto", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "inimigo_de_tenebra", "nome": "Inimigo de Tenebra", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "apostar_com_o_trapaceiro", "nome": "Apostar com o Trapaceiro", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "farsa_do_fingidor", "nome": "Farsa do Fingidor", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "forma_de_macaco", "nome": "Forma de Macaco", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "golpista_divino", "nome": "Golpista Divino", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "aura_de_medo", "nome": "Aura de Medo", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "escamas_draconicas", "nome": "Escamas Dracônicas", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "presas_primordiais", "nome": "Presas Primordiais", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "servos_do_dragao", "nome": "Servos do Dragão", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "dom_da_verdade", "nome": "Dom da Verdade", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "espada_justiceira", "nome": "Espada Justiceira", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "reparar_injustica", "nome": "Reparar Injustiça", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "ataque_piedoso", "nome": "Ataque Piedoso", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "aura_restauradora", "nome": "Aura Restauradora", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "cura_gentil", "nome": "Cura Gentil", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "curandeira_perfeita", "nome": "Curandeira Perfeita", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "kiai_divino", "nome": "Kiai Divino", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "mente_vazia", "nome": "Mente Vazia", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "tradicao_de_lin_wu", "nome": "Tradição de Lin-Wu", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "aura_de_paz", "nome": "Aura de Paz", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "dom_da_esperanca", "nome": "Dom da Esperança", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "palavras_de_bondade", "nome": "Palavras de Bondade", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "talento_artistico", "nome": "Talento Artístico", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "olhar_amedrontador", "nome": "Olhar Amedrontador", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "urro_divino", "nome": "Urro Divino", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "voz_dos_monstros", "nome": "Voz dos Monstros", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "poder_oculto", "nome": "Poder Oculto", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "sorte_dos_loucos", "nome": "Sorte dos Loucos", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "transmissao_da_loucura", "nome": "Transmissão da Loucura", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "anfibio", "nome": "Anfíbio", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "arsenal_das_profundezas", "nome": "Arsenal das Profundezas", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "mestre_dos_mares", "nome": "Mestre dos Mares", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "sopro_do_mar", "nome": "Sopro do Mar", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "astucia_da_serpente", "nome": "Astúcia da Serpente", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "familiar_ofidico", "nome": "Familiar Ofídico", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "presas_venenosas", "nome": "Presas Venenosas", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "sangue_ofidico", "nome": "Sangue Ofídico", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "conhecimento_enciclopedico", "nome": "Conhecimento Enciclopédico", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "mente_analitica", "nome": "Mente Analítica", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "pesquisa_abencoada", "nome": "Pesquisa Abençoada", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "voz_da_civilizacao", "nome": "Voz da Civilização", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "caricia_sombria", "nome": "Carícia Sombria", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "manto_da_penumbra", "nome": "Manto da Penumbra", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "visao_nas_trevas", "nome": "Visão nas Trevas", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "zumbificar", "nome": "Zumbificar", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "almejar_o_impossivel", "nome": "Almejar o Impossível", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "furia_divina", "nome": "Fúria Divina", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "tropas_duyshidakk", "nome": "Tropas Duyshidakk", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "dom_da_imortalidade", "nome": "Dom da Imortalidade", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "dom_da_profecia", "nome": "Dom da Profecia", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "dom_da_ressurreicao", "nome": "Dom da Ressurreição", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "armas_da_ambicao", "nome": "Armas da Ambição", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "liberdade_divina", "nome": "Liberdade Divina", "descricao": "", "efeitos_mecanicos": [] },
+
+  { "id": "bencao_do_mana", "nome": "Bênção do Mana", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "centelha_magica", "nome": "Centelha Mágica", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "escudo_magico", "nome": "Escudo Mágico", "descricao": "", "efeitos_mecanicos": [] },
+  { "id": "teurgista_mistico", "nome": "Teurgista Místico", "descricao": "", "efeitos_mecanicos": [] }
+]
+

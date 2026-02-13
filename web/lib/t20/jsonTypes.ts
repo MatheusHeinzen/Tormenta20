@@ -274,12 +274,23 @@ export interface OrigemJson {
 
 // Divindades -----------------------------------------------------------------
 
+export type EnergiaDivindade = "positiva" | "negativa" | "qualquer";
+
 export interface DivindadeJson {
   id: string;
   nome: string;
+  energia?: EnergiaDivindade;
+  poderes_concedidos?: string[];
   dominios?: string[];
   efeitos_mecanicos?: EfeitoMecanico[];
   descricao_resumida?: string;
+}
+
+export interface PoderConcedidoDivindadeJson {
+  id: string;
+  nome: string;
+  descricao?: string;
+  efeitos_mecanicos?: EfeitoMecanico[];
 }
 
 // Linhagens (Feiticeiro) -----------------------------------------------------

@@ -1,57 +1,22 @@
 [
-  {
-    "id": "aharadak",
-    "nome": "Aharadak",
-    "dominios": ["destruicao", "escuridao"],
-    "efeitos_mecanicos": [],
-    "descricao_resumida": "Divindade associada à destruição. Consulte o livro para detalhes completos."
-  },
-  { "id": "alihanna", "nome": "Alihanna" },
-  { "id": "arsenal", "nome": "Arsenal" },
-  { "id": "azgher", "nome": "Azgher" },
-  { "id": "hyninn", "nome": "Hyninn" },
-  { "id": "kallyadranoch", "nome": "Kallyadranoch" },
-  {
-    "id": "khalmyr",
-    "nome": "Khalmyr",
-    "dominios": ["justica", "ordem", "guerra"],
-    "efeitos_mecanicos": [
-      {
-        "alvo": "defesa",
-        "tipo_efeito": "bonus_fixo",
-        "operacao": "add",
-        "valor_base": 1,
-        "condicao": "em_defesa_de_inocentes"
-      }
-    ],
-    "descricao_resumida": "Exemplo de divindade com foco em justiça e ordem. Consulte o livro para detalhes completos."
-  },
-  { "id": "lena", "nome": "Lena" },
-  { "id": "lin-wu", "nome": "Lin-Wu" },
-  { "id": "marah", "nome": "Marah" },
-  { "id": "megalokk", "nome": "Megalokk" },
-  { "id": "nimb", "nome": "Nimb" },
-  { "id": "oceano", "nome": "Oceano" },
-  { "id": "sszzaas", "nome": "Sszzaas" },
-  { "id": "tanna-toh", "nome": "Tanna-Toh" },
-  { "id": "tenebra", "nome": "Tenebra" },
-  { "id": "thwor", "nome": "Thwor" },
-  { "id": "thyatis", "nome": "Thyatis" },
-  { "id": "valkaria", "nome": "Valkaria" },
-  {
-    "id": "wynna",
-    "nome": "Wynna",
-    "dominios": ["magia"],
-    "efeitos_mecanicos": [
-      {
-        "alvo": "mana",
-        "tipo_efeito": "ajuste_mana",
-        "operacao": "add",
-        "valor_base": 1,
-        "condicao": "magias_arcana"
-      }
-    ],
-    "descricao_resumida": "Exemplo de divindade ligada à magia. Consulte o livro para detalhes completos."
-  }
+  {"id":"aharadak","nome":"Aharadak","energia":"negativa","poderes_concedidos":["afinidade_com_a_tormenta","extase_da_loucura","percepcao_temporal","rejeicao_divina"],"dominios":["destruicao","escuridao"],"efeitos_mecanicos":[],"descricao_resumida":"Divindade associada à destruição. Consulte o livro para detalhes completos."},
+  {"id":"alihanna","nome":"Alihanna","energia":"positiva","poderes_concedidos":["compreender_os_ermos","dedo_verde","descanso_natural","voz_da_natureza"]},
+  {"id":"arsenal","nome":"Arsenal","energia":"qualquer","poderes_concedidos":["conjurar_arma","coragem_total","fe_guerreira","sangue_de_ferro"]},
+  {"id":"azgher","nome":"Azgher","energia":"positiva","poderes_concedidos":["espada_solar","fulgor_solar","habitante_do_deserto","inimigo_de_tenebra"]},
+  {"id":"hyninn","nome":"Hyninn","energia":"qualquer","poderes_concedidos":["apostar_com_o_trapaceiro","farsa_do_fingidor","forma_de_macaco","golpista_divino"]},
+  {"id":"kallyadranoch","nome":"Kallyadranoch","energia":"negativa","poderes_concedidos":["aura_de_medo","escamas_draconicas","presas_primordiais","servos_do_dragao"]},
+  {"id":"khalmyr","nome":"Khalmyr","energia":"positiva","poderes_concedidos":["coragem_total","dom_da_verdade","espada_justiceira","reparar_injustica"],"dominios":["justica","ordem","guerra"],"efeitos_mecanicos":[{"alvo":"defesa","tipo_efeito":"bonus_fixo","operacao":"add","valor_base":1,"condicao":"em_defesa_de_inocentes"}],"descricao_resumida":"Exemplo de divindade com foco em justiça e ordem. Consulte o livro para detalhes completos."},
+  {"id":"lena","nome":"Lena","energia":"positiva","poderes_concedidos":["ataque_piedoso","aura_restauradora","cura_gentil","curandeira_perfeita"]},
+  {"id":"lin-wu","nome":"Lin-Wu","energia":"qualquer","poderes_concedidos":["coragem_total","kiai_divino","mente_vazia","tradicao_de_lin_wu"]},
+  {"id":"marah","nome":"Marah","energia":"positiva","poderes_concedidos":["aura_de_paz","dom_da_esperanca","palavras_de_bondade","talento_artistico"]},
+  {"id":"megalokk","nome":"Megalokk","energia":"negativa","poderes_concedidos":["olhar_amedrontador","presas_primordiais","urro_divino","voz_dos_monstros"]},
+  {"id":"nimb","nome":"Nimb","energia":"qualquer","poderes_concedidos":["extase_da_loucura","poder_oculto","sorte_dos_loucos","transmissao_da_loucura"]},
+  {"id":"oceano","nome":"Oceano","energia":"qualquer","poderes_concedidos":["anfibio","arsenal_das_profundezas","mestre_dos_mares","sopro_do_mar"]},
+  {"id":"sszzaas","nome":"Sszzaas","energia":"negativa","poderes_concedidos":["astucia_da_serpente","familiar_ofidico","presas_venenosas","sangue_ofidico"]},
+  {"id":"tanna-toh","nome":"Tanna-Toh","energia":"qualquer","poderes_concedidos":["conhecimento_enciclopedico","mente_analitica","pesquisa_abencoada","voz_da_civilizacao"]},
+  {"id":"tenebra","nome":"Tenebra","energia":"negativa","poderes_concedidos":["caricia_sombria","manto_da_penumbra","visao_nas_trevas","zumbificar"]},
+  {"id":"thwor","nome":"Thwor","energia":"qualquer","poderes_concedidos":["almejar_o_impossivel","furia_divina","olhar_amedrontador","tropas_duyshidakk"]},
+  {"id":"thyatis","nome":"Thyatis","energia":"positiva","poderes_concedidos":["ataque_piedoso","dom_da_imortalidade","dom_da_profecia","dom_da_ressurreicao"]},
+  {"id":"valkaria","nome":"Valkaria","energia":"positiva","poderes_concedidos":["almejar_o_impossivel","armas_da_ambicao","coragem_total","liberdade_divina"]},
+  {"id":"wynna","nome":"Wynna","energia":"qualquer","poderes_concedidos":["bencao_do_mana","centelha_magica","escudo_magico","teurgista_mistico"],"dominios":["magia"],"efeitos_mecanicos":[{"alvo":"mana","tipo_efeito":"ajuste_mana","operacao":"add","valor_base":1,"condicao":"magias_arcana"}],"descricao_resumida":"Exemplo de divindade ligada à magia. Consulte o livro para detalhes completos."}
 ]
-
