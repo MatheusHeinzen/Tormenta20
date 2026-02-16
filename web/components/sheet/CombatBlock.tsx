@@ -1,6 +1,20 @@
-import type { AbilityScoreName, CharacterSheet } from "@/lib/models/character";
+import type {
+  AbilityScoreName,
+  CharacterSheet,
+  FormaSelvagemId,
+  TierFormaSelvagem,
+} from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
-import { getBonusDefesaPoderesConcedidos } from "@/lib/data/tormenta20";
+import {
+  getBonusDefesaPoderesConcedidos,
+  getClassByNome,
+} from "@/lib/data/tormenta20";
+import {
+  FORMA_LABELS,
+  getModificadoresFormaSelvagem,
+  FORMAS_SELVAGEM_IDS,
+  TIER_LABELS,
+} from "@/lib/data/formasSelvagem";
 import { getConjuradorMagiaInfo } from "@/lib/t20/class";
 
 interface CombatBlockProps {
@@ -45,13 +59,65 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
       : []),
   ];
   const bonusDefesaPoderes = getBonusDefesaPoderesConcedidos(idsPoderesConcedidos);
+
+  const temDruidaFormaSelvagem =
+    sheet.classes?.some(
+      (c) => getClassByNome(c.nome)?.id === "druida",
+    ) &&
+    sheet.poderesClasseEscolhidos?.some(
+      (p) => p.classeId === "druida" && p.poderId === "druida_forma_selvagem",
+    );
+  const nivelDruida =
+    sheet.classes?.find((c) => getClassByNome(c.nome)?.id === "druida")
+      ?.nivel ?? 0;
+  const temFormaAprimorada =
+    (sheet.poderesClasseEscolhidos?.some(
+      (p) =>
+        p.classeId === "druida" &&
+        p.poderId === "druida_forma_selvagem_aprimorada",
+    ) ?? false) && nivelDruida >= 6;
+  const temFormaSuperior =
+    (sheet.poderesClasseEscolhidos?.some(
+      (p) =>
+        p.classeId === "druida" &&
+        p.poderId === "druida_forma_selvagem_superior",
+    ) ?? false) && nivelDruida >= 12;
+  const tiersDisponiveis: TierFormaSelvagem[] = ["base"];
+  if (temFormaAprimorada) tiersDisponiveis.push("apr");
+  if (temFormaSuperior) tiersDisponiveis.push("sup");
+
+  const formaAtiva = sheet.formaSelvagem ?? null;
+  const tierEfetivo =
+    formaAtiva?.tier && tiersDisponiveis.includes(formaAtiva.tier)
+      ? formaAtiva.tier
+      : formaAtiva?.forma
+        ? "base"
+        : null;
+  const modificadoresForma =
+    formaAtiva?.forma && tierEfetivo
+      ? getModificadoresFormaSelvagem(formaAtiva.forma, tierEfetivo)
+      : undefined;
+  const bonusDefesaForma = modificadoresForma?.bonusDefesa ?? 0;
+
+  const bonusAtributoDefesaForma =
+    modificadoresForma != null
+      ? (atributoDefesa === "forca"
+          ? modificadoresForma.bonusFor
+          : atributoDefesa === "destreza"
+            ? modificadoresForma.bonusDes
+            : 0)
+      : 0;
+  const atributoDefesaModEfetivo =
+    atributoDefesaMod + bonusAtributoDefesaForma;
+
   const caCalculada =
     10 +
-    atributoDefesaMod +
+    atributoDefesaModEfetivo +
     (proficiencias?.armadura?.defesa ?? 0) +
     (proficiencias?.escudo?.defesa ?? 0) +
     (combate.caBonus ?? 0) +
-    bonusDefesaPoderes;
+    bonusDefesaPoderes +
+    bonusDefesaForma;
   const magia = sheet.magia;
 
   const classesResumo =
@@ -304,14 +370,21 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
                 <option value="carisma">Car</option>
               </select>
               <span className="text-[11px] text-ink-muted">
-                {atributoDefesaMod >= 0 ? `+${atributoDefesaMod}` : atributoDefesaMod}
+                {atributoDefesaModEfetivo >= 0 ? `+${atributoDefesaModEfetivo}` : atributoDefesaModEfetivo}
+                {bonusAtributoDefesaForma !== 0 && (
+                  <span> (base {atributoDefesaMod >= 0 ? `+${atributoDefesaMod}` : atributoDefesaMod} + forma)</span>
+                )}
               </span>
             </div>
           </div>
           <p className="text-[11px] text-ink-muted">
-            10 + {atributoDefesaMod >= 0 ? `+${atributoDefesaMod}` : atributoDefesaMod} (atributo) + {proficiencias?.armadura?.defesa ?? 0} (armadura) + {proficiencias?.escudo?.defesa ?? 0} (escudo)
+            10 + {atributoDefesaModEfetivo >= 0 ? `+${atributoDefesaModEfetivo}` : atributoDefesaModEfetivo} (atributo
+            {bonusAtributoDefesaForma !== 0 ? " + forma selvagem" : ""}) + {proficiencias?.armadura?.defesa ?? 0} (armadura) + {proficiencias?.escudo?.defesa ?? 0} (escudo)
             {((combate.caBonus ?? 0) !== 0 || bonusDefesaPoderes !== 0) && (
               <> + {(combate.caBonus ?? 0) + bonusDefesaPoderes} (bônus{bonusDefesaPoderes > 0 ? ", incl. poderes" : ""})</>
+            )}
+            {bonusDefesaForma !== 0 && (
+              <> + {bonusDefesaForma} (forma selvagem)</>
             )}
           </p>
           <div className="flex items-baseline gap-3">
@@ -364,8 +437,111 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
               handleChange("deslocamento", Number(event.target.value) || 0)
             }
           />
+          {modificadoresForma && (
+            <p className="text-[11px] text-ink-muted">
+              Exibido: {combate.deslocamento + (modificadoresForma.deslocamentoBonus ?? 0)} m
+              {modificadoresForma.deslocamentoTexto && (
+                <> — {modificadoresForma.deslocamentoTexto}</>
+              )}
+            </p>
+          )}
         </div>
       </div>
+
+      {temDruidaFormaSelvagem && (
+        <section className="space-y-3 rounded-md border border-border bg-paper-card p-4 shadow-sm">
+          <h3 className="text-sm font-semibold text-ink">Forma Selvagem</h3>
+          <div className="flex flex-wrap items-center gap-4">
+            <label className="flex flex-col gap-0.5 text-xs text-ink-muted">
+              Forma
+              <select
+                value={formaAtiva?.forma ?? ""}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (!v) {
+                    onChange({ ...sheet, formaSelvagem: undefined });
+                    return;
+                  }
+                  const tier = formaAtiva?.tier && tiersDisponiveis.includes(formaAtiva.tier) ? formaAtiva.tier : "base";
+                  onChange({
+                    ...sheet,
+                    formaSelvagem: { forma: v as FormaSelvagemId, tier },
+                  });
+                }}
+                className="rounded border border-border bg-paper px-2 py-1 text-sm shadow-sm focus:border-accent focus:outline-none"
+              >
+                <option value="">Nenhuma</option>
+                {FORMAS_SELVAGEM_IDS.map((id) => (
+                  <option key={id} value={id}>
+                    {FORMA_LABELS[id]}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="flex flex-col gap-0.5 text-xs text-ink-muted">
+              Tier
+              <select
+                value={
+                  formaAtiva?.tier && tiersDisponiveis.includes(formaAtiva.tier)
+                    ? formaAtiva.tier
+                    : "base"
+                }
+                onChange={(e) => {
+                  const tier = e.target.value as TierFormaSelvagem;
+                  if (!formaAtiva?.forma) return;
+                  onChange({
+                    ...sheet,
+                    formaSelvagem: { forma: formaAtiva.forma, tier },
+                  });
+                }}
+                disabled={!formaAtiva?.forma}
+                className="rounded border border-border bg-paper px-2 py-1 text-sm shadow-sm focus:border-accent focus:outline-none disabled:opacity-60"
+              >
+                {tiersDisponiveis.map((t) => (
+                  <option key={t} value={t}>
+                    {TIER_LABELS[t]}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          {modificadoresForma && (
+            <div className="rounded border border-border bg-paper p-3 text-xs text-ink">
+              <p className="font-semibold text-ink-muted">Efeitos da forma</p>
+              <ul className="mt-1 list-inside list-disc space-y-0.5">
+                {modificadoresForma.bonusFor !== 0 && (
+                  <li>Força {modificadoresForma.bonusFor >= 0 ? "+" : ""}{modificadoresForma.bonusFor}</li>
+                )}
+                {modificadoresForma.bonusDes !== 0 && (
+                  <li>Destreza {modificadoresForma.bonusDes >= 0 ? "+" : ""}{modificadoresForma.bonusDes}</li>
+                )}
+                {modificadoresForma.bonusDefesa !== 0 && (
+                  <li>Defesa {modificadoresForma.bonusDefesa >= 0 ? "+" : ""}{modificadoresForma.bonusDefesa}</li>
+                )}
+                {modificadoresForma.reducaoDano !== 0 && (
+                  <li>RD {modificadoresForma.reducaoDano}</li>
+                )}
+                {modificadoresForma.tamanho && modificadoresForma.tamanho !== "Médio" && (
+                  <li>Tamanho: {modificadoresForma.tamanho}</li>
+                )}
+                <li>Armas naturais: {modificadoresForma.armasNaturais}</li>
+                {(modificadoresForma.deslocamentoBonus !== 0 || modificadoresForma.deslocamentoTexto) && (
+                  <li>
+                    Deslocamento: {modificadoresForma.deslocamentoBonus > 0 ? `+${modificadoresForma.deslocamentoBonus} m` : ""}
+                    {modificadoresForma.deslocamentoTexto && (modificadoresForma.deslocamentoBonus > 0 ? ` ou ${modificadoresForma.deslocamentoTexto}` : modificadoresForma.deslocamentoTexto)}
+                  </li>
+                )}
+                {modificadoresForma.penalidadeFurtividade !== 0 && (
+                  <li>Furtividade {modificadoresForma.penalidadeFurtividade >= 0 ? "+" : ""}{modificadoresForma.penalidadeFurtividade}</li>
+                )}
+                {modificadoresForma.bonusManobras !== 0 && (
+                  <li>Manobras {modificadoresForma.bonusManobras >= 0 ? "+" : ""}{modificadoresForma.bonusManobras}</li>
+                )}
+              </ul>
+            </div>
+          )}
+        </section>
+      )}
 
       <section className="space-y-4 rounded-md border border-border bg-paper-card p-4 shadow-sm">
         <h3 className="text-sm font-semibold text-ink">

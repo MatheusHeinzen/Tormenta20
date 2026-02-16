@@ -794,6 +794,128 @@
       }
     ],
     "descricao_resumida": "Eiradaans são criaturas feéricas do tipo espírito, com magia intuitiva e sensibilidade à melancolia."
+  },
+  {
+    "id": "meio-elfo",
+    "nome": "Meio elfo",
+    "bonus_flexivel": {
+      "pontos_por_atributo": 1,
+      "quantidade": 3,
+      "atributos_proibidos": ["constituicao"]
+    },
+    "deslocamento_base": 9,
+    "tamanho": "Medio",
+    "sentidos": {"visao_penumbra": true},
+    "tipo_criatura": "humanoide",
+    "poderes_automaticos": [
+      {
+        "id": "meio_elfo_ambicao_herdada",
+        "nome": "Ambição Herdada",
+        "tipo": "passivo",
+        "descricao_resumida": "Você recebe um poder geral ou poder único de origem (Tormenta20, p. 85) à sua escolha.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "meio_elfo_entre_dois_mundos",
+        "nome": "Entre Dois Mundos",
+        "tipo": "passivo",
+        "descricao_resumida": "Você recebe +1 em testes de Carisma e de perícias baseadas neste atributo.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "meio_elfo_sangue_elfico",
+        "nome": "Sangue Élfico",
+        "tipo": "passivo",
+        "descricao_resumida": "Visão na penumbra, +1 PM no 1º nível e a cada dois níveis. Considerado elfo para efeitos relacionados à raça.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Meio elfos unem versatilidade humana e herança élfica, com bônus em Carisma e mana."
+  },
+  {
+    "id": "galokk",
+    "nome": "Galokk",
+    "modificadores_atributos": [
+      {"atributo": "forca", "valor": 1},
+      {"atributo": "constituicao", "valor": 1},
+      {"atributo": "carisma", "valor": -1}
+    ],
+    "bonus_flexivel": {"pontos_por_atributo": 1, "quantidade": 1},
+    "deslocamento_base": 9,
+    "tamanho": "Grande",
+    "tipo_criatura": "humanoide",
+    "pericias_extras": {"quantidade": 1, "livre": true, "origem": "raca"},
+    "poderes_automaticos": [
+      {
+        "id": "galokk_forca_titas",
+        "nome": "Força dos Titãs",
+        "tipo": "ativo",
+        "descricao_resumida": "Ao fazer ataque corpo a corpo ou de arremesso, pode gastar 1 PM; se acertar, pode rolar novamente qualquer resultado máximo da rolagem de dano da arma e adicionar ao dano.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "galokk_grandao",
+        "nome": "Grandão",
+        "tipo": "passivo",
+        "descricao_resumida": "Tipo humanoide (gigante), tamanho Grande. Pode usar Força como atributo-chave para testes de Intimidação em vez de Carisma.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "galokk_infancia_pequenos",
+        "nome": "Infância entre os Pequenos",
+        "tipo": "passivo",
+        "descricao_resumida": "Treinado em uma perícia à sua escolha.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Galokks são humanoides gigantes fortes e resistentes, com força devastadora e infância entre os pequenos."
+  },
+  {
+    "id": "satiro",
+    "nome": "Sátiro",
+    "modificadores_atributos": [
+      {"atributo": "carisma", "valor": 2},
+      {"atributo": "destreza", "valor": 1},
+      {"atributo": "sabedoria", "valor": -1}
+    ],
+    "deslocamento_base": 12,
+    "tamanho": "Medio",
+    "sentidos": {"visao_penumbra": true},
+    "tipo_criatura": "espirito",
+    "poderes_automaticos": [
+      {
+        "id": "satiro_chifres",
+        "nome": "Chifres",
+        "tipo": "ativo",
+        "descricao_resumida": "Arma natural de chifres (1d6, crítico x2, impacto). Uma vez por rodada, ao usar ação agredir com outra arma, pode gastar 1 PM para ataque corpo a corpo extra com os chifres.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "satiro_festeiro_feerico",
+        "nome": "Festeiro Feérico",
+        "tipo": "passivo",
+        "descricao_resumida": "Criatura do tipo espírito, visão na penumbra, +2 em testes de Atuação e Fortitude.",
+        "efeitos_mecanicos": [
+          {"alvo": "pericia", "tipo_efeito": "bonus_fixo", "operacao": "add", "valor_base": 2, "condicao": "atuacao"},
+          {"alvo": "pericia", "tipo_efeito": "bonus_fixo", "operacao": "add", "valor_base": 2, "condicao": "fortitude"}
+        ]
+      },
+      {
+        "id": "satiro_instrumentista_magico",
+        "nome": "Instrumentista Mágico",
+        "tipo": "ativo",
+        "descricao_resumida": "Empunhando instrumento musical, pode lançar Amedrontar, Enfeitiçar, Hipnotismo e Sono usando Carisma como atributo-chave; se aprender novamente uma dessas magias, custo -1 PM.",
+        "efeitos_mecanicos": []
+      },
+      {
+        "id": "satiro_pernas_caprinas",
+        "nome": "Pernas Caprinas",
+        "tipo": "passivo",
+        "descricao_resumida": "Deslocamento 12m. Pode usar Destreza como atributo-chave para testes de Atletismo em vez de Força.",
+        "efeitos_mecanicos": []
+      }
+    ],
+    "descricao_resumida": "Sátiros são espíritos festeiros, carismáticos, com chifres, magia por instrumento e pernas caprinas."
   }
 ]
 

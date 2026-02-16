@@ -151,7 +151,10 @@ export interface ProficienciasClasse {
 
 export interface HabilidadesNivelClasse {
   nivel: number;
-  poderes: string[]; // ids em poderes_classe.json
+  /** Poderes que a classe concede automaticamente neste nível (sem escolha do jogador). */
+  concedidas: string[];
+  /** Poderes desbloqueados neste nível para o jogador escolher ao subir de nível. */
+  escolhiveis: string[];
 }
 
 export interface MagiaProgressaoCirculoClasse {
@@ -216,11 +219,10 @@ export interface ClasseJson {
    */
   pericias_treinaveis?: string[];
   /**
-   * Quantidade de perícias treinadas que a classe concede.
-   * Pode ser um número fixo (ex.: 4) ou uma expressão simples
-   * como "2+inteligencia".
+   * Quantidade base de perícias treinadas que a classe concede.
+   * O modificador de Inteligência é sempre somado a esse valor no código.
    */
-  pericias_treinadas?: number | string;
+  pericias_treinadas?: number;
   pericias_iniciais?: PericiasIniciaisClasse;
   proficiencias?: ProficienciasClasse;
   habilidades_por_nivel?: HabilidadesNivelClasse[];

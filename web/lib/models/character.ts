@@ -1,4 +1,13 @@
+import type { FormaSelvagemId, TierFormaSelvagem } from "@/lib/data/formasSelvagem";
+
 export type GameSystem = "T20" | "custom";
+
+export type { FormaSelvagemId, TierFormaSelvagem };
+
+export interface FormaSelvagemAtiva {
+  forma: FormaSelvagemId;
+  tier: TierFormaSelvagem;
+}
 
 export type AbilityScoreName =
   | "forca"
@@ -140,6 +149,15 @@ export interface CharacterSpell {
   memorizada?: boolean;
 }
 
+export interface Engenhoca {
+  id: string;
+  nome: string;
+  magiaOuEfeito?: string;
+  cd?: number;
+  custoPm?: string;
+  observacoes?: string;
+}
+
 export interface CharacterNotes {
   descricao: string;
   historicoAliadosTesouros: string;
@@ -175,6 +193,10 @@ export interface CharacterSheet {
   poderConcedidoLinhagemAbencoadaId?: string;
   /** Poderes de classe escolhidos por nível (um por classeId + nivel) */
   poderesClasseEscolhidos?: PoderClasseEscolhido[];
+  /** Engenhocas do Inventor (aba Magias) */
+  engenhocas?: Engenhoca[];
+  /** Forma Selvagem ativa (Druida); apenas para exibição/cálculo no combate */
+  formaSelvagem?: FormaSelvagemAtiva | null;
   notas: CharacterNotes;
 
   classes: CharacterClass[];
@@ -283,6 +305,8 @@ export function normalizeCharacter(raw: CharacterSheet): CharacterSheet {
     poderesDivindadeIds: raw.poderesDivindadeIds ?? [],
     poderConcedidoLinhagemAbencoadaId: raw.poderConcedidoLinhagemAbencoadaId,
     poderesClasseEscolhidos: raw.poderesClasseEscolhidos ?? [],
+    engenhocas: raw.engenhocas ?? [],
+    formaSelvagem: raw.formaSelvagem ?? undefined,
   };
 }
 
@@ -392,6 +416,9 @@ export function createEmptyCharacterSheet(nome: string): CharacterSheet {
     magias: [],
     poderesDivindadeIds: [],
     poderesClasseEscolhidos: [],
+    engenhocas: [],
+
+    formaSelvagem: undefined,
 
     notas: {
       descricao: "",
