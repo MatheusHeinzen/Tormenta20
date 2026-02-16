@@ -303,19 +303,19 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
             <thead>
               <tr className="border-b border-border bg-paper">
                 <th className="px-1 py-1 text-left font-semibold text-ink-muted">
-                  Tot
+                  Total
                 </th>
                 <th className="px-1 py-1 text-left font-semibold text-ink-muted">
-                  T
+                  Treinado
                 </th>
                 <th className="px-1 py-1 text-left font-semibold text-ink-muted">
                   Perícia
                 </th>
                 <th className="px-1 py-1 text-left font-semibold text-ink-muted">
-                  Atr
+                  Atributo
                 </th>
                 <th className="px-1 py-1 text-left font-semibold text-ink-muted">
-                  B.
+                  Bônus
                 </th>
               </tr>
             </thead>
@@ -328,19 +328,19 @@ export function SkillsBlock({ sheet, onChange }: SkillsBlockProps) {
             <thead>
               <tr className="border-b border-border bg-paper">
                 <th className="px-1 py-1 text-left font-semibold text-ink-muted">
-                  Tot
+                  Total
                 </th>
                 <th className="px-1 py-1 text-left font-semibold text-ink-muted">
-                  T
+                  Treinado
                 </th>
                 <th className="px-1 py-1 text-left font-semibold text-ink-muted">
                   Perícia
                 </th>
                 <th className="px-1 py-1 text-left font-semibold text-ink-muted">
-                  Atr
+                  Atributo
                 </th>
                 <th className="px-1 py-1 text-left font-semibold text-ink-muted">
-                  B.
+                  Bônus
                 </th>
               </tr>
             </thead>

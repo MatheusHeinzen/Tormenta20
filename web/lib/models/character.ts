@@ -140,6 +140,15 @@ export interface CharacterSpell {
   memorizada?: boolean;
 }
 
+export interface Engenhoca {
+  id: string;
+  nome: string;
+  magiaOuEfeito?: string;
+  cd?: number;
+  custoPm?: string;
+  observacoes?: string;
+}
+
 export interface CharacterNotes {
   descricao: string;
   historicoAliadosTesouros: string;
@@ -175,6 +184,8 @@ export interface CharacterSheet {
   poderConcedidoLinhagemAbencoadaId?: string;
   /** Poderes de classe escolhidos por nível (um por classeId + nivel) */
   poderesClasseEscolhidos?: PoderClasseEscolhido[];
+  /** Engenhocas do Inventor (aba Magias) */
+  engenhocas?: Engenhoca[];
   notas: CharacterNotes;
 
   classes: CharacterClass[];
@@ -283,6 +294,7 @@ export function normalizeCharacter(raw: CharacterSheet): CharacterSheet {
     poderesDivindadeIds: raw.poderesDivindadeIds ?? [],
     poderConcedidoLinhagemAbencoadaId: raw.poderConcedidoLinhagemAbencoadaId,
     poderesClasseEscolhidos: raw.poderesClasseEscolhidos ?? [],
+    engenhocas: raw.engenhocas ?? [],
   };
 }
 
@@ -392,6 +404,7 @@ export function createEmptyCharacterSheet(nome: string): CharacterSheet {
     magias: [],
     poderesDivindadeIds: [],
     poderesClasseEscolhidos: [],
+    engenhocas: [],
 
     notas: {
       descricao: "",

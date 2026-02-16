@@ -1,4 +1,5 @@
-import type { CharacterSheet } from "@/lib/models/character";
+import type { CharacterSheet, Engenhoca } from "@/lib/models/character";
+import { getClassByNome } from "@/lib/data/tormenta20";
 import { getConjuradorMagiaInfo } from "@/lib/t20/class";
 
 interface SpellsBlockProps {
@@ -9,6 +10,10 @@ interface SpellsBlockProps {
 export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
   const magias = sheet.magias;
   const conjurador = getConjuradorMagiaInfo(sheet);
+  const engenhocas = sheet.engenhocas ?? [];
+  const isInventor = (sheet.classes ?? []).some(
+    (k) => getClassByNome(k.nome)?.id === "inventor",
+  );
 
   function handleChange(index: number, partial: Partial<CharacterSheet["magias"][number]>) {
     const next = magias.map((spell, idx) =>
@@ -45,6 +50,29 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
       ...sheet,
       magias: next,
     });
+  }
+
+  function handleEngenhocaChange(
+    index: number,
+    partial: Partial<Engenhoca>,
+  ) {
+    const next = engenhocas.map((e, i) =>
+      i === index ? { ...e, ...partial } : e,
+    );
+    onChange({ ...sheet, engenhocas: next });
+  }
+
+  function handleAddEngenhoca() {
+    const nova: Engenhoca = {
+      id: crypto.randomUUID(),
+      nome: "",
+    };
+    onChange({ ...sheet, engenhocas: [...engenhocas, nova] });
+  }
+
+  function handleRemoveEngenhoca(index: number) {
+    const next = engenhocas.filter((_, i) => i !== index);
+    onChange({ ...sheet, engenhocas: next });
   }
 
   return (
@@ -326,6 +354,151 @@ export function SpellsBlock({ sheet, onChange }: SpellsBlockProps) {
             </details>
           ))}
         </div>
+      )}
+
+      {isInventor && (
+        <details className="rounded-md border border-border bg-paper p-4">
+          <summary className="cursor-pointer list-none text-sm font-semibold text-ink">
+            Engenhocas (Inventor)
+            {engenhocas.length > 0 && (
+              <span className="ml-2 text-xs font-normal text-ink-muted">
+                ({engenhocas.length}) — Clique para expandir
+              </span>
+            )}
+            {engenhocas.length === 0 && (
+              <span className="ml-2 text-xs font-normal text-ink-muted">
+                Clique para expandir
+              </span>
+            )}
+          </summary>
+          <div className="mt-3 space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <h3 className="text-xs font-semibold uppercase text-ink-muted">
+                Lista de engenhocas
+              </h3>
+              <button
+                type="button"
+                onClick={handleAddEngenhoca}
+                className="rounded bg-accent px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90"
+              >
+                Adicionar engenhoca
+              </button>
+            </div>
+            {engenhocas.length === 0 ? (
+              <p className="text-sm text-ink-muted">
+                Nenhuma engenhoca cadastrada. Use &quot;Adicionar
+                engenhoca&quot; para começar.
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {engenhocas.map((eng, index) => (
+                  <details
+                    key={eng.id}
+                    className="rounded-md border border-border bg-paper-card p-3"
+                  >
+                    <summary className="cursor-pointer list-none text-xs font-semibold text-ink">
+                      {eng.nome || "Sem nome"}
+                    </summary>
+                    <div className="mt-3 space-y-3 text-xs">
+                      <div className="grid gap-2 md:grid-cols-2">
+                        <div className="space-y-1">
+                          <label className="block font-semibold text-ink-muted">
+                            Nome
+                          </label>
+                          <input
+                            type="text"
+                            value={eng.nome}
+                            onChange={(e) =>
+                              handleEngenhocaChange(index, {
+                                nome: e.target.value,
+                              })
+                            }
+                            placeholder="Nome da engenhoca"
+                            className="w-full rounded border border-border px-2 py-1.5 shadow-sm focus:border-accent focus:outline-none"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="block font-semibold text-ink-muted">
+                            Magia / efeito simulado
+                          </label>
+                          <input
+                            type="text"
+                            value={eng.magiaOuEfeito ?? ""}
+                            onChange={(e) =>
+                              handleEngenhocaChange(index, {
+                                magiaOuEfeito: e.target.value || undefined,
+                              })
+                            }
+                            placeholder="Ex.: Bola de Fogo (2º círculo)"
+                            className="w-full rounded border border-border px-2 py-1.5 shadow-sm focus:border-accent focus:outline-none"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid gap-2 md:grid-cols-2">
+                        <div className="space-y-1">
+                          <label className="block font-semibold text-ink-muted">
+                            CD (ativação)
+                          </label>
+                          <input
+                            type="number"
+                            value={eng.cd ?? ""}
+                            onChange={(e) => {
+                              const v = e.target.value;
+                              handleEngenhocaChange(index, {
+                                cd: v === "" ? undefined : Number(v),
+                              });
+                            }}
+                            placeholder="Ex.: 23"
+                            className="w-full rounded border border-border px-2 py-1.5 shadow-sm focus:border-accent focus:outline-none"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="block font-semibold text-ink-muted">
+                            Custo em PM
+                          </label>
+                          <input
+                            type="text"
+                            value={eng.custoPm ?? ""}
+                            onChange={(e) =>
+                              handleEngenhocaChange(index, {
+                                custoPm: e.target.value || undefined,
+                              })
+                            }
+                            placeholder="Ex.: 1 PM + CD da magia"
+                            className="w-full rounded border border-border px-2 py-1.5 shadow-sm focus:border-accent focus:outline-none"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <label className="block font-semibold text-ink-muted">
+                          Observações
+                        </label>
+                        <textarea
+                          rows={2}
+                          value={eng.observacoes ?? ""}
+                          onChange={(e) =>
+                            handleEngenhocaChange(index, {
+                              observacoes: e.target.value || undefined,
+                            })
+                          }
+                          placeholder="Detalhes extras"
+                          className="w-full rounded border border-border px-2 py-1.5 shadow-sm focus:border-accent focus:outline-none"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveEngenhoca(index)}
+                        className="rounded border border-red-200 bg-paper px-2 py-1 text-xs font-medium text-red-700 hover:bg-red-50"
+                      >
+                        Remover
+                      </button>
+                    </div>
+                  </details>
+                ))}
+              </div>
+            )}
+          </div>
+        </details>
       )}
     </section>
   );
