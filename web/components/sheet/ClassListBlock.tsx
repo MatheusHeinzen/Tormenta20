@@ -184,16 +184,19 @@ export function ClassListBlock({ sheet, onChange }: ClassListBlockProps) {
         if (!data) return null;
         const poderesIds = [
           ...new Set(
-            data.habilidades_por_nivel?.flatMap((h) => h.poderes) ?? [],
+            data.habilidades_por_nivel?.flatMap((h) => [
+              ...(h.concedidas ?? []),
+              ...(h.escolhiveis ?? []),
+            ]) ?? [],
           ),
         ];
         const poderes = getPoderesClasseByIds(poderesIds) as PoderClasseJson[];
         const base = data.pericias_base ?? [];
         const treinaveis = data.pericias_treinaveis ?? [];
         const treinadas =
-          typeof data.pericias_treinadas === "number"
-            ? String(data.pericias_treinadas)
-            : data.pericias_treinadas ?? "—";
+          data.pericias_treinadas != null
+            ? `${data.pericias_treinadas} (+ Int)`
+            : "—";
         const prof =
           data.proficiencias &&
           [

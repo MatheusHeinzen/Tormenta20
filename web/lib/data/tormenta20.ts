@@ -72,9 +72,9 @@ export function getPoderesClasseDisponiveisParaNivel(
   if (!classe?.habilidades_por_nivel?.length) return [];
 
   const entradaNivel = classe.habilidades_por_nivel.find((h) => h.nivel === nivel);
-  if (!entradaNivel?.poderes?.length) return [];
+  if (!entradaNivel?.escolhiveis?.length) return [];
 
-  const poderesIds = entradaNivel.poderes;
+  const poderesIds = entradaNivel.escolhiveis;
   const poderes = getPoderesClasseByIds(poderesIds);
   const idsEscolhidos = escolhasDestaClasse
     .filter((e) => e.nivel < nivel && e.poderId)

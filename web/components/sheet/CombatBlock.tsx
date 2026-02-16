@@ -5,7 +5,10 @@ import type {
   TierFormaSelvagem,
 } from "@/lib/models/character";
 import { abilityModifier } from "@/lib/models/character";
-import { getBonusDefesaPoderesConcedidos } from "@/lib/data/tormenta20";
+import {
+  getBonusDefesaPoderesConcedidos,
+  getClassByNome,
+} from "@/lib/data/tormenta20";
 import {
   FORMA_LABELS,
   getModificadoresFormaSelvagem,
@@ -58,12 +61,15 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
   const bonusDefesaPoderes = getBonusDefesaPoderesConcedidos(idsPoderesConcedidos);
 
   const temDruidaFormaSelvagem =
-    sheet.classes?.some((c) => c.id === "druida") &&
+    sheet.classes?.some(
+      (c) => getClassByNome(c.nome)?.id === "druida",
+    ) &&
     sheet.poderesClasseEscolhidos?.some(
       (p) => p.classeId === "druida" && p.poderId === "druida_forma_selvagem",
     );
   const nivelDruida =
-    sheet.classes?.find((c) => c.id === "druida")?.nivel ?? 0;
+    sheet.classes?.find((c) => getClassByNome(c.nome)?.id === "druida")
+      ?.nivel ?? 0;
   const temFormaAprimorada =
     (sheet.poderesClasseEscolhidos?.some(
       (p) =>
@@ -93,9 +99,20 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
       : undefined;
   const bonusDefesaForma = modificadoresForma?.bonusDefesa ?? 0;
 
+  const bonusAtributoDefesaForma =
+    modificadoresForma != null
+      ? (atributoDefesa === "forca"
+          ? modificadoresForma.bonusFor
+          : atributoDefesa === "destreza"
+            ? modificadoresForma.bonusDes
+            : 0)
+      : 0;
+  const atributoDefesaModEfetivo =
+    atributoDefesaMod + bonusAtributoDefesaForma;
+
   const caCalculada =
     10 +
-    atributoDefesaMod +
+    atributoDefesaModEfetivo +
     (proficiencias?.armadura?.defesa ?? 0) +
     (proficiencias?.escudo?.defesa ?? 0) +
     (combate.caBonus ?? 0) +
@@ -353,12 +370,16 @@ export function CombatBlock({ sheet, onChange }: CombatBlockProps) {
                 <option value="carisma">Car</option>
               </select>
               <span className="text-[11px] text-ink-muted">
-                {atributoDefesaMod >= 0 ? `+${atributoDefesaMod}` : atributoDefesaMod}
+                {atributoDefesaModEfetivo >= 0 ? `+${atributoDefesaModEfetivo}` : atributoDefesaModEfetivo}
+                {bonusAtributoDefesaForma !== 0 && (
+                  <span> (base {atributoDefesaMod >= 0 ? `+${atributoDefesaMod}` : atributoDefesaMod} + forma)</span>
+                )}
               </span>
             </div>
           </div>
           <p className="text-[11px] text-ink-muted">
-            10 + {atributoDefesaMod >= 0 ? `+${atributoDefesaMod}` : atributoDefesaMod} (atributo) + {proficiencias?.armadura?.defesa ?? 0} (armadura) + {proficiencias?.escudo?.defesa ?? 0} (escudo)
+            10 + {atributoDefesaModEfetivo >= 0 ? `+${atributoDefesaModEfetivo}` : atributoDefesaModEfetivo} (atributo
+            {bonusAtributoDefesaForma !== 0 ? " + forma selvagem" : ""}) + {proficiencias?.armadura?.defesa ?? 0} (armadura) + {proficiencias?.escudo?.defesa ?? 0} (escudo)
             {((combate.caBonus ?? 0) !== 0 || bonusDefesaPoderes !== 0) && (
               <> + {(combate.caBonus ?? 0) + bonusDefesaPoderes} (bônus{bonusDefesaPoderes > 0 ? ", incl. poderes" : ""})</>
             )}

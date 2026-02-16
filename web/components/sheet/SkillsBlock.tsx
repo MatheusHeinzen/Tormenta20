@@ -47,16 +47,6 @@ function getPericiasFromClasses(sheet: CharacterSheet): {
     const pt = data.pericias_treinadas;
     if (typeof pt === "number") {
       slotsClasse += pt;
-    } else if (typeof pt === "string" && pt.includes("+")) {
-      const [fixed, attr] = pt.split("+").map((s) => s.trim().toLowerCase());
-      const n = parseInt(fixed, 10) || 0;
-      slotsClasse += n;
-      if (attr === "inteligencia" && sheet.atributos.inteligencia != null) {
-        slotsInteligencia += Math.max(
-          0,
-          abilityModifier(sheet.atributos.inteligencia),
-        );
-      }
     }
 
     if (
@@ -69,6 +59,12 @@ function getPericiasFromClasses(sheet: CharacterSheet): {
   }
   const origem = getOrigemByNome(sheet.origem);
   (origem?.pericias ?? []).forEach((id) => baseSet.add(id));
+  if (sheet.atributos.inteligencia != null) {
+    slotsInteligencia = Math.max(
+      0,
+      abilityModifier(sheet.atributos.inteligencia),
+    );
+  }
   return {
     base: [...baseSet],
     treinaveis: [...treinaveisSet],

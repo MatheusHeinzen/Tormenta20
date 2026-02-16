@@ -182,6 +182,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
           nivel: klass.nivel,
           descricao: data.descricao_resumida,
           poderesPorNivel: habilidadesPorNivel.map((h) => ({ nivel: h.nivel })),
+          habilidadesPorNivel: habilidadesPorNivel as { nivel: number; concedidas: string[]; escolhiveis: string[] }[],
           poderesLinhagemOpcionais,
           linhagemBasica,
         };
@@ -192,6 +193,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
       nivel: number;
       descricao?: string;
       poderesPorNivel: { nivel: number }[];
+      habilidadesPorNivel: { nivel: number; concedidas: string[]; escolhiveis: string[] }[];
       poderesLinhagemOpcionais: ReturnType<typeof getPoderesClasseByIds>;
       linhagemBasica: LinhagemJson | null;
     }[];
@@ -243,6 +245,10 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
                   {block.poderesPorNivel
                     .filter((grupo) => grupo.nivel <= block.nivel)
                     .map((grupo) => {
+                      const entradaNivel = block.habilidadesPorNivel?.find(
+                        (h) => h.nivel === grupo.nivel,
+                      );
+                      const concedidas = entradaNivel?.concedidas ?? [];
                       const disponiveis = getPoderesClasseDisponiveisParaNivel(
                         block.id,
                         grupo.nivel,
@@ -257,6 +263,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
                       const mostraCustom =
                         valorSelect === PODER_CLASSE_CUSTOM ||
                         (escolha?.poderCustom != null && escolha.poderCustom !== "");
+                      const poderesConcedidos = getPoderesClasseByIds(concedidas);
 
                       return (
                         <li
@@ -266,6 +273,21 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
                           <span className="font-semibold">
                             Nível {grupo.nivel}:
                           </span>
+                          {poderesConcedidos.length > 0 && (
+                            <ul className="list-inside list-disc space-y-0.5 text-ink-muted">
+                              {poderesConcedidos.map((p) => (
+                                <li key={p.id}>
+                                  <span className="font-medium text-ink">
+                                    {p.nome}
+                                  </span>
+                                  {p.descricao_resumida && (
+                                    <> — {p.descricao_resumida}</>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                          {disponiveis.length > 0 ? (
                           <div className="flex flex-wrap items-center gap-2">
                             <select
                               value={valorSelect}
@@ -320,6 +342,7 @@ export function PowersTabsBlock({ sheet, onChange }: PowersTabsBlockProps) {
                               />
                             )}
                           </div>
+                          ) : null}
                           {escolha?.poderId && (
                             <p className="text-ink-muted">
                               {getPoderesClasseByIds([escolha.poderId])[0]
