@@ -1,4 +1,13 @@
+import type { FormaSelvagemId, TierFormaSelvagem } from "@/lib/data/formasSelvagem";
+
 export type GameSystem = "T20" | "custom";
+
+export type { FormaSelvagemId, TierFormaSelvagem };
+
+export interface FormaSelvagemAtiva {
+  forma: FormaSelvagemId;
+  tier: TierFormaSelvagem;
+}
 
 export type AbilityScoreName =
   | "forca"
@@ -186,6 +195,8 @@ export interface CharacterSheet {
   poderesClasseEscolhidos?: PoderClasseEscolhido[];
   /** Engenhocas do Inventor (aba Magias) */
   engenhocas?: Engenhoca[];
+  /** Forma Selvagem ativa (Druida); apenas para exibição/cálculo no combate */
+  formaSelvagem?: FormaSelvagemAtiva | null;
   notas: CharacterNotes;
 
   classes: CharacterClass[];
@@ -295,6 +306,7 @@ export function normalizeCharacter(raw: CharacterSheet): CharacterSheet {
     poderConcedidoLinhagemAbencoadaId: raw.poderConcedidoLinhagemAbencoadaId,
     poderesClasseEscolhidos: raw.poderesClasseEscolhidos ?? [],
     engenhocas: raw.engenhocas ?? [],
+    formaSelvagem: raw.formaSelvagem ?? undefined,
   };
 }
 
@@ -405,6 +417,8 @@ export function createEmptyCharacterSheet(nome: string): CharacterSheet {
     poderesDivindadeIds: [],
     poderesClasseEscolhidos: [],
     engenhocas: [],
+
+    formaSelvagem: undefined,
 
     notas: {
       descricao: "",
