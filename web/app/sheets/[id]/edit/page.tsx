@@ -4,6 +4,7 @@ import { useRouter, useParams } from "next/navigation";
 import { SheetForm } from "@/components/sheet/SheetForm";
 import { useSheetContext } from "@/context/SheetContext";
 import type { CharacterSheet } from "@/lib/models/character";
+import { AdSidebar } from "@/components/ads/AdSidebar";
 
 export default function EditSheetPage() {
   const router = useRouter();
@@ -37,7 +38,7 @@ export default function EditSheetPage() {
 
   return (
     <main className="min-h-screen w-full max-w-full overflow-x-hidden px-4 py-8">
-      <div className="mx-auto w-full min-w-0 lg:max-w-6xl">
+      <div className="mx-auto w-full min-w-0 lg:max-w-7xl">
         <header className="mb-6 space-y-1">
           <h1 className="font-serif text-xl font-semibold text-ink sm:text-2xl">
             Editar ficha – {initial.nome}
@@ -54,11 +55,29 @@ export default function EditSheetPage() {
           </button>
         </header>
 
-        <SheetForm
-          initialSheet={initial}
-          onSubmit={handleSubmit}
-          submitLabel="Salvar alterações"
-        />
+        {/* Layout com sidebar em telas grandes */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_300px]">
+          {/* Conteúdo principal */}
+          <div className="min-w-0">
+            <SheetForm
+              initialSheet={initial}
+              onSubmit={handleSubmit}
+              submitLabel="Salvar alterações"
+            />
+          </div>
+
+          {/* Sidebar com anúncios (apenas em telas grandes) */}
+          <aside className="hidden lg:block">
+            <div className="sticky top-4 space-y-6">
+              <AdSidebar adUnitId={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_AD_UNIT_ID} />
+              {/* Segundo anúncio sidebar (opcional) */}
+              <AdSidebar 
+                adUnitId={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_AD_UNIT_ID_2}
+                className="mt-8"
+              />
+            </div>
+          </aside>
+        </div>
       </div>
     </main>
   );

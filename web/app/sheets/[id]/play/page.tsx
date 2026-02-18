@@ -6,6 +6,7 @@ import { abilityModifier, type AbilityScoreName } from "@/lib/models/character";
 import { getRaceDataByName, getTipoCriaturaLabel } from "@/lib/t20/race";
 import { SessionCombatSkillsSpellsCard } from "@/components/sheet/SessionCombatSkillsSpellsCard";
 import { SessionPowersNotesCard } from "@/components/sheet/SessionPowersNotesCard";
+import { AdSidebar } from "@/components/ads/AdSidebar";
 
 function StatButton({
   label,
@@ -90,8 +91,8 @@ export default function PlaySheetPage() {
 
   return (
     <main className="min-h-screen px-4 py-8">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6">
-        <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mx-auto max-w-7xl">
+        <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="font-serif text-2xl font-semibold text-ink">
               Sessão – {sheet.nome}
@@ -118,96 +119,113 @@ export default function PlaySheetPage() {
           </div>
         </header>
 
-        <section className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-3 rounded-md border border-border bg-paper-card p-4 shadow-sm">
-            <h2 className="font-serif text-sm font-semibold text-ink">
-              Pontos de Vida
-            </h2>
-            <p className="text-2xl font-semibold text-ink">
-              {sheet.combate.pvAtual}{" "}
-              <span className="text-base font-normal text-ink-muted">
-                / {sheet.combate.pvMaximo}
-              </span>
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              <StatButton label="-1 PV" onClick={() => adjustPv(sheet, -1)} />
-              <StatButton label="-5 PV" onClick={() => adjustPv(sheet, -5)} />
-              <StatButton label="+1 PV" onClick={() => adjustPv(sheet, 1)} />
-              <StatButton label="+5 PV" onClick={() => adjustPv(sheet, 5)} />
+        {/* Layout com sidebar em telas grandes */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_300px]">
+          {/* Conteúdo principal */}
+          <div className="min-w-0 space-y-6">
+            <section className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-3 rounded-md border border-border bg-paper-card p-4 shadow-sm">
+                <h2 className="font-serif text-sm font-semibold text-ink">
+                  Pontos de Vida
+                </h2>
+                <p className="text-2xl font-semibold text-ink">
+                  {sheet.combate.pvAtual}{" "}
+                  <span className="text-base font-normal text-ink-muted">
+                    / {sheet.combate.pvMaximo}
+                  </span>
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  <StatButton label="-1 PV" onClick={() => adjustPv(sheet, -1)} />
+                  <StatButton label="-5 PV" onClick={() => adjustPv(sheet, -5)} />
+                  <StatButton label="+1 PV" onClick={() => adjustPv(sheet, 1)} />
+                  <StatButton label="+5 PV" onClick={() => adjustPv(sheet, 5)} />
+                </div>
+              </div>
+
+              <div className="space-y-3 rounded-md border border-border bg-paper-card p-4 shadow-sm">
+                <h2 className="font-serif text-sm font-semibold text-ink">
+                  Pontos de Mana
+                </h2>
+                <p className="text-2xl font-semibold text-ink">
+                  {sheet.combate.pmAtual}{" "}
+                  <span className="text-base font-normal text-ink-muted">
+                    / {sheet.combate.pmMaximo}
+                  </span>
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  <StatButton label="-1 PM" onClick={() => adjustPm(sheet, -1)} />
+                  <StatButton label="-5 PM" onClick={() => adjustPm(sheet, -5)} />
+                  <StatButton label="+1 PM" onClick={() => adjustPm(sheet, 1)} />
+                  <StatButton label="+5 PM" onClick={() => adjustPm(sheet, 5)} />
+                </div>
+              </div>
+            </section>
+
+            <section className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2 rounded-md border border-border bg-paper-card p-4 shadow-sm">
+                <h2 className="font-serif text-sm font-semibold text-ink">Resumo</h2>
+                <p className="text-xs text-ink-muted">
+                  {sheet.raca} • {sheet.origem} • Tipo: {getTipoCriaturaLabel(getRaceDataByName(sheet.raca)?.tipo_criatura)} • {classesResumo}
+                </p>
+                <p className="text-xs text-ink-muted">
+                  CA {sheet.combate.caTotal} (
+                  {atributoDefesa.toUpperCase()}{" "}
+                  {defesaMod >= 0 ? `+${defesaMod}` : defesaMod}) • Deslocamento{" "}
+                  {sheet.combate.deslocamento}m
+                </p>
+              </div>
+
+              <div className="space-y-2 rounded-md border border-border bg-paper-card p-4 shadow-sm">
+                <h2 className="font-serif text-sm font-semibold text-ink">Inventário</h2>
+                <p className="text-xs font-semibold text-ink-muted">
+                  Dinheiro: {sheet.inventario.dinheiro ?? 0} T$
+                </p>
+                {sheet.inventario.itens.length === 0 ? (
+                  <p className="text-xs text-ink-muted">
+                    Nenhum item cadastrado. Edite a ficha para adicionar itens.
+                  </p>
+                ) : (
+                  <ul className="space-y-1 text-xs text-ink">
+                    {sheet.inventario.itens.map((item) => (
+                      <li key={item.id} className="flex justify-between gap-2">
+                        <span>{item.nome}</span>
+                        <span className="text-ink-muted">
+                          {item.quantidade} × {item.slots} slots
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </section>
+
+            <section className="space-y-2">
+              <h2 className="font-serif text-sm font-semibold text-ink">
+                Ataques, magias e perícias
+              </h2>
+              <SessionCombatSkillsSpellsCard sheet={sheet} />
+            </section>
+
+            <section className="space-y-2">
+              <h2 className="font-serif text-sm font-semibold text-ink">
+                Poderes e anotações
+              </h2>
+              <SessionPowersNotesCard sheet={sheet} />
+            </section>
+          </div>
+
+          {/* Sidebar com anúncios (apenas em telas grandes) */}
+          <aside className="hidden lg:block">
+            <div className="sticky top-4 space-y-6">
+              <AdSidebar adUnitId={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_AD_UNIT_ID} />
+              {/* Segundo anúncio sidebar (opcional) */}
+              <AdSidebar 
+                adUnitId={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_AD_UNIT_ID_2}
+                className="mt-8"
+              />
             </div>
-          </div>
-
-          <div className="space-y-3 rounded-md border border-border bg-paper-card p-4 shadow-sm">
-            <h2 className="font-serif text-sm font-semibold text-ink">
-              Pontos de Mana
-            </h2>
-            <p className="text-2xl font-semibold text-ink">
-              {sheet.combate.pmAtual}{" "}
-              <span className="text-base font-normal text-ink-muted">
-                / {sheet.combate.pmMaximo}
-              </span>
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              <StatButton label="-1 PM" onClick={() => adjustPm(sheet, -1)} />
-              <StatButton label="-5 PM" onClick={() => adjustPm(sheet, -5)} />
-              <StatButton label="+1 PM" onClick={() => adjustPm(sheet, 1)} />
-              <StatButton label="+5 PM" onClick={() => adjustPm(sheet, 5)} />
-            </div>
-          </div>
-        </section>
-
-        <section className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2 rounded-md border border-border bg-paper-card p-4 shadow-sm">
-            <h2 className="font-serif text-sm font-semibold text-ink">Resumo</h2>
-            <p className="text-xs text-ink-muted">
-              {sheet.raca} • {sheet.origem} • Tipo: {getTipoCriaturaLabel(getRaceDataByName(sheet.raca)?.tipo_criatura)} • {classesResumo}
-            </p>
-            <p className="text-xs text-ink-muted">
-              CA {sheet.combate.caTotal} (
-              {atributoDefesa.toUpperCase()}{" "}
-              {defesaMod >= 0 ? `+${defesaMod}` : defesaMod}) • Deslocamento{" "}
-              {sheet.combate.deslocamento}m
-            </p>
-          </div>
-
-          <div className="space-y-2 rounded-md border border-border bg-paper-card p-4 shadow-sm">
-            <h2 className="font-serif text-sm font-semibold text-ink">Inventário</h2>
-            <p className="text-xs font-semibold text-ink-muted">
-              Dinheiro: {sheet.inventario.dinheiro ?? 0} T$
-            </p>
-            {sheet.inventario.itens.length === 0 ? (
-              <p className="text-xs text-ink-muted">
-                Nenhum item cadastrado. Edite a ficha para adicionar itens.
-              </p>
-            ) : (
-              <ul className="space-y-1 text-xs text-ink">
-                {sheet.inventario.itens.map((item) => (
-                  <li key={item.id} className="flex justify-between gap-2">
-                    <span>{item.nome}</span>
-                    <span className="text-ink-muted">
-                      {item.quantidade} × {item.slots} slots
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </section>
-
-        <section className="space-y-2">
-          <h2 className="font-serif text-sm font-semibold text-ink">
-            Ataques, magias e perícias
-          </h2>
-          <SessionCombatSkillsSpellsCard sheet={sheet} />
-        </section>
-
-        <section className="space-y-2">
-          <h2 className="font-serif text-sm font-semibold text-ink">
-            Poderes e anotações
-          </h2>
-          <SessionPowersNotesCard sheet={sheet} />
-        </section>
-
+          </aside>
+        </div>
       </div>
     </main>
   );

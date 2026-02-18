@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AdBanner } from "@/components/ads/AdBanner";
 
 export default function Home() {
   return (
@@ -11,6 +12,9 @@ export default function Home() {
           Crie, edite e use fichas de personagem diretamente no navegador
         </p>
       </header>
+
+      {/* Ad banner após o header */}
+      <AdBanner position="top" />
 
       <section className="grid gap-4 md:grid-cols-3">
         <Link
@@ -60,6 +64,9 @@ export default function Home() {
           <span className="mt-4 text-xs">Em breve</span>
         </div>
       </section>
+
+      {/* Ad banner antes do final da página */}
+      <AdBanner position="bottom" />
     </main>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Cinzel } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { SheetProvider } from "@/context/SheetContext";
@@ -30,8 +31,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const adSenseClientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || 'ca-pub-PLACEHOLDER';
+
   return (
     <html lang="pt-BR">
+      <head>
+        {/* Google AdSense */}
+        {adSenseClientId !== 'ca-pub-PLACEHOLDER' && (
+          <Script
+            id="adsbygoogle-init"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                (adsbygoogle = window.adsbygoogle || []).push({
+                  google_ad_client: "${adSenseClientId}",
+                  enable_page_level_ads: false
+                });
+              `,
+            }}
+          />
+        )}
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} antialiased`}
       >
@@ -41,6 +61,15 @@ export default function RootLayout({
           </div>
         </SheetProvider>
         <Analytics />
+        {/* AdSense script */}
+        {adSenseClientId !== 'ca-pub-PLACEHOLDER' && (
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adSenseClientId}`}
+            crossOrigin="anonymous"
+            strategy="lazyOnload"
+          />
+        )}
       </body>
     </html>
   );
